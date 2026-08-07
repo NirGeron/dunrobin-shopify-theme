@@ -289,6 +289,17 @@
         "default": true
       },
       {
+        "type": "select",
+        "id": "age_gate_frequency",
+        "label": "How often to ask",
+        "options": [
+          { "value": "session", "label": "Every new browsing session" },
+          { "value": "device", "label": "Once per device" }
+        ],
+        "default": "session",
+        "info": "Per session uses sessionStorage, so the gate returns whenever the visitor starts a fresh session."
+      },
+      {
         "type": "image_picker",
         "id": "age_gate_background",
         "label": "Background",

@@ -112,9 +112,32 @@
     if (window.Shopify && window.Shopify.designMode) return;
 
     var KEY = 'dunrobin:age-verified';
-    var verified;
+    // Per session by default: sessionStorage is cleared when the browsing
+    // session ends, so a returning visitor is asked again.
+    var perSession = gate.getAttribute('data-frequency') !== 'device';
+
+    function store() {
+      try {
+        return perSession ? window.sessionStorage : window.localStorage;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    if (perSession) {
+      // Drop any device-wide flag left by a previous configuration, otherwise
+      // visitors who confirmed once would never be asked again.
+      try {
+        window.localStorage.removeItem(KEY);
+      } catch (e) {
+        /* storage unavailable */
+      }
+    }
+
+    var verified = null;
     try {
-      verified = localStorage.getItem(KEY);
+      var s = store();
+      verified = s && s.getItem(KEY);
     } catch (e) {
       verified = null;
     }
@@ -130,9 +153,10 @@
       'click',
       function () {
         try {
-          localStorage.setItem(KEY, 'true');
+          var s = store();
+          if (s) s.setItem(KEY, 'true');
         } catch (e) {
-          /* private browsing — the gate simply shows again next visit */
+          /* private browsing — the gate simply shows again */
         }
         gate.classList.remove('is-open');
         gate.hidden = true;

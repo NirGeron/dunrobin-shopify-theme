@@ -227,6 +227,20 @@ def test_structure():
     check('age gate is scoped to the cart page',
           ".cart-page" in js and "scope.querySelector('button[name=\"checkout\"]')" in js)
 
+    # The gate must return each browsing session, not once per device forever.
+    js = open(rel('assets/global.js')).read()
+    check('age gate: uses sessionStorage by default',
+          'window.sessionStorage' in js and "!== 'device'" in js,
+          'localStorage would remember the visitor indefinitely')
+    check('age gate: clears any stale device-wide flag',
+          'window.localStorage.removeItem(KEY)' in js,
+          'visitors who confirmed under the old behaviour would never be asked again')
+    gate = open(rel('snippets/age-gate.liquid')).read()
+    check('age gate: frequency reaches the markup', 'data-frequency=' in gate)
+    schema_ids_local = {x['id'] for g in json.load(open(rel('config/settings_schema.json')))
+                        for x in g.get('settings', []) if 'id' in x}
+    check('age gate: frequency is a theme setting', 'age_gate_frequency' in schema_ids_local)
+
     # Required theme files.
     for required in ('layout/theme.liquid', 'config/settings_schema.json',
                      'config/settings_data.json', 'locales/en.default.json',
@@ -388,6 +402,21 @@ window.addEventListener('load', function () {
       }
     }
 
+    // Age-gate storage behaviour, exercised against the real global.js logic.
+    var gateEl = document.getElementById('AgeGate');
+    if (gateEl) {
+      out.gateFrequency = gateEl.getAttribute('data-frequency');
+      try {
+        sessionStorage.removeItem('dunrobin:age-verified');
+        localStorage.setItem('dunrobin:age-verified', 'true');
+        // A device-wide flag must not suppress the gate in per-session mode.
+        out.deviceFlagIgnored = sessionStorage.getItem('dunrobin:age-verified') !== 'true';
+        localStorage.removeItem('dunrobin:age-verified');
+      } catch (e) {
+        out.gateStorageError = String(e);
+      }
+    }
+
     var pre = document.createElement('pre');
     pre.id = 'probe';
     pre.textContent = JSON.stringify(out);
@@ -505,6 +534,12 @@ def test_render():
                 check(f'{tag}: bottle centred in its section',
                       d['bottleOffset'] < 2,
                       f'{d["bottleOffset"]:.1f}px off centre')
+
+            if 'gateFrequency' in d:
+                check(f'{tag}: age gate asks per session', d['gateFrequency'] == 'session',
+                      f'frequency is {d["gateFrequency"]}')
+                check(f'{tag}: device-wide flag does not suppress the gate',
+                      d.get('deviceFlagIgnored') is True)
 
             check(f'{tag}: body text at least 14px', d['bodyFontPx'] >= 14,
                   f'{d["bodyFontPx"]}px')
