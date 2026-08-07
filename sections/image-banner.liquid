@@ -1,4 +1,4 @@
-<div class="image-banner image-banner--{{ section.settings.height }}">
+<div class="image-banner image-banner--{{ section.settings.height }} {% if section.settings.fit_mobile %}image-banner--fit-mobile{% endif %}">
   {%- if section.settings.image != blank -%}
     <img
       src="{{ section.settings.image | image_url: width: 2400 }}"
@@ -47,6 +47,13 @@
         { "value": "auto", "label": "Full image height" }
       ],
       "default": "medium"
+    },
+    {
+      "type": "checkbox",
+      "id": "fit_mobile",
+      "label": "Show the whole image on mobile",
+      "default": true,
+      "info": "Uncropped on phones, so nothing is lost off the sides."
     },
     { "type": "text", "id": "caption", "label": "Caption" }
   ],

@@ -45,7 +45,7 @@
       {%- endif -%}
     </div>
 
-    <div class="dispatch-grid dispatch-grid--{{ section.settings.columns }} {% if section.settings.stagger %}dispatch-grid--staggered{% endif %}">
+    <div class="dispatch-grid dispatch-grid--{{ section.settings.columns }} {% if section.settings.stagger %}dispatch-grid--staggered{% endif %} {% if section.settings.mobile_carousel %}dispatch-grid--carousel{% endif %}">
       {%- if posts.size > 0 -%}
         {%- for article in posts limit: count -%}
           <article class="dispatch-card reveal">
@@ -147,6 +147,13 @@
       "default": 3
     },
     { "type": "range", "id": "columns", "min": 2, "max": 4, "step": 1, "label": "Columns on desktop", "default": 3 },
+    {
+      "type": "checkbox",
+      "id": "mobile_carousel",
+      "label": "Swipeable carousel on mobile",
+      "default": true,
+      "info": "Cards sit in a horizontal rail on phones instead of stacking."
+    },
     {
       "type": "checkbox",
       "id": "stagger",

@@ -21,7 +21,18 @@
               loading="lazy"
             >
           {%- else -%}
-            <img src="{{ 'castle.jpg' | asset_url }}" alt="" width="1600" height="1101" loading="lazy">
+            {%- case section.settings.builtin_image -%}
+              {%- when 'team' -%}
+                <img src="{{ 'team.jpg' | asset_url }}" alt="" width="1400" height="1400" loading="lazy">
+              {%- when 'bottle' -%}
+                <img src="{{ 'bottle-gin.png' | asset_url }}" alt="" width="918" height="993" loading="lazy">
+              {%- when 'cocktail' -%}
+                <img src="{{ 'cocktail.jpg' | asset_url }}" alt="" width="1600" height="900" loading="lazy">
+              {%- when 'pattern' -%}
+                <img src="{{ 'pattern-navy.jpg' | asset_url }}" alt="" width="1800" height="588" loading="lazy">
+              {%- else -%}
+                <img src="{{ 'castle.jpg' | asset_url }}" alt="" width="1600" height="1101" loading="lazy">
+            {%- endcase -%}
           {%- endif -%}
         </div>
       </div>
@@ -90,6 +101,19 @@
   "max_blocks": 8,
   "settings": [
     { "type": "image_picker", "id": "image", "label": "Image" },
+    {
+      "type": "select",
+      "id": "builtin_image",
+      "label": "Image to use until you upload one",
+      "options": [
+        { "value": "castle", "label": "Dunrobin Castle" },
+        { "value": "team", "label": "The team" },
+        { "value": "bottle", "label": "Gin bottle" },
+        { "value": "cocktail", "label": "Serve" },
+        { "value": "pattern", "label": "Brand pattern" }
+      ],
+      "default": "castle"
+    },
     {
       "type": "select",
       "id": "image_ratio",

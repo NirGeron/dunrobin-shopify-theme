@@ -37,7 +37,7 @@
               {%- endif -%}
 
               {%- if block.settings.text != blank -%}
-                <div class="rte" style="font-size:1.5rem;opacity:.85">{{ block.settings.text }}</div>
+                <div class="rte" style="font-size:1.5rem">{{ block.settings.text }}</div>
               {%- endif -%}
 
               {%- if block.settings.show_social -%}
@@ -74,7 +74,7 @@
               {%- if block.settings.heading != blank -%}
                 <h3 class="footer__block-title">{{ block.settings.heading }}</h3>
               {%- endif -%}
-              <div class="rte" style="font-size:1.5rem;opacity:.85">{{ block.settings.text }}</div>
+              <div class="rte" style="font-size:1.5rem">{{ block.settings.text }}</div>
 
             {%- when 'policies' -%}
               {%- if block.settings.heading != blank -%}
@@ -105,7 +105,7 @@
                 <h3 class="footer__block-title">{{ block.settings.heading }}</h3>
               {%- endif -%}
               {%- if block.settings.text != blank -%}
-                <div class="rte" style="font-size:1.5rem;opacity:.85;margin-bottom:1.6rem">{{ block.settings.text }}</div>
+                <div class="rte" style="font-size:1.5rem;margin-bottom:1.6rem">{{ block.settings.text }}</div>
               {%- endif -%}
               {% form 'customer' %}
                 <input type="hidden" name="contact[tags]" value="newsletter">

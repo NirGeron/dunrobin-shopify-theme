@@ -244,6 +244,11 @@ window.addEventListener('load', function () {
       // Off-canvas drawers sit outside the viewport by design while closed.
       var off = el.closest('.mobile-nav, .cart-drawer, .age-gate');
       if (off && !off.classList.contains('is-open')) return;
+      // Horizontal rails scroll their own content; that is not page overflow.
+      for (var a = el.parentElement; a && a !== document.body; a = a.parentElement) {
+        var ox = getComputedStyle(a).overflowX;
+        if (ox === 'auto' || ox === 'scroll') return;
+      }
       if (r.right > vw + 1.5 || r.left < -1.5) {
         if (out.overflowing.length < 8) {
           out.overflowing.push((el.tagName + '.' + (el.className || '')).slice(0, 70)
@@ -304,6 +309,57 @@ window.addEventListener('load', function () {
       out.checkoutReblocked = checkout.disabled === true;
     }
 
+    var rail = document.querySelector('.dispatch-grid--carousel');
+    if (rail) {
+      var cs = getComputedStyle(rail);
+      out.railScrolls = (cs.overflowX === 'auto' || cs.overflowX === 'scroll')
+        && rail.scrollWidth > rail.clientWidth + 4;
+      out.railStacks = cs.overflowX === 'visible';
+      out.railSnaps = cs.scrollSnapType.indexOf('x') !== -1;
+    }
+
+    var fit = document.querySelector('.image-banner--fit-mobile');
+    if (fit) {
+      var img = fit.querySelector('img');
+      out.bannerFit = img ? getComputedStyle(img).objectFit : null;
+      // Uncropped means the rendered box keeps the file's aspect ratio.
+      if (img && img.naturalWidth) {
+        var br = img.getBoundingClientRect();
+        out.bannerAspectDrift = Math.abs(
+          (br.width / br.height) - (img.naturalWidth / img.naturalHeight));
+      }
+    }
+
+    var foot = document.querySelector('.footer:not(.footer--light)');
+    if (foot) {
+      var notWhite = [];
+      foot.querySelectorAll('a, p, li, h3, div, span, time').forEach(function (el) {
+        if (!el.textContent.trim()) return;
+        var r = el.getBoundingClientRect();
+        if (r.width === 0 || r.height === 0) return;
+        var c = getComputedStyle(el);
+        var m = c.color.match(/\d+/g);
+        if (!m) return;
+        var white = m[0] > 245 && m[1] > 245 && m[2] > 245;
+        var opaque = parseFloat(c.opacity) > 0.98;
+        if ((!white || !opaque) && notWhite.length < 6) {
+          notWhite.push((el.tagName + '.' + (el.className || '')).slice(0, 50)
+            + ' ' + c.color + ' @' + c.opacity);
+        }
+      });
+      out.footerNotWhite = notWhite;
+    }
+
+    var centred = document.querySelector('.featured-product--centered');
+    if (centred) {
+      var bimg = centred.querySelector('img');
+      if (bimg) {
+        var br = bimg.getBoundingClientRect();
+        var cr = centred.getBoundingClientRect();
+        out.bottleOffset = Math.abs((br.left + br.width / 2) - (cr.left + cr.width / 2));
+      }
+    }
+
     var pre = document.createElement('pre');
     pre.id = 'probe';
     pre.textContent = JSON.stringify(out);
@@ -322,24 +378,59 @@ def build_preview():
 
 
 def probe(page, width, height):
+    """
+    Chrome clamps its window to a 500px minimum, so --window-size cannot reach
+    a real phone width. Rendering the page inside an exactly sized iframe gives
+    it a true viewport of any width, and media queries resolve against that.
+    """
     src = os.path.join(PREVIEW, page)
-    html = open(src).read().replace('</body>', PROBE + '</body>')
-    tmp = os.path.join(PREVIEW, '__probe_' + page)
-    open(tmp, 'w').write(html)
+    child_html = open(src).read().replace('</body>', PROBE + '</body>')
+    child = os.path.join(PREVIEW, '__probe_child.html')
+    frame = os.path.join(PREVIEW, '__probe_frame.html')
+    open(child, 'w').write(child_html)
+    open(frame, 'w').write(f"""<!doctype html><html><head><meta charset="utf-8">
+<style>html,body{{margin:0;padding:0}}iframe{{border:0;display:block}}</style></head><body>
+<iframe id="f" src="__probe_child.html" width="{width}" height="{height}" scrolling="no"></iframe>
+<script>
+function grab(tries) {{
+  try {{
+    var d = document.getElementById('f').contentDocument;
+    var pre = d && d.getElementById('probe');
+    if (pre) {{
+      var out = document.createElement('pre');
+      out.id = 'probe'; out.textContent = pre.textContent;
+      document.body.appendChild(out); return;
+    }}
+  }} catch (e) {{
+    var err = document.createElement('pre');
+    err.id = 'probe-error'; err.textContent = String(e);
+    document.body.appendChild(err); return;
+  }}
+  if (tries > 0) setTimeout(function () {{ grab(tries - 1); }}, 200);
+}}
+window.addEventListener('load', function () {{ setTimeout(function () {{ grab(30); }}, 300); }});
+</script></body></html>""")
     try:
         r = subprocess.run(
             [CHROME, '--headless', '--disable-gpu', '--no-sandbox', '--hide-scrollbars',
-             f'--window-size={width},{height}', '--virtual-time-budget=6000',
-             '--dump-dom', 'file://' + tmp],
-            capture_output=True, text=True, timeout=120)
+             '--allow-file-access-from-files',
+             f'--window-size={max(width, 1400)},{height + 200}',
+             '--virtual-time-budget=9000', '--dump-dom', 'file://' + frame],
+            capture_output=True, text=True, timeout=180)
+        if '<pre id="probe-error">' in r.stdout:
+            m = re.search(r'<pre id="probe-error">(.*?)</pre>', r.stdout, re.S)
+            check(f'probe iframe access ({page} @{width})', False, m.group(1)[:120])
+            return None
         m = re.search(r'<pre id="probe">(.*?)</pre>', r.stdout, re.S)
         if not m:
             return None
-        return json.loads(m.group(1).replace('&quot;', '"').replace('&amp;', '&')
-                          .replace('&lt;', '<').replace('&gt;', '>'))
+        raw = (m.group(1).replace('&quot;', '"').replace('&amp;', '&')
+               .replace('&lt;', '<').replace('&gt;', '>'))
+        return json.loads(raw)
     finally:
-        if os.path.exists(tmp):
-            os.remove(tmp)
+        for f in (child, frame):
+            if os.path.exists(f):
+                os.remove(f)
 
 
 def test_render():
@@ -360,6 +451,9 @@ def test_render():
                 check(tag, False, 'probe returned nothing')
                 continue
 
+            check(f'{tag}: rendered at the requested width',
+                  d['viewport'] == w, f'asked {w}px, got {d["viewport"]}px')
+
             check(f'{tag}: no horizontal overflow',
                   d['scrollWidth'] <= d['viewport'] + 2,
                   f'scrollWidth {d["scrollWidth"]} > viewport {d["viewport"]}; '
@@ -375,6 +469,15 @@ def test_render():
                   d['imagesMissingDims'] == 0,
                   f'{d["imagesMissingDims"]} images without dimensions (layout shift)')
 
+            if 'footerNotWhite' in d:
+                check(f'{tag}: footer text is white', not d['footerNotWhite'],
+                      str(d['footerNotWhite'][:3]))
+
+            if 'bottleOffset' in d:
+                check(f'{tag}: bottle centred in its section',
+                      d['bottleOffset'] < 2,
+                      f'{d["bottleOffset"]:.1f}px off centre')
+
             check(f'{tag}: body text at least 14px', d['bodyFontPx'] >= 14,
                   f'{d["bodyFontPx"]}px')
 
@@ -383,11 +486,27 @@ def test_render():
                   f'body={d["bodyFont"]}, heading={d["headingFont"]}')
 
             if label == 'mobile':
+                if 'railScrolls' in d:
+                    check(f'{tag}: dispatches scroll as a carousel', d['railScrolls'] is True,
+                          'rail is not horizontally scrollable on mobile')
+                    check(f'{tag}: carousel snaps', d.get('railSnaps') is True)
+                if 'bannerFit' in d:
+                    check(f'{tag}: banner image not cropped', d['bannerFit'] == 'contain',
+                          f'object-fit is {d["bannerFit"]}')
+                    check(f'{tag}: banner keeps its aspect ratio',
+                          d.get('bannerAspectDrift', 9) < 0.05,
+                          f'drift {d.get("bannerAspectDrift")}')
                 check(f'{tag}: desktop nav hidden', d['navDisplay'] == 'none', d['navDisplay'])
                 check(f'{tag}: menu toggle visible', d['toggleDisplay'] != 'none')
                 check(f'{tag}: drawer opens', d.get('drawerOpens') is True)
                 check(f'{tag}: drawer closes', d.get('drawerCloses') is True)
             if label == 'desktop':
+                if 'railStacks' in d:
+                    check(f'{tag}: dispatches are a grid, not a rail',
+                          d['railStacks'] is True, 'carousel styles leaked to desktop')
+                if 'bannerFit' in d:
+                    check(f'{tag}: banner fills the band', d['bannerFit'] == 'cover',
+                          f'object-fit is {d["bannerFit"]}')
                 check(f'{tag}: menu toggle hidden', d['toggleDisplay'] == 'none')
                 if 'navCentre' in d:
                     check(f'{tag}: nav centred in header',

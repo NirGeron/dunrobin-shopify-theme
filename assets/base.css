@@ -2444,3 +2444,97 @@ textarea.field__input {
   text-transform: uppercase;
   color: var(--text-muted);
 }
+
+/* --------------------------------------------------------------------------
+   Mobile refinements
+   -------------------------------------------------------------------------- */
+
+@media screen and (max-width: 749px) {
+  /* Dispatches become a swipeable rail. The negative margin lets cards bleed
+     to the screen edge while the first one still lines up with the page grid. */
+  .dispatch-grid--carousel {
+    grid-auto-flow: column;
+    grid-auto-columns: 78vw;
+    grid-template-columns: none;
+    gap: 1.6rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline-start: 2rem;
+    margin-inline: -2rem;
+    padding: 0 2rem 1.6rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .dispatch-grid--carousel::-webkit-scrollbar {
+    display: none;
+  }
+
+  .dispatch-grid--carousel > * {
+    scroll-snap-align: start;
+    margin-top: 0;
+  }
+
+  /* Narrative images show whole on a phone rather than being cropped to a band. */
+  .image-banner--fit-mobile {
+    height: auto;
+    min-height: 0;
+  }
+
+  .image-banner--fit-mobile img {
+    height: auto;
+    object-fit: contain;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Footer — solid white type on the navy panel
+   -------------------------------------------------------------------------- */
+
+.footer,
+.footer a,
+.footer p,
+.footer li,
+.footer .rte,
+.footer .rte a,
+.footer__block-title,
+.footer__list a,
+.footer__bottom,
+.footer__social a {
+  color: #fff;
+  opacity: 1;
+}
+
+.footer .field__input {
+  color: #fff;
+  border-bottom-color: rgba(255, 255, 255, 0.45);
+}
+
+.footer .field__input::placeholder {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+/* The light variant keeps the ordinary text colour. */
+.footer--light,
+.footer--light a,
+.footer--light p,
+.footer--light li,
+.footer--light .rte,
+.footer--light .rte a,
+.footer--light .footer__block-title,
+.footer--light .footer__list a,
+.footer--light .footer__bottom,
+.footer--light .footer__social a {
+  color: var(--text);
+}
+
+.footer--light .rte a,
+.footer--light .footer__list a:hover {
+  color: var(--brand);
+}
+
+.footer--light .field__input {
+  color: var(--text);
+  border-bottom-color: var(--border);
+}
