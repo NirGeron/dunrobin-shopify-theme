@@ -383,6 +383,37 @@
   }
 
   /* ---------------------------------------------------------------------
+     Cart page age confirmation — blocks checkout until ticked
+     --------------------------------------------------------------------- */
+  function initAgeConfirm() {
+    var box = document.querySelector('[data-age-confirm]');
+    if (!box) return;
+
+    var panel = document.getElementById('AgeConfirm');
+    var checkout = document.querySelector('button[name="checkout"]');
+    if (!checkout) return;
+
+    function sync() {
+      checkout.disabled = !box.checked;
+      if (box.checked && panel) panel.classList.remove('is-invalid');
+    }
+
+    sync();
+    box.addEventListener('change', sync);
+
+    // If the button is reached without ticking, draw attention to the panel.
+    checkout.addEventListener('click', function (e) {
+      if (box.checked) return;
+      e.preventDefault();
+      if (panel) {
+        panel.classList.add('is-invalid');
+        panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      box.focus();
+    });
+  }
+
+  /* ---------------------------------------------------------------------
      Misc
      --------------------------------------------------------------------- */
   function initAutoSubmit() {
@@ -406,6 +437,7 @@
     initCart();
     initProductForm();
     initVariantPicker();
+    initAgeConfirm();
     initAutoSubmit();
     initShare();
   }

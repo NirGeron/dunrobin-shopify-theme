@@ -1,0 +1,233 @@
+<div
+  class="scheme--{{ section.settings.color_scheme }} section-padding"
+  style="--padding-top:{{ section.settings.padding_top }}px;--padding-bottom:{{ section.settings.padding_bottom }}px"
+>
+  <div class="page-width">
+    {%- if section.settings.heading != blank or section.settings.eyebrow != blank -%}
+      <div class="section-header section-header--{{ section.settings.heading_alignment }}">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="h2">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="bento">
+      {%- for block in section.blocks -%}
+        <div
+          class="bento__item bento__item--{{ block.settings.size }} scheme--{{ block.settings.color_scheme }} reveal"
+          style="--bento-justify: {{ block.settings.content_position }}"
+          {{ block.shopify_attributes }}
+        >
+          {%- if block.settings.image != blank -%}
+            <img
+              src="{{ block.settings.image | image_url: width: 1400 }}"
+              alt="{{ block.settings.image.alt | escape }}"
+              width="{{ block.settings.image.width }}"
+              height="{{ block.settings.image.height }}"
+              style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"
+              loading="lazy"
+            >
+            <div style="position:absolute;inset:0;background:rgba(0,0,0,{{ block.settings.overlay_opacity | divided_by: 100.0 }})"></div>
+          {%- endif -%}
+
+          {%- if block.settings.watermark != blank -%}
+            <span class="bento__watermark" aria-hidden="true">{{ block.settings.watermark }}</span>
+          {%- endif -%}
+
+          <div class="bento__content">
+            {%- if block.settings.eyebrow != blank -%}
+              <p class="eyebrow {% if block.settings.color_scheme == 'brand' or block.settings.color_scheme == 'accent' %}eyebrow--light{% endif %}">
+                {{ block.settings.eyebrow }}
+              </p>
+            {%- endif -%}
+
+            {%- if block.settings.heading != blank -%}
+              <h3 class="bento__title h3">{{ block.settings.heading }}</h3>
+            {%- endif -%}
+
+            {%- if block.settings.quote != blank -%}
+              <p class="bento__quote">{{ block.settings.quote }}</p>
+            {%- endif -%}
+
+            {%- if block.settings.text != blank -%}
+              <div class="bento__text rte">{{ block.settings.text }}</div>
+            {%- endif -%}
+
+            {%- if block.settings.footnote_label != blank -%}
+              <div class="bento__footnote">
+                {%- if block.settings.footnote_mark != blank -%}
+                  <span class="bento__footnote-mark" aria-hidden="true">{{ block.settings.footnote_mark }}</span>
+                {%- endif -%}
+                <div>
+                  <p class="bento__footnote-label">{{ block.settings.footnote_label }}</p>
+                  {%- if block.settings.footnote_value != blank -%}
+                    <p class="bento__footnote-value">{{ block.settings.footnote_value }}</p>
+                  {%- endif -%}
+                </div>
+              </div>
+            {%- endif -%}
+
+            {%- if block.settings.link_label != blank -%}
+              <a href="{{ block.settings.link | default: '#' }}" class="link-arrow" style="margin-top:2.4rem">
+                {{ block.settings.link_label }}
+                {% render 'icon', name: 'arrow-right' %}
+              </a>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Bento grid",
+  "tag": "section",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow label" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "The Sutherland Chronicles" },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Heading alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Centre" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Section background",
+      "options": [
+        { "value": "default", "label": "White" },
+        { "value": "alt", "label": "Off-white" },
+        { "value": "brand", "label": "Brand navy" }
+      ],
+      "default": "default"
+    },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 8, "unit": "px", "label": "Top padding", "default": 112 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 8, "unit": "px", "label": "Bottom padding", "default": 112 }
+  ],
+  "blocks": [
+    {
+      "type": "panel",
+      "name": "Panel",
+      "settings": [
+        {
+          "type": "select",
+          "id": "size",
+          "label": "Size",
+          "options": [
+            { "value": "large", "label": "Large (tall, 7 of 12 columns)" },
+            { "value": "small", "label": "Small (5 of 12 columns)" },
+            { "value": "half", "label": "Half width" },
+            { "value": "full", "label": "Full width" }
+          ],
+          "default": "small"
+        },
+        {
+          "type": "select",
+          "id": "color_scheme",
+          "label": "Panel colour",
+          "options": [
+            { "value": "alt", "label": "Off-white" },
+            { "value": "default", "label": "White" },
+            { "value": "brand", "label": "Brand navy" },
+            { "value": "accent", "label": "Forest green" }
+          ],
+          "default": "alt"
+        },
+        {
+          "type": "select",
+          "id": "content_position",
+          "label": "Content position",
+          "options": [
+            { "value": "flex-start", "label": "Top" },
+            { "value": "center", "label": "Middle" },
+            { "value": "flex-end", "label": "Bottom" }
+          ],
+          "default": "flex-end"
+        },
+        { "type": "header", "content": "Content" },
+        { "type": "text", "id": "watermark", "label": "Watermark", "info": "A large faded number or word behind the text, such as a founding date." },
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow label" },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "The Seat of Dunrobin" },
+        { "type": "text", "id": "quote", "label": "Pull quote", "info": "Set in the heading serif, italic." },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Our story is anchored in the stones of Dunrobin Castle, seat of the Earls of Sutherland on the wild northern coastline.</p>"
+        },
+        { "type": "header", "content": "Image" },
+        { "type": "image_picker", "id": "image", "label": "Background image" },
+        {
+          "type": "range",
+          "id": "overlay_opacity",
+          "min": 0,
+          "max": 80,
+          "step": 5,
+          "unit": "%",
+          "label": "Image darkening",
+          "default": 35
+        },
+        { "type": "header", "content": "Footnote" },
+        { "type": "text", "id": "footnote_mark", "label": "Badge text", "info": "A short mark shown in a circle, such as initials." },
+        { "type": "text", "id": "footnote_label", "label": "Label" },
+        { "type": "text", "id": "footnote_value", "label": "Value" },
+        { "type": "header", "content": "Link" },
+        { "type": "text", "id": "link_label", "label": "Link label" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bento grid",
+      "blocks": [
+        {
+          "type": "panel",
+          "settings": {
+            "size": "large",
+            "color_scheme": "alt",
+            "watermark": "1275",
+            "heading": "The Seat of Dunrobin",
+            "text": "<p>Our story is anchored in the stones of Dunrobin Castle, seat of the Earls of Sutherland on the wild northern coastline.</p>"
+          }
+        },
+        {
+          "type": "panel",
+          "settings": {
+            "size": "small",
+            "color_scheme": "brand",
+            "content_position": "center",
+            "heading": "The Castle Still",
+            "text": "<p>Every drop is shaped by the atmosphere of the estate, crafted in the shadow of the great spires.</p>"
+          }
+        },
+        {
+          "type": "panel",
+          "settings": {
+            "size": "small",
+            "color_scheme": "accent",
+            "content_position": "flex-start",
+            "heading": "",
+            "quote": "The spirit of Dunrobin is caught in the silence of Highland nights and the roar of the North Sea against the castle walls.",
+            "text": "",
+            "footnote_mark": "IV",
+            "footnote_label": "Castle archives",
+            "footnote_value": "Volume IV, Distillery Acts"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

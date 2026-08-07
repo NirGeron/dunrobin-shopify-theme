@@ -1,0 +1,55 @@
+<div class="image-banner image-banner--{{ section.settings.height }}">
+  {%- if section.settings.image != blank -%}
+    <img
+      src="{{ section.settings.image | image_url: width: 2400 }}"
+      srcset="
+        {{ section.settings.image | image_url: width: 900 }} 900w,
+        {{ section.settings.image | image_url: width: 1400 }} 1400w,
+        {{ section.settings.image | image_url: width: 2000 }} 2000w,
+        {{ section.settings.image | image_url: width: 2800 }} 2800w
+      "
+      sizes="100vw"
+      alt="{{ section.settings.image.alt | escape }}"
+      width="{{ section.settings.image.width }}"
+      height="{{ section.settings.image.height }}"
+      loading="lazy"
+    >
+  {%- else -%}
+    <img src="{{ 'landscape-storr.jpg' | asset_url }}" alt="" width="2000" height="1125" loading="lazy">
+  {%- endif -%}
+
+  {%- if section.settings.caption != blank -%}
+    <div class="image-banner__caption">
+      <p class="eyebrow eyebrow--light">{{ section.settings.caption }}</p>
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Image banner",
+  "tag": "section",
+  "class": "shopify-section--full-bleed",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "A full-width image used to break up the page — the copper stills, the coastline, the castle."
+    },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    {
+      "type": "select",
+      "id": "height",
+      "label": "Height",
+      "options": [
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" },
+        { "value": "auto", "label": "Full image height" }
+      ],
+      "default": "medium"
+    },
+    { "type": "text", "id": "caption", "label": "Caption" }
+  ],
+  "presets": [{ "name": "Image banner" }]
+}
+{% endschema %}

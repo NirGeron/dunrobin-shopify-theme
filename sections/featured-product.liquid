@@ -8,6 +8,74 @@
   style="--padding-top:{{ section.settings.padding_top }}px;--padding-bottom:{{ section.settings.padding_bottom }}px"
 >
   <div class="page-width">
+    {%- if section.settings.layout == 'centered' -%}
+      <div class="featured-product--centered reveal">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="eyebrow {% if section.settings.color_scheme == 'brand' %}eyebrow--light{% endif %}">
+            {{ section.settings.eyebrow }}
+          </p>
+        {%- endif -%}
+
+        <h2 class="h1">{{ featured.title | default: section.settings.fallback_title }}</h2>
+
+        <div class="featured-product__media">
+          <div class="featured-product__glow"></div>
+          {%- if featured.featured_media -%}
+            <img
+              src="{{ featured.featured_media | image_url: width: 1200 }}"
+              srcset="{{ featured.featured_media | image_url: width: 600 }} 600w, {{ featured.featured_media | image_url: width: 1200 }} 1200w"
+              sizes="(min-width: 750px) 40vw, 80vw"
+              alt="{{ featured.featured_media.alt | escape }}"
+              width="{{ featured.featured_media.width }}"
+              height="{{ featured.featured_media.height }}"
+              loading="lazy"
+            >
+          {%- else -%}
+            <img src="{{ 'bottle-gin.png' | asset_url }}" alt="" width="705" height="993" loading="lazy">
+          {%- endif -%}
+        </div>
+
+        {%- if section.settings.show_specs -%}
+          <div class="featured-product__stats">
+            {%- if section.settings.spec_label_1 != blank -%}
+              <div>
+                <span class="featured-product__stat-label">{{ section.settings.spec_label_1 }}</span>
+                <span class="featured-product__stat-value">{{ section.settings.spec_value_1 }}</span>
+              </div>
+            {%- endif -%}
+            {%- if section.settings.spec_label_2 != blank -%}
+              <div>
+                <span class="featured-product__stat-label">{{ section.settings.spec_label_2 }}</span>
+                <span class="featured-product__stat-value">{{ section.settings.spec_value_2 }}</span>
+              </div>
+            {%- endif -%}
+            {%- if section.settings.spec_label_3 != blank -%}
+              <div>
+                <span class="featured-product__stat-label">{{ section.settings.spec_label_3 }}</span>
+                <span class="featured-product__stat-value">{{ section.settings.spec_value_3 }}</span>
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.description != blank -%}
+          <div class="rte" style="max-width:52rem;margin:0 auto 3.2rem">{{ section.settings.description }}</div>
+        {%- endif -%}
+
+        {%- if featured != blank -%}
+          <a
+            href="{{ featured.url }}"
+            class="button button--full {% if section.settings.color_scheme == 'brand' %}button--light{% endif %}"
+          >
+            {{ section.settings.centered_button_label | default: 'Shop the collection' }}
+          </a>
+        {%- else -%}
+          <a href="{{ routes.all_products_collection_url }}" class="button button--full">
+            {{ section.settings.centered_button_label | default: 'Shop the collection' }}
+          </a>
+        {%- endif -%}
+      </div>
+    {%- else -%}
     <div class="image-with-text {% if section.settings.layout == 'text_first' %}image-with-text--reverse{% endif %}">
       <div class="image-with-text__media reveal">
         <div class="media media--{{ section.settings.image_ratio }}" style="background:transparent">
@@ -103,6 +171,7 @@
         </div>
       </div>
     </div>
+    {%- endif -%}
   </div>
 </div>
 
@@ -131,9 +200,16 @@
       "label": "Layout",
       "options": [
         { "value": "image_first", "label": "Image left" },
-        { "value": "text_first", "label": "Image right" }
+        { "value": "text_first", "label": "Image right" },
+        { "value": "centered", "label": "Centred, bottle above the details" }
       ],
       "default": "image_first"
+    },
+    {
+      "type": "text",
+      "id": "centered_button_label",
+      "label": "Button label (centred layout)",
+      "default": "Shop the collection"
     },
     {
       "type": "select",

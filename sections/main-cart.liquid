@@ -1,24 +1,120 @@
-<div class="page-width section-padding" style="--padding-top:64px;--padding-bottom:96px">
-  <div class="collection-hero" style="padding-top:0">
-    <h1 class="h1">{{ 'sections.cart.title' | t }}</h1>
-  </div>
-
+<div class="page-width section-padding" style="--padding-top:{{ section.settings.padding_top }}px;--padding-bottom:{{ section.settings.padding_bottom }}px">
   {%- if cart.item_count == 0 -%}
+    <div class="collection-hero" style="padding-top:0">
+      <h1 class="h1">{{ section.settings.heading | default: 'Your bag' }}</h1>
+    </div>
     <div class="cart-empty">
       <p class="h4">{{ 'sections.cart.empty' | t }}</p>
       <a class="button" href="{{ routes.all_products_collection_url }}">{{ 'general.continue_shopping' | t }}</a>
     </div>
   {%- else -%}
-    <div class="product" style="align-items:start">
-      <div>{% render 'cart-items', cart: cart, context: 'page' %}</div>
-      <div class="product__info--sticky" style="border:1px solid var(--border);padding:3.2rem">
-        <h2 class="h4">{{ 'sections.cart.summary' | t }}</h2>
-        {% render 'cart-footer', cart: cart %}
+    <div class="cart-page">
+      <div>
+        <h1 class="h1" style="margin-bottom:4rem">{{ section.settings.heading | default: 'Your bag' }}</h1>
+
+        {%- if section.settings.show_age_confirm -%}
+          <div class="age-confirm" id="AgeConfirm">
+            <p class="age-confirm__legend">{{ section.settings.age_confirm_legend }}</p>
+            <div class="age-confirm__row">
+              <input type="checkbox" id="AgeConfirmCheckbox" data-age-confirm>
+              <label for="AgeConfirmCheckbox">
+                {{ section.settings.age_confirm_text }}
+                {%- if section.settings.age_confirm_note != blank -%}
+                  <span class="age-confirm__note">{{ section.settings.age_confirm_note }}</span>
+                {%- endif -%}
+              </label>
+            </div>
+          </div>
+        {%- endif -%}
+
+        {% render 'cart-items', cart: cart, context: 'page' %}
       </div>
+
+      <aside class="cart-page__aside">
+        <div class="cart-panel">
+          <h2 class="cart-panel__title h3">{{ 'sections.cart.summary' | t }}</h2>
+
+          {%- if section.settings.show_summary_specs -%}
+            <div class="cart-summary__specs">
+              {%- if section.settings.spec_label_1 != blank -%}
+                <div class="cart-summary__spec-row">
+                  <span>{{ section.settings.spec_label_1 }}</span>
+                  <span>{{ section.settings.spec_value_1 }}</span>
+                </div>
+              {%- endif -%}
+              {%- if section.settings.spec_label_2 != blank -%}
+                <div class="cart-summary__spec-row">
+                  <span>{{ section.settings.spec_label_2 }}</span>
+                  <span>{{ section.settings.spec_value_2 }}</span>
+                </div>
+              {%- endif -%}
+              {%- if section.settings.spec_label_3 != blank -%}
+                <div class="cart-summary__spec-row">
+                  <span>{{ section.settings.spec_label_3 }}</span>
+                  <span>{{ section.settings.spec_value_3 }}</span>
+                </div>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+
+          {% render 'cart-footer', cart: cart %}
+
+          {%- if section.settings.trust_text != blank -%}
+            <p class="cart-checkout-note">{{ section.settings.trust_text }}</p>
+          {%- endif -%}
+        </div>
+      </aside>
     </div>
   {%- endif -%}
 </div>
 
 {% schema %}
-{ "name": "Cart", "tag": "section", "settings": [] }
+{
+  "name": "Cart",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Your bag" },
+    { "type": "header", "content": "Age confirmation" },
+    {
+      "type": "paragraph",
+      "content": "Shown above the bag contents. The visitor must tick it before the checkout button becomes active."
+    },
+    { "type": "checkbox", "id": "show_age_confirm", "label": "Require age confirmation", "default": true },
+    {
+      "type": "text",
+      "id": "age_confirm_legend",
+      "label": "Legend",
+      "default": "Verification required"
+    },
+    {
+      "type": "text",
+      "id": "age_confirm_text",
+      "label": "Confirmation text",
+      "default": "I confirm that I am over the legal drinking age in my country of residence."
+    },
+    {
+      "type": "text",
+      "id": "age_confirm_note",
+      "label": "Small print",
+      "default": "Alcoholic beverages can only be purchased by adults."
+    },
+    { "type": "header", "content": "Summary specifications" },
+    { "type": "checkbox", "id": "show_summary_specs", "label": "Show specification rows", "default": true },
+    { "type": "text", "id": "spec_label_1", "label": "Label 1", "default": "ABV" },
+    { "type": "text", "id": "spec_value_1", "label": "Value 1", "default": "45%" },
+    { "type": "text", "id": "spec_label_2", "label": "Label 2", "default": "Origin" },
+    { "type": "text", "id": "spec_value_2", "label": "Value 2", "default": "Golspie, Scotland" },
+    { "type": "text", "id": "spec_label_3", "label": "Label 3", "default": "Distilled" },
+    { "type": "text", "id": "spec_value_3", "label": "Value 3", "default": "Traditional pot still" },
+    { "type": "header", "content": "Reassurance" },
+    {
+      "type": "text",
+      "id": "trust_text",
+      "label": "Text below the checkout button",
+      "default": "Secure checkout · Adult signature required on delivery"
+    },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 8, "unit": "px", "label": "Top padding", "default": 64 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 8, "unit": "px", "label": "Bottom padding", "default": 96 }
+  ]
+}
 {% endschema %}

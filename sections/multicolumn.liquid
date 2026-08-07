@@ -17,7 +17,10 @@
       </div>
     {%- endif -%}
 
-    <div class="multicolumn multicolumn--{{ section.settings.columns }}">
+    <div
+      class="multicolumn-layout {% if section.settings.side_image != blank %}multicolumn-layout--with-image{% endif %} {% if section.settings.side_image_position == 'left' %}multicolumn-layout--image-first{% endif %}"
+    >
+      <div class="multicolumn multicolumn--{{ section.settings.columns }}">
       {%- for block in section.blocks -%}
         <div
           class="multicolumn__item {% if section.settings.bordered %}multicolumn__item--bordered{% endif %} reveal"
@@ -56,6 +59,21 @@
           {%- endif -%}
         </div>
       {%- endfor -%}
+      </div>
+
+      {%- if section.settings.side_image != blank -%}
+        <div class="multicolumn-layout__media {% if section.settings.side_image_muted %}multicolumn-layout__media--muted{% endif %} reveal">
+          <img
+            src="{{ section.settings.side_image | image_url: width: 1000 }}"
+            srcset="{{ section.settings.side_image | image_url: width: 500 }} 500w, {{ section.settings.side_image | image_url: width: 1000 }} 1000w"
+            sizes="(min-width: 990px) 33vw, 100vw"
+            alt="{{ section.settings.side_image.alt | escape }}"
+            width="{{ section.settings.side_image.width }}"
+            height="{{ section.settings.side_image.height }}"
+            loading="lazy"
+          >
+        </div>
+      {%- endif -%}
     </div>
   </div>
 </div>
@@ -111,6 +129,29 @@
       "default": "landscape"
     },
     { "type": "checkbox", "id": "bordered", "label": "Outline each column", "default": true },
+    { "type": "header", "content": "Companion image" },
+    {
+      "type": "image_picker",
+      "id": "side_image",
+      "label": "Image beside the columns",
+      "info": "Optional. Sits alongside the columns on desktop, below them on mobile."
+    },
+    {
+      "type": "select",
+      "id": "side_image_position",
+      "label": "Image side",
+      "options": [
+        { "value": "right", "label": "Right" },
+        { "value": "left", "label": "Left" }
+      ],
+      "default": "right"
+    },
+    {
+      "type": "checkbox",
+      "id": "side_image_muted",
+      "label": "Desaturate until hovered",
+      "default": true
+    },
     {
       "type": "select",
       "id": "color_scheme",
