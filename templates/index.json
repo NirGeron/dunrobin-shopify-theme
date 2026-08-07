@@ -167,19 +167,6 @@
         "show_centered_button": true
       }
     },
-    "newsletter": {
-      "type": "newsletter",
-      "settings": {
-        "eyebrow": "The Dispatch",
-        "heading": "Word from the distillery",
-        "text": "<p>Batch releases, tastings at the castle and the occasional recipe. No more than once a month.</p>",
-        "button_label": "Subscribe",
-        "disclaimer": "<p>You must be of legal drinking age to subscribe. Unsubscribe at any time.</p>",
-        "color_scheme": "alt",
-        "padding_top": 96,
-        "padding_bottom": 96
-      }
-    },
     "dispatches": {
       "type": "blog-posts",
       "settings": {
@@ -211,7 +198,6 @@
     "creed",
     "stills",
     "chronicles",
-    "expression",
-    "newsletter"
+    "expression"
   ]
 }
