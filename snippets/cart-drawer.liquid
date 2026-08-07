@@ -13,10 +13,16 @@
       {% render 'cart-items', cart: cart, context: 'drawer' %}
     </div>
 
-    {%- if cart.item_count > 0 -%}
-      <div class="cart-drawer__footer" id="CartDrawerFooter">
+    {%- comment -%}
+      The footer container is always present, only hidden while the cart is
+      empty. Rendering it conditionally meant that adding the first item left
+      nothing for the refresh to populate, so the checkout button never
+      appeared and the drawer became a dead end.
+    {%- endcomment -%}
+    <div class="cart-drawer__footer" id="CartDrawerFooter" {% if cart.item_count == 0 %}hidden{% endif %}>
+      {%- if cart.item_count > 0 -%}
         {% render 'cart-footer', cart: cart %}
-      </div>
-    {%- endif -%}
+      {%- endif -%}
+    </div>
   </div>
 </cart-drawer>

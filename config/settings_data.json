@@ -21,7 +21,7 @@
     "card_image_ratio": "portrait",
     "card_show_vendor": false,
     "card_text_alignment": "center",
-    "cart_type": "drawer",
+    "cart_type": "page",
     "cart_show_note": true,
     "age_gate_enabled": true,
     "age_gate_heading": "Please confirm you are 18+ to proceed",

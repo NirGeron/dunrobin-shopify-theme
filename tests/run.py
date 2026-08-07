@@ -199,6 +199,34 @@ def test_structure():
                 snippet = ' '.join(tag.split())[:80]
                 check(f'{sub}/{f}: <img> declares width/height', False, snippet)
 
+    # The drawer's checkout button lives in #CartDrawerFooter. If that container
+    # is only rendered when the cart already has items, adding the first item
+    # leaves nothing to populate and the drawer becomes a dead end with no way
+    # to pay. The container must always exist; only its contents are gated.
+    drawer = open(rel('snippets/cart-drawer.liquid')).read()
+    check('cart drawer: footer container exists',
+          'id="CartDrawerFooter"' in drawer)
+    body_end = drawer.find('id="CartDrawerBody"')
+    footer_at = drawer.find('id="CartDrawerFooter"')
+    between = drawer[body_end:footer_at]
+    check('cart drawer: footer container is not gated on item_count',
+          'if cart.item_count > 0' not in between,
+          'wrapping it in a cart.item_count conditional hides checkout after the first add')
+
+    js = open(rel('assets/global.js')).read()
+    check('cart drawer: refresh populates the footer',
+          'CartDrawerFooter' in js and 'footer.hidden' in js)
+    check('cart drawer: refresh has a fallback to the cart page',
+          'window.location.href = routes.cart_url' in js,
+          'a failed refresh must not strand the shopper in an empty drawer')
+    check('cart drawer: checkout is never inherited disabled',
+          'b.disabled = false' in js,
+          'the cart page gates checkout behind its age checkbox; the drawer must not inherit that')
+
+    # The age checkbox must gate only the cart page's own button.
+    check('age gate is scoped to the cart page',
+          ".cart-page" in js and "scope.querySelector('button[name=\"checkout\"]')" in js)
+
     # Required theme files.
     for required in ('layout/theme.liquid', 'config/settings_schema.json',
                      'config/settings_data.json', 'locales/en.default.json',

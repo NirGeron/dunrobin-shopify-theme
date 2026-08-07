@@ -170,41 +170,43 @@
   function refreshCartDrawer() {
     if (!cartDrawer) return Promise.resolve();
 
-    return fetch(window.location.pathname + '?sections=cart-drawer')
+    // Re-render from the cart page, which is the single source of truth for
+    // both the line items and the checkout form.
+    return fetch(routes.cart_url || '/cart', { headers: { Accept: 'text/html' } })
       .then(function (r) {
-        return r.ok ? r.json() : null;
+        return r.text();
+      })
+      .then(function (html) {
+        var doc = new DOMParser().parseFromString(html, 'text/html');
+        var body = document.getElementById('CartDrawerBody');
+        var footer = document.getElementById('CartDrawerFooter');
+        var newItems = doc.querySelector('.cart-items') || doc.querySelector('.cart-empty');
+        var newFooter = doc.getElementById('CartFooterForm');
+
+        if (body && newItems) {
+          body.innerHTML = '';
+          body.appendChild(newItems);
+        }
+
+        if (footer) {
+          footer.innerHTML = '';
+          if (newFooter) {
+            // The cart page gates checkout behind its age checkbox; the drawer
+            // has no such checkbox, so never inherit a disabled button.
+            newFooter.querySelectorAll('button[name="checkout"]').forEach(function (b) {
+              b.disabled = false;
+            });
+            footer.appendChild(newFooter);
+            footer.hidden = false;
+          } else {
+            footer.hidden = true;
+          }
+        }
       })
       .catch(function () {
-        return null;
-      })
-      .then(function () {
-        // The drawer is rendered in the layout rather than as a section, so
-        // re-fetch the cart and rebuild the body from the cart page markup.
-        return fetch(routes.cart_url || '/cart')
-          .then(function (r) {
-            return r.text();
-          })
-          .then(function (html) {
-            var doc = new DOMParser().parseFromString(html, 'text/html');
-            var body = document.getElementById('CartDrawerBody');
-            var footer = document.getElementById('CartDrawerFooter');
-            var newItems = doc.querySelector('.cart-items') || doc.querySelector('.cart-empty');
-            var newFooter = doc.getElementById('CartFooterForm');
-
-            if (body && newItems) {
-              body.innerHTML = '';
-              body.appendChild(newItems);
-            }
-            if (footer) {
-              if (newFooter) {
-                footer.innerHTML = '';
-                footer.appendChild(newFooter);
-                footer.hidden = false;
-              } else {
-                footer.hidden = true;
-              }
-            }
-          });
+        // If the refresh fails, send the shopper to the cart page rather than
+        // leaving them stuck in a drawer with no way to pay.
+        window.location.href = routes.cart_url || '/cart';
       });
   }
 
@@ -390,7 +392,9 @@
     if (!box) return;
 
     var panel = document.getElementById('AgeConfirm');
-    var checkout = document.querySelector('button[name="checkout"]');
+    // Gate only the cart page's own button, never the drawer's.
+    var scope = panel.closest('.cart-page') || document;
+    var checkout = scope.querySelector('button[name="checkout"]');
     if (!checkout) return;
 
     function sync() {
