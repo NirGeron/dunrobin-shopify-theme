@@ -11,15 +11,15 @@ Every page is composed from sections and blocks, so the whole site is editable f
 | Royal Blue (primary) | `#1C348F` | Brand guidelines, colour page |
 | Deep Blue | `#101C50` | Brand guidelines |
 | Forest Green (secondary) | `#123620` | Brand guidelines |
-| Heading typeface | Cormorant Garamond | Nearest Shopify-hosted match for **Junicode Condensed** |
-| Body typeface | Work Sans | Brand secondary typeface |
+| Heading typeface | Libre Baskerville | Set site-wide |
+| Body typeface | Libre Baskerville | Set site-wide |
 
 All of the above are theme settings, so they can be changed in the editor.
 
-> The guidelines specify **Junicode Condensed** for headings. It is not in Shopify's
-> font library, so the theme ships with Cormorant Garamond as the default. To use the
-> real typeface, upload the Junicode woff2 files to `assets/` and add an `@font-face`
-> rule at the top of `assets/base.css`.
+> The site uses **Libre Baskerville** throughout, for both headings and body copy.
+> The guidelines specify **Junicode Condensed**, which is not in Shopify's font
+> library — to use it, upload the Junicode woff2 files to `assets/` and add an
+> `@font-face` rule at the top of `assets/base.css`.
 
 ## Layout
 
@@ -52,7 +52,7 @@ Derived from the brand guideline deck and the supplied logo files.
 - `brand-mark.png`, `favicon.png` — the four-tile monogram
 - `seal-sans-peur.png`, `seal-sans-peur-navy.png` — the Sans Peur wildcat seal
 - `pattern-navy.jpg`, `pattern-white.jpg` — the arch-and-wave pattern
-- `castle.jpg`, `castle-duotone.jpg`, `highlands.jpg`, `landscape-storr.jpg`, `cocktail.jpg`
+- `castle.jpg`, `castle-duotone.jpg`, `landscape-storr.jpg`, `cocktail.jpg`
 - `bottle-gin.png` and the other bottle renders, cut out on transparency
 
 ## Connecting to Shopify

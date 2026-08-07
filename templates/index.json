@@ -5,31 +5,33 @@
       "blocks": {
         "eyebrow": {
           "type": "eyebrow",
-          "settings": { "text": "Established by tradition" }
+          "settings": {
+            "text": "Established by tradition"
+          }
         },
         "heading": {
           "type": "heading",
-          "settings": { "text": "Ancestral Spirit, Home at the Castle.", "size": "h0" }
+          "settings": {
+            "text": "Ancestral Spirit, Home at the Castle.",
+            "size": "h0"
+          }
         },
         "text": {
           "type": "text",
           "settings": {
             "text": "<p>On Scotland's north east coast, forest envelops a castle and meets the sea. Our gin is distilled to evoke that experience of forest and garden.</p>"
           }
-        },
-        "buttons": {
-          "type": "buttons",
-          "settings": {
-            "button_label": "Shop the collection",
-            "button_label_2": "Our heritage"
-          }
         }
       },
-      "block_order": ["eyebrow", "heading", "text", "buttons"],
+      "block_order": [
+        "eyebrow",
+        "heading",
+        "text"
+      ],
       "settings": {
         "height": "large",
         "content_position": "left",
-        "duotone": true,
+        "duotone": false,
         "duotone_opacity": 40,
         "scrim": true,
         "padding_top": 80,
@@ -41,11 +43,16 @@
       "blocks": {
         "eyebrow": {
           "type": "eyebrow",
-          "settings": { "text": "Our eternal creed" }
+          "settings": {
+            "text": "Our eternal creed"
+          }
         },
         "heading": {
           "type": "heading",
-          "settings": { "text": "Sans Peur", "size": "h1" }
+          "settings": {
+            "text": "Sans Peur",
+            "size": "h1"
+          }
         },
         "text": {
           "type": "text",
@@ -65,7 +72,12 @@
           }
         }
       },
-      "block_order": ["eyebrow", "heading", "text", "specs"],
+      "block_order": [
+        "eyebrow",
+        "heading",
+        "text",
+        "specs"
+      ],
       "settings": {
         "image_ratio": "square",
         "layout": "image_first",
@@ -119,7 +131,11 @@
           }
         }
       },
-      "block_order": ["seat", "still", "archives"],
+      "block_order": [
+        "seat",
+        "still",
+        "archives"
+      ],
       "settings": {
         "eyebrow": "",
         "heading": "The Sutherland Chronicles",
@@ -162,7 +178,39 @@
         "padding_top": 96,
         "padding_bottom": 96
       }
+    },
+    "dispatches": {
+      "type": "blog-posts",
+      "settings": {
+        "eyebrow": "",
+        "heading": "Recent Dispatches",
+        "posts_to_show": 3,
+        "columns": 3,
+        "stagger": true,
+        "image_ratio": "portrait",
+        "show_filters": true,
+        "filters_to_show": 4,
+        "accent_color": "#8A6A3B",
+        "show_tag": true,
+        "show_date": true,
+        "show_excerpt": true,
+        "excerpt_words": 25,
+        "read_more_label": "Read more",
+        "show_view_all": false,
+        "view_all_label": "View all dispatches",
+        "color_scheme": "alt",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
     }
   },
-  "order": ["hero", "creed", "stills", "chronicles", "expression", "newsletter"]
+  "order": [
+    "hero",
+    "dispatches",
+    "creed",
+    "stills",
+    "chronicles",
+    "expression",
+    "newsletter"
+  ]
 }

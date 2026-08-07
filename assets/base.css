@@ -775,10 +775,30 @@ textarea.field__input {
   mix-blend-mode: multiply;
 }
 
+/* Angled toward whichever side carries the copy, so white text stays legible
+   over bright, un-duotoned photography. */
 .hero__scrim {
   position: absolute;
   inset: 0;
   background: linear-gradient(to top, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0) 60%);
+}
+
+.hero--left .hero__scrim {
+  background:
+    linear-gradient(to right, rgba(0, 0, 0, 0.62), rgba(0, 0, 0, 0.2) 52%, rgba(0, 0, 0, 0) 76%),
+    linear-gradient(to top, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0) 55%);
+}
+
+.hero--right .hero__scrim {
+  background:
+    linear-gradient(to left, rgba(0, 0, 0, 0.62), rgba(0, 0, 0, 0.2) 52%, rgba(0, 0, 0, 0) 76%),
+    linear-gradient(to top, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0) 55%);
+}
+
+.hero--center .hero__scrim {
+  background:
+    linear-gradient(to top, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.22) 55%, rgba(0, 0, 0, 0.3)),
+    radial-gradient(ellipse at center, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0) 70%);
 }
 
 .hero__content {
@@ -1675,7 +1695,7 @@ textarea.field__input {
 .footer__social svg { width: 1.8rem; height: 1.8rem; }
 
 /* --------------------------------------------------------------------------
-   Age gate
+   Age gate — first-visit confirmation over the brand pattern
    -------------------------------------------------------------------------- */
 
 .age-gate {
@@ -1686,20 +1706,51 @@ textarea.field__input {
   align-items: center;
   justify-content: center;
   padding: 2.4rem;
-  background: var(--brand);
-  color: #fff;
-  text-align: center;
+  background: var(--bg);
 }
 
 .age-gate.is-open { display: flex; }
 
-.age-gate__inner {
-  max-width: 52rem;
+.age-gate__backdrop {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.age-gate__backdrop img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.age-gate__panel {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 52rem);
+  padding: 4.8rem 4rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  box-shadow: 0 3rem 8rem rgba(0, 0, 0, 0.18);
+  text-align: center;
+}
+
+@media screen and (min-width: 750px) {
+  .age-gate__panel { padding: 5.6rem 5.6rem; }
 }
 
 .age-gate__logo {
-  max-width: 26rem;
+  width: min(26rem, 70%);
+  height: auto;
   margin: 0 auto 3.2rem;
+}
+
+.age-gate__heading {
+  margin-bottom: 1.6rem;
+}
+
+.age-gate__text {
+  color: var(--text-muted);
+  font-size: 1.5rem;
 }
 
 .age-gate__buttons {
@@ -1708,6 +1759,16 @@ textarea.field__input {
   justify-content: center;
   margin-top: 3.2rem;
   flex-wrap: wrap;
+}
+
+.age-gate__buttons .button {
+  min-width: 14rem;
+}
+
+.age-gate__note {
+  margin: 2.4rem 0 0;
+  font-size: 1.2rem;
+  color: var(--text-muted);
 }
 
 /* --------------------------------------------------------------------------
@@ -2151,4 +2212,158 @@ textarea.field__input {
   font-size: 1.2rem;
   text-align: center;
   color: var(--text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   Dispatches — editorial blog grid
+   -------------------------------------------------------------------------- */
+
+.dispatch-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2rem 3.2rem;
+  margin-bottom: 5.6rem;
+}
+
+.dispatch-header__heading {
+  margin: 0;
+}
+
+.dispatch-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dispatch-filter {
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid transparent;
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: var(--label-tracking);
+  text-decoration: none;
+  color: var(--text-muted);
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.dispatch-filter:hover {
+  color: var(--dispatch-accent, var(--brand));
+}
+
+.dispatch-filter[aria-current='page'] {
+  color: var(--dispatch-accent, var(--brand));
+  border-bottom-color: var(--dispatch-accent, var(--brand));
+}
+
+.dispatch-grid {
+  display: grid;
+  gap: 4rem 3.2rem;
+  grid-template-columns: 1fr;
+}
+
+@media screen and (min-width: 750px) {
+  .dispatch-grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .dispatch-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .dispatch-grid--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+  /* Drops every second card so the row reads as a hand-set editorial page. */
+  .dispatch-grid--staggered > *:nth-child(even) {
+    margin-top: 3.2rem;
+  }
+}
+
+.dispatch-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.dispatch-card__media {
+  display: block;
+  overflow: hidden;
+  margin-bottom: 2rem;
+  background: var(--bg-alt);
+}
+
+.dispatch-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dispatch-card:hover .dispatch-card__media img {
+  transform: scale(1.04);
+}
+
+.dispatch-card__meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.6rem;
+  margin-bottom: 1.2rem;
+}
+
+.dispatch-card__tag {
+  font-size: 1.05rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: var(--label-tracking);
+  color: var(--dispatch-accent, var(--brand));
+  text-decoration: none;
+}
+
+.dispatch-card__date {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.dispatch-card__title {
+  margin: 0 0 1.4rem;
+  font-family: var(--font-heading);
+  font-size: calc(2.4rem * var(--heading-scale));
+  line-height: 1.25;
+}
+
+.dispatch-card__title a {
+  text-decoration: none;
+}
+
+.dispatch-card__excerpt {
+  margin-bottom: 2.4rem;
+  font-size: 1.4rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+.dispatch-card__more {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.6rem;
+  margin-top: auto;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: var(--label-tracking);
+  text-decoration: none;
+}
+
+.dispatch-card__more svg {
+  width: 1.8rem;
+  flex: 0 0 1.8rem;
+  transition: transform 0.25s ease;
+}
+
+.dispatch-card:hover .dispatch-card__more svg {
+  transform: translateX(0.5rem);
 }

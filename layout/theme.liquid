@@ -33,7 +33,7 @@
       assign body_font = settings.font_body
       assign body_font_bold = body_font | font_modify: 'weight', 'bold'
       assign body_font_italic = body_font | font_modify: 'style', 'italic'
-      assign heading_font_bold = heading_font | font_modify: 'weight', '600'
+      assign heading_font_bold = heading_font | font_modify: 'weight', 'bold'
     -%}
 
     {{ heading_font | font_face: font_display: 'swap' }}

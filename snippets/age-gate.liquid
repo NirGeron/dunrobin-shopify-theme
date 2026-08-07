@@ -1,32 +1,58 @@
+{%- liquid
+  assign gate_bg = settings.age_gate_background | default: settings.pattern_image
+  assign gate_logo = settings.logo
+-%}
+
 <div class="age-gate" id="AgeGate" role="dialog" aria-modal="true" aria-labelledby="AgeGateHeading" hidden>
-  <div class="age-gate__inner">
-    {%- if settings.logo_light != blank -%}
+  <div class="age-gate__backdrop" aria-hidden="true">
+    {%- if gate_bg != blank -%}
       <img
-        class="age-gate__logo"
-        src="{{ settings.logo_light | image_url: width: 600 }}"
-        alt="{{ shop.name | escape }}"
-        width="600"
-        height="{{ 600 | divided_by: settings.logo_light.aspect_ratio | round }}"
+        src="{{ gate_bg | image_url: width: 2400 }}"
+        srcset="{{ gate_bg | image_url: width: 1200 }} 1200w, {{ gate_bg | image_url: width: 2400 }} 2400w"
+        sizes="100vw"
+        alt=""
+        width="{{ gate_bg.width }}"
+        height="{{ gate_bg.height }}"
       >
     {%- else -%}
-      <img class="age-gate__logo" src="{{ 'logo-white.png' | asset_url }}" alt="{{ shop.name | escape }}" width="600" height="182">
+      <img src="{{ 'pattern-white.jpg' | asset_url }}" alt="" width="1800" height="588">
+    {%- endif -%}
+  </div>
+
+  <div class="age-gate__panel">
+    {%- if gate_logo != blank -%}
+      <img
+        class="age-gate__logo"
+        src="{{ gate_logo | image_url: width: 600 }}"
+        alt="{{ shop.name | escape }}"
+        width="600"
+        height="{{ 600 | divided_by: gate_logo.aspect_ratio | round }}"
+      >
+    {%- else -%}
+      <img class="age-gate__logo" src="{{ 'logo.png' | asset_url }}" alt="{{ shop.name | escape }}" width="600" height="182">
     {%- endif -%}
 
-    <h2 class="h3" id="AgeGateHeading">{{ settings.age_gate_heading }}</h2>
+    <h2 class="age-gate__heading h3" id="AgeGateHeading">{{ settings.age_gate_heading }}</h2>
 
-    <div class="rte">{{ settings.age_gate_text }}</div>
+    {%- if settings.age_gate_text != blank -%}
+      <div class="age-gate__text rte">{{ settings.age_gate_text }}</div>
+    {%- endif -%}
 
     <div class="age-gate__buttons">
-      <button type="button" class="button button--light" data-age-gate-accept>
+      <button type="button" class="button" data-age-gate-accept>
         {{ settings.age_gate_accept }}
       </button>
       <a
-        class="button button--outline-light"
+        class="button button--secondary"
         href="{{ settings.age_gate_decline_url | default: 'https://www.drinkaware.co.uk/' }}"
         rel="noopener"
       >
         {{ settings.age_gate_decline }}
       </a>
     </div>
+
+    {%- if settings.age_gate_note != blank -%}
+      <p class="age-gate__note">{{ settings.age_gate_note }}</p>
+    {%- endif -%}
   </div>
 </div>

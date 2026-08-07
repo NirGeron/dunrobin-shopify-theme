@@ -1,0 +1,225 @@
+{%- liquid
+  assign target_blog = section.settings.blog
+  assign posts = target_blog.articles
+  assign count = section.settings.posts_to_show
+-%}
+
+<div
+  class="scheme--{{ section.settings.color_scheme }} section-padding"
+  style="--padding-top:{{ section.settings.padding_top }}px;--padding-bottom:{{ section.settings.padding_bottom }}px;--dispatch-accent:{{ section.settings.accent_color }}"
+>
+  <div class="page-width">
+    <div class="dispatch-header">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="dispatch-header__heading h2">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.show_filters and target_blog != blank -%}
+        <ul class="dispatch-filters">
+          <li>
+            <a
+              class="dispatch-filter"
+              href="{{ target_blog.url }}"
+              {% unless current_tags %}aria-current="page"{% endunless %}
+            >
+              {{ 'blogs.filters.all' | t }}
+            </a>
+          </li>
+          {%- for tag in target_blog.all_tags limit: section.settings.filters_to_show -%}
+            <li>
+              <a
+                class="dispatch-filter"
+                href="{{ target_blog.url }}/tagged/{{ tag | handleize }}"
+                {% if current_tags contains tag %}aria-current="page"{% endif %}
+              >
+                {{ tag }}
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+
+    <div class="dispatch-grid dispatch-grid--{{ section.settings.columns }} {% if section.settings.stagger %}dispatch-grid--staggered{% endif %}">
+      {%- if posts.size > 0 -%}
+        {%- for article in posts limit: count -%}
+          <article class="dispatch-card reveal">
+            <a href="{{ article.url }}" class="dispatch-card__media media media--{{ section.settings.image_ratio }}" tabindex="-1" aria-hidden="true">
+              {%- if article.image -%}
+                <img
+                  src="{{ article.image | image_url: width: 900 }}"
+                  srcset="{{ article.image | image_url: width: 450 }} 450w, {{ article.image | image_url: width: 900 }} 900w"
+                  sizes="(min-width: 750px) 33vw, 100vw"
+                  alt="{{ article.image.alt | escape }}"
+                  width="{{ article.image.width }}"
+                  height="{{ article.image.height }}"
+                  loading="lazy"
+                >
+              {%- else -%}
+                {{ 'blog-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+            </a>
+
+            {%- if section.settings.show_tag or section.settings.show_date -%}
+              <div class="dispatch-card__meta">
+                {%- if section.settings.show_tag and article.tags.size > 0 -%}
+                  <span class="dispatch-card__tag">{{ article.tags.first }}</span>
+                {%- else -%}
+                  <span></span>
+                {%- endif -%}
+
+                {%- if section.settings.show_date -%}
+                  <time class="dispatch-card__date" datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
+                    {{ article.published_at | date: format: 'date' }}
+                  </time>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+
+            <h3 class="dispatch-card__title">
+              <a href="{{ article.url }}">{{ article.title }}</a>
+            </h3>
+
+            {%- if section.settings.show_excerpt and article.excerpt_or_content != blank -%}
+              <p class="dispatch-card__excerpt">
+                {{ article.excerpt_or_content | strip_html | truncatewords: section.settings.excerpt_words }}
+              </p>
+            {%- endif -%}
+
+            <a href="{{ article.url }}" class="dispatch-card__more">
+              {{ section.settings.read_more_label | default: 'Read more' }}
+              {% render 'icon', name: 'arrow-right' %}
+            </a>
+          </article>
+        {%- endfor -%}
+      {%- else -%}
+        {%- comment -%} Placeholders so the section is composable before any posts exist. {%- endcomment -%}
+        {%- for i in (1..count) -%}
+          <article class="dispatch-card">
+            <div class="dispatch-card__media media media--{{ section.settings.image_ratio }}">
+              {{ 'blog-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            </div>
+            <div class="dispatch-card__meta">
+              <span class="dispatch-card__tag">{{ 'blogs.onboarding.tag' | t }}</span>
+              <span class="dispatch-card__date">{{ 'now' | date: format: 'date' }}</span>
+            </div>
+            <h3 class="dispatch-card__title">{{ 'blogs.onboarding.title' | t }}</h3>
+            <p class="dispatch-card__excerpt">{{ 'blogs.onboarding.excerpt' | t }}</p>
+            <span class="dispatch-card__more">
+              {{ section.settings.read_more_label | default: 'Read more' }}
+              {% render 'icon', name: 'arrow-right' %}
+            </span>
+          </article>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.show_view_all and target_blog != blank -%}
+      <div style="text-align:center;margin-top:5.6rem">
+        <a href="{{ target_blog.url }}" class="button button--secondary">
+          {{ section.settings.view_all_label | default: 'View all' }}
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Blog posts",
+  "tag": "section",
+  "settings": [
+    { "type": "blog", "id": "blog", "label": "Blog" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow label" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Recent Dispatches" },
+    {
+      "type": "range",
+      "id": "posts_to_show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "label": "Posts to show",
+      "default": 3
+    },
+    { "type": "range", "id": "columns", "min": 2, "max": 4, "step": 1, "label": "Columns on desktop", "default": 3 },
+    {
+      "type": "checkbox",
+      "id": "stagger",
+      "label": "Stagger alternate cards",
+      "default": true,
+      "info": "Drops every second card slightly, for an editorial feel."
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image shape",
+      "options": [
+        { "value": "adapt", "label": "Adapt to image" },
+        { "value": "square", "label": "Square" },
+        { "value": "portrait", "label": "Portrait (4:5)" },
+        { "value": "landscape", "label": "Landscape (3:2)" }
+      ],
+      "default": "portrait"
+    },
+    { "type": "header", "content": "Category filter" },
+    {
+      "type": "checkbox",
+      "id": "show_filters",
+      "label": "Show category filter",
+      "default": true,
+      "info": "Built from the tags on your articles."
+    },
+    {
+      "type": "range",
+      "id": "filters_to_show",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "label": "Maximum categories",
+      "default": 4
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Category and filter colour",
+      "default": "#8A6A3B"
+    },
+    { "type": "header", "content": "Card content" },
+    { "type": "checkbox", "id": "show_tag", "label": "Show category", "default": true },
+    { "type": "checkbox", "id": "show_date", "label": "Show date", "default": true },
+    { "type": "checkbox", "id": "show_excerpt", "label": "Show excerpt", "default": true },
+    {
+      "type": "range",
+      "id": "excerpt_words",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "label": "Excerpt length",
+      "default": 25
+    },
+    { "type": "text", "id": "read_more_label", "label": "Read more label", "default": "Read more" },
+    { "type": "header", "content": "View all" },
+    { "type": "checkbox", "id": "show_view_all", "label": "Show 'view all' button", "default": false },
+    { "type": "text", "id": "view_all_label", "label": "Button label", "default": "View all dispatches" },
+    { "type": "header", "content": "Appearance" },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Colour scheme",
+      "options": [
+        { "value": "default", "label": "White" },
+        { "value": "alt", "label": "Off-white" }
+      ],
+      "default": "alt"
+    },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 8, "unit": "px", "label": "Top padding", "default": 96 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 8, "unit": "px", "label": "Bottom padding", "default": 96 }
+  ],
+  "presets": [{ "name": "Blog posts" }]
+}
+{% endschema %}

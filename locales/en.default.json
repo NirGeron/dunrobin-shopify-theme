@@ -114,6 +114,14 @@
       "message": "Comment",
       "post": "Post comment",
       "success": "Thank you. Your comment has been posted."
+    },
+    "filters": {
+      "all": "All"
+    },
+    "onboarding": {
+      "tag": "Heritage",
+      "title": "Your first dispatch",
+      "excerpt": "Write about the distillery, the botanicals or the castle. Posts you publish to the chosen blog appear here automatically."
     }
   },
   "customer": {
