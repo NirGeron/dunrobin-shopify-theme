@@ -62,17 +62,19 @@
           <div class="rte" style="max-width:52rem;margin:0 auto 3.2rem">{{ section.settings.description }}</div>
         {%- endif -%}
 
-        {%- if featured != blank -%}
-          <a
-            href="{{ featured.url }}"
-            class="button button--full {% if section.settings.color_scheme == 'brand' %}button--light{% endif %}"
-          >
-            {{ section.settings.centered_button_label | default: 'Shop the collection' }}
-          </a>
-        {%- else -%}
-          <a href="{{ routes.all_products_collection_url }}" class="button button--full">
-            {{ section.settings.centered_button_label | default: 'Shop the collection' }}
-          </a>
+        {%- if section.settings.show_centered_button -%}
+          {%- if featured != blank -%}
+            <a
+              href="{{ featured.url }}"
+              class="button button--full {% if section.settings.color_scheme == 'brand' %}button--light{% endif %}"
+            >
+              {{ section.settings.centered_button_label | default: 'Shop the collection' }}
+            </a>
+          {%- else -%}
+            <a href="{{ routes.all_products_collection_url }}" class="button button--full">
+              {{ section.settings.centered_button_label | default: 'Shop the collection' }}
+            </a>
+          {%- endif -%}
         {%- endif -%}
       </div>
     {%- else -%}
@@ -204,6 +206,12 @@
         { "value": "centered", "label": "Centred, bottle above the details" }
       ],
       "default": "image_first"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_centered_button",
+      "label": "Show button (centred layout)",
+      "default": true
     },
     {
       "type": "text",

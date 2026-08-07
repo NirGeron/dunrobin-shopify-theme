@@ -163,7 +163,8 @@
         "spec_value_3": "001",
         "color_scheme": "default",
         "padding_top": 112,
-        "padding_bottom": 112
+        "padding_bottom": 112,
+        "show_centered_button": true
       }
     },
     "newsletter": {
