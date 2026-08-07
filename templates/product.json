@@ -3,9 +3,14 @@
     "main": {
       "type": "main-product",
       "blocks": {
-        "eyebrow": { "type": "eyebrow", "settings": {} },
-        "title": { "type": "title", "settings": {} },
-        "price": { "type": "price", "settings": {} },
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
         "specs": {
           "type": "specs",
           "settings": {
@@ -17,16 +22,23 @@
             "value_3": "Golspie"
           }
         },
-        "description": { "type": "description", "settings": {} },
-        "variant_picker": { "type": "variant_picker", "settings": {} },
-        "quantity": { "type": "quantity", "settings": {} },
+        "description": {
+          "type": "description",
+          "settings": {}
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {}
+        },
+        "quantity": {
+          "type": "quantity",
+          "settings": {}
+        },
         "buy_buttons": {
           "type": "buy_buttons",
-          "settings": { "show_dynamic_checkout": true }
-        },
-        "shipping_note": {
-          "type": "shipping_note",
-          "settings": { "text": "Complimentary UK shipping on orders over £100" }
+          "settings": {
+            "show_dynamic_checkout": true
+          }
         },
         "tasting": {
           "type": "accordion",
@@ -36,28 +48,21 @@
             "open": false
           }
         },
-        "delivery": {
-          "type": "accordion",
-          "settings": {
-            "heading": "Delivery",
-            "content": "<p>Complimentary UK shipping on orders over £100. All orders require an adult signature on delivery.</p>",
-            "open": false
-          }
-        },
         "details": {
           "type": "detail_rows",
           "settings": {
-            "label_1": "Batch no.",
-            "value_1": "001",
-            "label_2": "Distillation",
-            "value_2": "Traditional pot still",
-            "label_3": "Units per bottle",
-            "value_3": "31.5 UK units"
+            "label_1": "Batch number",
+            "value_1": "1",
+            "label_2": "Units per bottle",
+            "value_2": "31.5 UK units",
+            "label_3": "",
+            "value_3": "",
+            "label_4": "",
+            "value_4": ""
           }
         }
       },
       "block_order": [
-        "eyebrow",
         "title",
         "price",
         "specs",
@@ -65,9 +70,7 @@
         "variant_picker",
         "quantity",
         "buy_buttons",
-        "shipping_note",
         "tasting",
-        "delivery",
         "details"
       ],
       "settings": {
@@ -76,77 +79,6 @@
         "sticky_info": true,
         "padding_top": 64,
         "padding_bottom": 96
-      }
-    },
-    "tasting-notes": {
-      "type": "multicolumn",
-      "blocks": {
-        "nose": {
-          "type": "column",
-          "settings": {
-            "number": "01",
-            "heading": "The Nose",
-            "text": "<p>Vibrant juniper followed by a salty sea breeze and soft floral hints of gorse blossom.</p>"
-          }
-        },
-        "palate": {
-          "type": "column",
-          "settings": {
-            "number": "02",
-            "heading": "The Palate",
-            "text": "<p>Silky smooth with crisp citrus zest, earthy angelica root, and a warming peppery finish.</p>"
-          }
-        },
-        "pairing": {
-          "type": "column",
-          "settings": {
-            "number": "03",
-            "heading": "The Pairing",
-            "text": "<p>Premium Mediterranean tonic, plenty of ice, and a sprig of fresh rosemary.</p>"
-          }
-        }
-      },
-      "block_order": ["nose", "palate", "pairing"],
-      "settings": {
-        "eyebrow": "",
-        "heading": "The Tasting Notes",
-        "heading_alignment": "left",
-        "columns": 3,
-        "alignment": "left",
-        "bordered": true,
-        "side_image_position": "right",
-        "side_image_muted": true,
-        "color_scheme": "default",
-        "padding_top": 112,
-        "padding_bottom": 96
-      }
-    },
-    "heritage": {
-      "type": "image-with-text",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": { "text": "Ancestral Spirit, Modern Craft", "size": "h2" }
-        },
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Dunrobin Highland Distillery sits in the shadow of the historic Dunrobin Castle. Every bottle is a dialogue between the centuries-old legacy of the House of Sutherland and our modern distillation techniques. We don't just make gin; we capture the spirit of the Highlands in our iconic minimalist blue glass.</p>"
-          }
-        },
-        "button": {
-          "type": "button",
-          "settings": { "label": "Discover our heritage", "style": "link" }
-        }
-      },
-      "block_order": ["heading", "text", "button"],
-      "settings": {
-        "image_ratio": "landscape",
-        "layout": "text_first",
-        "wide_media": false,
-        "color_scheme": "default",
-        "padding_top": 32,
-        "padding_bottom": 112
       }
     },
     "related": {
@@ -165,5 +97,8 @@
       }
     }
   },
-  "order": ["main", "tasting-notes", "heritage", "related"]
+  "order": [
+    "main",
+    "related"
+  ]
 }

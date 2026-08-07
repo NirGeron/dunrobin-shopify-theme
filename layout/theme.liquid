@@ -28,19 +28,52 @@
     <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
     {{ content_for_header }}
 
+    {%- comment -%}
+      A font_picker can return nil — the saved handle may predate this theme, or
+      the chosen family may not carry the bold or italic variant. font_face errors
+      on anything that is not a font drop, so every call is guarded and the CSS
+      falls back to a literal stack when the drop is missing.
+    {%- endcomment -%}
     {%- liquid
       assign heading_font = settings.font_heading
       assign body_font = settings.font_body
-      assign body_font_bold = body_font | font_modify: 'weight', 'bold'
-      assign body_font_italic = body_font | font_modify: 'style', 'italic'
-      assign heading_font_bold = heading_font | font_modify: 'weight', 'bold'
+
+      if heading_font.family
+        assign heading_font_bold = heading_font | font_modify: 'weight', 'bold'
+      endif
+
+      if body_font.family
+        assign body_font_bold = body_font | font_modify: 'weight', 'bold'
+        assign body_font_italic = body_font | font_modify: 'style', 'italic'
+      endif
+
+      assign fallback_stack = "'Libre Baskerville', Georgia, 'Times New Roman', serif"
     -%}
 
-    {{ heading_font | font_face: font_display: 'swap' }}
-    {{ heading_font_bold | font_face: font_display: 'swap' }}
-    {{ body_font | font_face: font_display: 'swap' }}
-    {{ body_font_bold | font_face: font_display: 'swap' }}
-    {{ body_font_italic | font_face: font_display: 'swap' }}
+    {%- if heading_font.family -%}
+      {{ heading_font | font_face: font_display: 'swap' }}
+      {%- if heading_font_bold.family -%}
+        {{ heading_font_bold | font_face: font_display: 'swap' }}
+      {%- endif -%}
+    {%- endif -%}
+
+    {%- if body_font.family -%}
+      {{ body_font | font_face: font_display: 'swap' }}
+      {%- if body_font_bold.family -%}
+        {{ body_font_bold | font_face: font_display: 'swap' }}
+      {%- endif -%}
+      {%- if body_font_italic.family -%}
+        {{ body_font_italic | font_face: font_display: 'swap' }}
+      {%- endif -%}
+    {%- endif -%}
+
+    {%- unless heading_font.family and body_font.family -%}
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap"
+      >
+    {%- endunless -%}
 
     <style data-shopify>
       :root {
@@ -56,13 +89,13 @@
         --button-text: {{ settings.color_button_text }};
         --button-radius: {{ settings.button_radius }}px;
 
-        --font-heading: {{ heading_font.family }}, {{ heading_font.fallback_families }};
-        --font-heading-weight: {{ heading_font.weight }};
-        --font-heading-style: {{ heading_font.style }};
-        --font-heading-transform: {{ settings.font_heading_transform }};
-        --font-body: {{ body_font.family }}, {{ body_font.fallback_families }};
-        --font-body-weight: {{ body_font.weight }};
-        --font-body-style: {{ body_font.style }};
+        --font-heading: {% if heading_font.family %}{{ heading_font.family }}, {{ heading_font.fallback_families }}{% else %}{{ fallback_stack }}{% endif %};
+        --font-heading-weight: {{ heading_font.weight | default: 400 }};
+        --font-heading-style: {{ heading_font.style | default: 'normal' }};
+        --font-heading-transform: {{ settings.font_heading_transform | default: 'none' }};
+        --font-body: {% if body_font.family %}{{ body_font.family }}, {{ body_font.fallback_families }}{% else %}{{ fallback_stack }}{% endif %};
+        --font-body-weight: {{ body_font.weight | default: 400 }};
+        --font-body-style: {{ body_font.style | default: 'normal' }};
 
         --heading-scale: {{ settings.font_heading_scale | divided_by: 100.0 }};
         --body-scale: {{ settings.font_body_scale | divided_by: 100.0 }};

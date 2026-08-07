@@ -3,28 +3,21 @@
     "hero": {
       "type": "hero-banner",
       "blocks": {
-        "eyebrow": {
-          "type": "eyebrow",
-          "settings": {
-            "text": "Established by tradition"
-          }
-        },
         "heading": {
           "type": "heading",
           "settings": {
-            "text": "Ancestral Spirit, Home at the Castle.",
+            "text": "Our Gin",
             "size": "h0"
           }
         },
         "text": {
           "type": "text",
           "settings": {
-            "text": "<p>On Scotland's north east coast, forest envelops a castle and meets the sea. Our gin is distilled to evoke that experience of forest and garden.</p>"
+            "text": "<p>On Scotland's North East coast, forest envelops a castle and meets the sea, spring water gathers in the hills and flows from the sphagnum moss coated hillside down to Golspie Burn. Lush and fragrant, the forest and castle garden meet. Gathering aromatic leaves and roots that reflect earthy and green scents, we shaped our gin to evoke the experience of forest and garden.</p>"
           }
         }
       },
       "block_order": [
-        "eyebrow",
         "heading",
         "text"
       ],
@@ -38,55 +31,6 @@
         "padding_bottom": 80
       }
     },
-    "creed": {
-      "type": "image-with-text",
-      "blocks": {
-        "eyebrow": {
-          "type": "eyebrow",
-          "settings": {
-            "text": "Our eternal creed"
-          }
-        },
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "text": "Sans Peur",
-            "size": "h1"
-          }
-        },
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "<p>“Without fear.” Since the thirteenth century these words have been the heartbeat of the House of Sutherland. Born within the towering spires of Dunrobin Castle, the motto is carved into the very stone of our ancestral seat. It is more than a creed — it is our distillation philosophy.</p>"
-          }
-        },
-        "specs": {
-          "type": "specs",
-          "settings": {
-            "label_1": "Lineage",
-            "value_1": "House of Sutherland",
-            "label_2": "Origin",
-            "value_2": "Dunrobin Castle",
-            "label_3": "",
-            "value_3": ""
-          }
-        }
-      },
-      "block_order": [
-        "eyebrow",
-        "heading",
-        "text",
-        "specs"
-      ],
-      "settings": {
-        "image_ratio": "square",
-        "layout": "image_first",
-        "wide_media": false,
-        "color_scheme": "default",
-        "padding_top": 112,
-        "padding_bottom": 112
-      }
-    },
     "stills": {
       "type": "image-banner",
       "settings": {
@@ -94,61 +38,10 @@
         "caption": ""
       }
     },
-    "chronicles": {
-      "type": "bento-grid",
-      "blocks": {
-        "seat": {
-          "type": "panel",
-          "settings": {
-            "size": "large",
-            "color_scheme": "alt",
-            "content_position": "flex-end",
-            "watermark": "1275",
-            "heading": "The Seat of Dunrobin",
-            "text": "<p>Our story is anchored in the stones of Dunrobin Castle. On the wild coastlines of the north, the Earls of Sutherland established a seat of power that remains the living home of our distillery's heritage.</p>"
-          }
-        },
-        "still": {
-          "type": "panel",
-          "settings": {
-            "size": "small",
-            "color_scheme": "brand",
-            "content_position": "center",
-            "heading": "The Castle Still",
-            "text": "<p>Every drop of our spirit is shaped by the atmosphere of the Sutherland estate, crafted in the shadow of the great spires.</p>"
-          }
-        },
-        "archives": {
-          "type": "panel",
-          "settings": {
-            "size": "small",
-            "color_scheme": "accent",
-            "content_position": "flex-start",
-            "quote": "The spirit of Dunrobin is caught in the silence of Highland nights and the roar of the North Sea against the castle walls.",
-            "footnote_mark": "IV",
-            "footnote_label": "Castle archives",
-            "footnote_value": "Volume IV, Distillery Acts"
-          }
-        }
-      },
-      "block_order": [
-        "seat",
-        "still",
-        "archives"
-      ],
-      "settings": {
-        "eyebrow": "",
-        "heading": "The Sutherland Chronicles",
-        "heading_alignment": "center",
-        "color_scheme": "default",
-        "padding_top": 112,
-        "padding_bottom": 112
-      }
-    },
     "expression": {
       "type": "featured-product",
       "settings": {
-        "eyebrow": "The current expression",
+        "eyebrow": "",
         "fallback_title": "Dunrobin Gin",
         "description": "<p>Scottish juniper, rhubarb, heather, Scots pine resin, bramble leaf, blaeberry, crab apple and toasted oats.</p>",
         "layout": "centered",
@@ -190,14 +83,64 @@
         "padding_top": 96,
         "padding_bottom": 96
       }
+    },
+    "intro": {
+      "type": "rich-text",
+      "blocks": {
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Here, in the north, seasons are strong. In summer, when the sun only briefly dips below the horizon, long days lead plants to surge with vitality and we replenish our botanical supplies. Through winter we continue making gin, while celebrating the season's snow, ice, and Northern Lights.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "text"
+      ],
+      "settings": {
+        "color_scheme": "default",
+        "alignment": "center",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
+    },
+    "team": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "text": "Meet The Team",
+            "size": "h2"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Lizzie and Boban live with their family in Golspie. They have treasured every step of the journey in creating Dunrobin Gin, from the recipe work to the day the still arrived to opening the doors of the pop up shop at the castle. Creating something of their own that represents their home has been a delight. Their vision is to now move on to starting their own whisky.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading",
+        "text"
+      ],
+      "settings": {
+        "image_ratio": "landscape",
+        "layout": "image_first",
+        "wide_media": false,
+        "color_scheme": "default",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
     }
   },
   "order": [
     "hero",
     "dispatches",
-    "creed",
+    "intro",
     "stills",
-    "chronicles",
+    "team",
     "expression"
   ]
 }

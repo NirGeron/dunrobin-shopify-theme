@@ -8,21 +8,17 @@
         "announcement-1": {
           "type": "announcement",
           "settings": {
-            "text": "Complimentary UK shipping on orders over £100"
-          }
-        },
-        "announcement-2": {
-          "type": "announcement",
-          "settings": {
-            "text": "Sans Peur — distilled at Dunrobin, Golspie, Sutherland"
+            "text": "It is an offence to sell alcohol to anyone under 18 in the UK or to attempt to purchase alcohol if you are under 18."
           }
         }
       },
-      "block_order": ["announcement-1", "announcement-2"],
+      "block_order": [
+        "announcement-1"
+      ],
       "settings": {
         "background": "#1C348F",
         "text_color": "#FFFFFF",
-        "autorotate": true,
+        "autorotate": false,
         "speed": 6
       }
     },
@@ -38,5 +34,8 @@
       }
     }
   },
-  "order": ["announcement-bar", "header"]
+  "order": [
+    "announcement-bar",
+    "header"
+  ]
 }

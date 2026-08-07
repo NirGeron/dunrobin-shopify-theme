@@ -808,6 +808,10 @@ textarea.field__input {
   padding: 8rem 0;
 }
 
+.hero__content .page-width {
+  padding-inline: clamp(2rem, 6vw, 9.6rem);
+}
+
 .hero__inner {
   max-width: 62rem;
 }
@@ -1561,7 +1565,8 @@ textarea.field__input {
 .cart-item__remove {
   border: 0;
   background: none;
-  padding: 0;
+  padding: 0.6rem 0;
+  min-height: 2.4rem;
   font-size: 1.2rem;
   color: var(--text-muted);
   text-decoration: underline;
@@ -1827,10 +1832,9 @@ textarea.field__input {
   .reveal { opacity: 1; transform: none; }
 }
 
-.shopify-section--full-bleed .page-width {
-  max-width: none;
-  padding: 0;
-}
+/* Full-bleed sections lay out their own media; nothing to override here.
+   Do NOT zero .page-width padding globally — the hero nests its copy inside
+   one, and doing so pins the text to the viewport edge. */
 
 /* --------------------------------------------------------------------------
    Image banner — full-bleed narrative image
@@ -2138,10 +2142,10 @@ textarea.field__input {
 }
 
 .age-confirm__row input[type='checkbox'] {
-  flex: 0 0 1.8rem;
-  width: 1.8rem;
-  height: 1.8rem;
-  margin-top: 0.3rem;
+  flex: 0 0 2.4rem;
+  width: 2.4rem;
+  height: 2.4rem;
+  margin-top: 0.1rem;
   accent-color: var(--brand);
   cursor: pointer;
 }
@@ -2241,7 +2245,10 @@ textarea.field__input {
 }
 
 .dispatch-filter {
-  padding-bottom: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.4rem;
+  padding: 0.4rem 0 0.5rem;
   border-bottom: 1px solid transparent;
   font-size: 1.1rem;
   font-weight: 500;
@@ -2366,4 +2373,74 @@ textarea.field__input {
 
 .dispatch-card:hover .dispatch-card__more svg {
   transform: translateX(0.5rem);
+}
+
+/* --------------------------------------------------------------------------
+   Collection page
+   -------------------------------------------------------------------------- */
+
+.collection-banner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 26rem;
+  overflow: hidden;
+  background: var(--brand);
+}
+
+@media screen and (min-width: 750px) {
+  .collection-banner { min-height: 34rem; }
+}
+
+.collection-banner img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.collection-banner__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.collection-banner__content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  color: #fff;
+}
+
+.collection-banner__content .h1 { margin: 0; }
+
+.collection-intro {
+  max-width: 64rem;
+  margin: 0 auto 4.8rem;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+/* Keeps a one- or two-product collection from stranding cards at full width. */
+.product-grid--centered {
+  max-width: 76rem;
+  margin-inline: auto;
+}
+
+.product-grid--1 { grid-template-columns: minmax(0, 1fr); max-width: 42rem; }
+
+@media screen and (min-width: 750px) {
+  .product-grid--1 { grid-template-columns: minmax(0, 1fr); }
+  .product-grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.collection-note {
+  margin-top: 4.8rem;
+  text-align: center;
+  font-size: 1.2rem;
+  letter-spacing: var(--label-tracking);
+  text-transform: uppercase;
+  color: var(--text-muted);
 }

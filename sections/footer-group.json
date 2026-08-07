@@ -15,39 +15,46 @@
         "brand": {
           "type": "brand",
           "settings": {
-            "text": "<p>Authentic craft spirits from the House of Sutherland.</p>",
+            "text": "",
             "show_social": true
           }
         },
-        "menu": {
-          "type": "menu",
-          "settings": {
-            "heading": "Shop",
-            "menu": "footer"
-          }
-        },
-        "visit": {
+        "contact": {
           "type": "text",
           "settings": {
-            "heading": "Visit",
-            "text": "<p>Dunrobin Highland Distillery<br>Golspie, Sutherland KW10 6SF<br>United Kingdom</p><p><a href=\"mailto:info@dunrobindistillery.com\">info@dunrobindistillery.com</a><br><a href=\"tel:+447526070580\">+44 7526 070580</a></p>"
+            "heading": "Contact",
+            "text": "<p><a href=\"tel:+447526070580\">+447526070580</a></p><p>Golspie KW106SF, UK</p><p><a href=\"mailto:info@dunrobindistillery.com\">info@dunrobindistillery.com</a></p>"
           }
         },
-        "newsletter": {
-          "type": "newsletter",
+        "policies": {
+          "type": "policies",
           "settings": {
-            "heading": "The Dispatch",
-            "text": "<p>Batch releases, tastings at the castle and the occasional recipe.</p>"
+            "heading": "Terms and Policies"
+          }
+        },
+        "licence": {
+          "type": "text",
+          "settings": {
+            "heading": "Licence",
+            "text": "<p>Licence Number: HC/CSR/30426/OL862/25 HC/CSR/30641/OL917/25<br>Issued by: The Highland Council Comhairle na Gaidhealtachdz</p><p>It is an offence to sell alcohol to anyone under 18 in the UK or to attempt to purchase alcohol if you are under 18.</p>"
           }
         }
       },
-      "block_order": ["brand", "menu", "visit", "newsletter"],
+      "block_order": [
+        "brand",
+        "contact",
+        "policies",
+        "licence"
+      ],
       "settings": {
         "color_scheme": "brand",
-        "legal_text": "Please enjoy responsibly. The UK Chief Medical Officers recommend adults do not regularly drink more than 14 units per week. Licence numbers HC/CSR/30426/OL862/25 and HC/CSR/30641/OL917/25, issued by The Highland Council.",
+        "legal_text": "All rights reserved.",
         "show_payment_icons": true
       }
     }
   },
-  "order": ["pattern-divider", "footer"]
+  "order": [
+    "pattern-divider",
+    "footer"
+  ]
 }

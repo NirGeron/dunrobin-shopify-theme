@@ -1,1 +1,23 @@
-{"sections":{"main":{"type":"main-collection","settings":{"show_hero":true,"show_sorting":true,"columns":3,"products_per_page":12,"image_ratio":"portrait"}}},"order":["main"]}
+{
+  "sections": {
+    "main": {
+      "type": "main-collection",
+      "settings": {
+        "heading": "",
+        "eyebrow": "",
+        "description": "",
+        "show_banner": true,
+        "show_sorting": true,
+        "columns": 3,
+        "products_per_page": 12,
+        "image_ratio": "portrait",
+        "footer_note": "",
+        "padding_top": 64,
+        "padding_bottom": 96
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

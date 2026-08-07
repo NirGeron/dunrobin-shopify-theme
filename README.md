@@ -77,3 +77,36 @@ so it does not block previewing.
 
 Footer carries the UK Chief Medical Officers' drinking guidance and the Highland
 Council licence numbers. Check these are current before publishing.
+
+## Tests
+
+```bash
+python3 tests/run.py          # everything (~1 min, drives headless Chrome)
+python3 tests/run.py --fast   # structure only, under a second
+```
+
+**Structure** — parses every Liquid schema, JSON template and settings file and
+checks they only refer to things that exist: sections, block types, setting ids,
+snippets, assets and translation keys. Also asserts that every non-`main-`
+section is addable in the editor, that `font_face` is never called on an
+unguarded variable, and that every `<img>` in Liquid declares width and height.
+
+**Render** — rebuilds the static preview from the real `assets/base.css` and
+`assets/global.js`, then drives headless Chrome over the home, product, shop and
+cart pages at **390px, 768px and 1440px**, asserting:
+
+- no horizontal overflow and nothing positioned outside the viewport
+- tap targets at least 24×24px (WCAG 2.5.8), excluding inline prose links
+- every image declares dimensions, so nothing shifts as the page loads
+- body text at least 14px, and Libre Baskerville actually applied
+- mobile: desktop nav hidden, menu toggle visible, drawer opens and closes
+- desktop: menu toggle hidden, nav centred on the header's midpoint
+- cart: checkout blocked until age is confirmed, and re-blocked if unticked
+
+A `pre-commit` hook runs the suite automatically:
+
+```bash
+git config core.hooksPath .githooks   # already set in this clone
+```
+
+Bypass once with `git commit --no-verify`.

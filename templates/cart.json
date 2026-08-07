@@ -1,1 +1,27 @@
-{"sections":{"main":{"type":"main-cart","settings":{}}},"order":["main"]}
+{
+  "sections": {
+    "main": {
+      "type": "main-cart",
+      "settings": {
+        "heading": "Your bag",
+        "show_age_confirm": true,
+        "age_confirm_legend": "Verification required",
+        "age_confirm_text": "I confirm I am 18 or over.",
+        "age_confirm_note": "It is an offence to sell alcohol to anyone under 18 in the UK or to attempt to purchase alcohol if you are under 18.",
+        "show_summary_specs": true,
+        "spec_label_1": "ABV",
+        "spec_value_1": "45%",
+        "spec_label_2": "Volume",
+        "spec_value_2": "70cl",
+        "spec_label_3": "Origin",
+        "spec_value_3": "Golspie",
+        "trust_text": "",
+        "padding_top": 64,
+        "padding_bottom": 96
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

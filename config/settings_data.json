@@ -25,16 +25,16 @@
     "cart_show_note": true,
     "age_gate_enabled": true,
     "age_gate_heading": "Please confirm you are 18+ to proceed",
-    "age_gate_text": "<p>It is an offence to sell alcohol to anyone under 18 in the UK.</p>",
+    "age_gate_text": "<p>It is an offence to sell alcohol to anyone under 18 in the UK or to attempt to purchase alcohol if you are under 18.</p>",
     "age_gate_accept": "Yes",
     "age_gate_decline": "No",
     "age_gate_decline_url": "https://www.drinkaware.co.uk/",
-    "social_instagram_link": "",
-    "social_facebook_link": "",
-    "social_twitter_link": "",
+    "social_instagram_link": "https://www.instagram.com/dunrobinhighlanddistillery/",
+    "social_facebook_link": "https://www.facebook.com/share/1G9Fbwnwaf",
+    "social_twitter_link": "https://x.com/DunrobinGin",
     "social_youtube_link": "",
     "social_tiktok_link": "",
-    "age_gate_note": "Please enjoy responsibly."
+    "age_gate_note": ""
   },
   "presets": {
     "Dunrobin": {

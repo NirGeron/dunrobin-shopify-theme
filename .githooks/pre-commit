@@ -1,0 +1,9 @@
+#!/bin/sh
+# Runs the theme test suite before every commit.
+# Skip once with:  git commit --no-verify
+echo "Running theme tests…"
+python3 "$(git rev-parse --show-toplevel)/tests/run.py" || {
+  echo
+  echo "Commit aborted: tests failed. Fix them, or use --no-verify to bypass."
+  exit 1
+}

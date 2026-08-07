@@ -1,39 +1,86 @@
 {%- paginate collection.products by section.settings.products_per_page -%}
-  <div class="page-width">
-    {%- if section.settings.show_hero -%}
+  {%- if section.settings.show_banner -%}
+    {%- liquid
+      assign banner = section.settings.banner_image | default: collection.featured_image
+    -%}
+    <div class="collection-banner">
+      {%- if banner != blank -%}
+        <img
+          src="{{ banner | image_url: width: 2400 }}"
+          srcset="{{ banner | image_url: width: 1200 }} 1200w, {{ banner | image_url: width: 2400 }} 2400w"
+          sizes="100vw"
+          alt="{{ banner.alt | escape }}"
+          width="{{ banner.width }}"
+          height="{{ banner.height }}"
+          fetchpriority="high"
+        >
+      {%- else -%}
+        <img src="{{ 'pattern-navy.jpg' | asset_url }}" alt="" width="1800" height="588" fetchpriority="high">
+      {%- endif -%}
+      <div class="collection-banner__overlay"></div>
+      <div class="collection-banner__content page-width">
+        <h1 class="h1">{{ section.settings.heading | default: collection.title }}</h1>
+      </div>
+    </div>
+  {%- endif -%}
+
+  <div class="page-width section-padding" style="--padding-top:{{ section.settings.padding_top }}px;--padding-bottom:{{ section.settings.padding_bottom }}px">
+    {%- unless section.settings.show_banner -%}
       <div class="collection-hero">
-        <p class="eyebrow">{{ 'collections.general.eyebrow' | t }}</p>
-        <h1 class="h1">{{ collection.title }}</h1>
-        {%- if collection.description != blank -%}
-          <div class="rte" style="max-width:62rem;margin:2rem auto 0;color:var(--text-muted)">
-            {{ collection.description }}
-          </div>
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+        <h1 class="h1">{{ section.settings.heading | default: collection.title }}</h1>
+      </div>
+    {%- endunless -%}
+
+    {%- liquid
+      assign blurb = section.settings.description
+      if blurb == blank
+        assign blurb = collection.description
+      endif
+    -%}
+    {%- if blurb != blank -%}
+      <div class="collection-intro rte">{{ blurb }}</div>
+    {%- endif -%}
+
+    {%- if collection.products_count > 0 -%}
+      <div class="collection-toolbar">
+        <span class="collection-toolbar__count">
+          {{ 'collections.general.items_count' | t: count: collection.products_count }}
+        </span>
+
+        {%- if section.settings.show_sorting and collection.products_count > 1 -%}
+          <form method="get" action="{{ collection.url }}" class="select" data-auto-submit>
+            <label class="visually-hidden" for="SortBy">{{ 'collections.sorting.title' | t }}</label>
+            <select class="select__select" name="sort_by" id="SortBy">
+              {%- assign current_sort = collection.sort_by | default: collection.default_sort_by -%}
+              {%- for option in collection.sort_options -%}
+                <option value="{{ option.value }}" {% if option.value == current_sort %}selected{% endif %}>
+                  {{ option.name }}
+                </option>
+              {%- endfor -%}
+            </select>
+          </form>
         {%- endif -%}
       </div>
     {%- endif -%}
 
-    <div class="collection-toolbar">
-      <span class="collection-toolbar__count">
-        {{ 'collections.general.items_count' | t: count: collection.products_count }}
-      </span>
-
-      {%- if section.settings.show_sorting -%}
-        <form method="get" action="{{ collection.url }}" class="select" data-auto-submit>
-          <label class="visually-hidden" for="SortBy">{{ 'collections.sorting.title' | t }}</label>
-          <select class="select__select" name="sort_by" id="SortBy">
-            {%- assign current_sort = collection.sort_by | default: collection.default_sort_by -%}
-            {%- for option in collection.sort_options -%}
-              <option value="{{ option.value }}" {% if option.value == current_sort %}selected{% endif %}>
-                {{ option.name }}
-              </option>
-            {%- endfor -%}
-          </select>
-        </form>
-      {%- endif -%}
-    </div>
-
     {%- if collection.products.size > 0 -%}
-      <ul class="product-grid product-grid--{{ section.settings.columns }}" role="list">
+      {%- comment -%}
+        A single bottle in a four-column grid looks stranded, so narrow the grid
+        when the collection is small.
+      {%- endcomment -%}
+      {%- liquid
+        assign grid_columns = section.settings.columns
+        if collection.products_count < grid_columns
+          assign grid_columns = collection.products_count
+        endif
+      -%}
+      <ul
+        class="product-grid product-grid--{{ grid_columns }} {% if collection.products_count < section.settings.columns %}product-grid--centered{% endif %}"
+        role="list"
+      >
         {%- for product in collection.products -%}
           <li>{% render 'card-product', product: product, ratio: section.settings.image_ratio %}</li>
         {%- endfor -%}
@@ -64,6 +111,10 @@
         </a>
       </div>
     {%- endif -%}
+
+    {%- if section.settings.footer_note != blank -%}
+      <p class="collection-note">{{ section.settings.footer_note }}</p>
+    {%- endif -%}
   </div>
 {%- endpaginate -%}
 
@@ -72,7 +123,34 @@
   "name": "Product grid",
   "tag": "section",
   "settings": [
-    { "type": "checkbox", "id": "show_hero", "label": "Show collection title and description", "default": true },
+    { "type": "header", "content": "Heading" },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "info": "Falls back to the collection name."
+    },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow label" },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "info": "Falls back to the collection description."
+    },
+    { "type": "header", "content": "Banner" },
+    {
+      "type": "checkbox",
+      "id": "show_banner",
+      "label": "Show a banner behind the heading",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "banner_image",
+      "label": "Banner image",
+      "info": "Defaults to the collection image, then the brand pattern."
+    },
+    { "type": "header", "content": "Grid" },
     { "type": "checkbox", "id": "show_sorting", "label": "Show sorting", "default": true },
     { "type": "range", "id": "columns", "min": 2, "max": 5, "step": 1, "label": "Columns on desktop", "default": 3 },
     {
@@ -94,7 +172,10 @@
         { "value": "portrait", "label": "Portrait (4:5)" }
       ],
       "default": "portrait"
-    }
+    },
+    { "type": "text", "id": "footer_note", "label": "Note below the grid" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 8, "unit": "px", "label": "Top padding", "default": 64 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 8, "unit": "px", "label": "Bottom padding", "default": 96 }
   ]
 }
 {% endschema %}

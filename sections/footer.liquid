@@ -76,6 +76,30 @@
               {%- endif -%}
               <div class="rte" style="font-size:1.5rem;opacity:.85">{{ block.settings.text }}</div>
 
+            {%- when 'policies' -%}
+              {%- if block.settings.heading != blank -%}
+                <h3 class="footer__block-title">{{ block.settings.heading }}</h3>
+              {%- endif -%}
+              <ul class="footer__list">
+                {%- if shop.privacy_policy != blank -%}
+                  <li><a href="{{ shop.privacy_policy.url }}">{{ shop.privacy_policy.title }}</a></li>
+                {%- endif -%}
+                {%- if shop.terms_of_service != blank -%}
+                  <li><a href="{{ shop.terms_of_service.url }}">{{ shop.terms_of_service.title }}</a></li>
+                {%- endif -%}
+                {%- if shop.shipping_policy != blank -%}
+                  <li><a href="{{ shop.shipping_policy.url }}">{{ shop.shipping_policy.title }}</a></li>
+                {%- endif -%}
+                {%- if shop.refund_policy != blank -%}
+                  <li><a href="{{ shop.refund_policy.url }}">{{ shop.refund_policy.title }}</a></li>
+                {%- endif -%}
+                {%- if block.settings.menu != blank -%}
+                  {%- for link in block.settings.menu.links -%}
+                    <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                  {%- endfor -%}
+                {%- endif -%}
+              </ul>
+
             {%- when 'newsletter' -%}
               {%- if block.settings.heading != blank -%}
                 <h3 class="footer__block-title">{{ block.settings.heading }}</h3>
@@ -132,7 +156,7 @@
 {
   "name": "Footer",
   "class": "shopify-section-footer",
-  "max_blocks": 5,
+  "max_blocks": 6,
   "settings": [
     {
       "type": "select",
@@ -191,6 +215,24 @@
           "id": "text",
           "label": "Text",
           "default": "<p>Dunrobin Highland Distillery<br>Dunrobin, Golspie<br>Sutherland KW10 6SF<br>United Kingdom</p>"
+        }
+      ]
+    },
+    {
+      "type": "policies",
+      "name": "Terms and policies",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Terms and Policies" },
+        {
+          "type": "paragraph",
+          "content": "Links to your store's policy pages are added automatically. Set them under Settings > Policies."
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Extra links",
+          "info": "Optional. Appended after the policy links."
         }
       ]
     },
