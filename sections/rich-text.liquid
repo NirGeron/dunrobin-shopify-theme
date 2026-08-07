@@ -1,0 +1,146 @@
+<div
+  class="scheme--{{ section.settings.color_scheme }} section-padding"
+  style="--padding-top:{{ section.settings.padding_top }}px;--padding-bottom:{{ section.settings.padding_bottom }}px"
+>
+  <div class="page-width">
+    <div class="rich-text {% if section.settings.alignment == 'center' %}rich-text--center{% endif %}">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'eyebrow' -%}
+            <p class="eyebrow" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
+
+          {%- when 'heading' -%}
+            <h2 class="{{ block.settings.size }}" {{ block.shopify_attributes }}>{{ block.settings.text }}</h2>
+
+          {%- when 'text' -%}
+            <div class="rte" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+
+          {%- when 'seal' -%}
+            <img
+              src="{% if section.settings.color_scheme == 'brand' or section.settings.color_scheme == 'accent' %}{{ 'seal-sans-peur.png' | asset_url }}{% else %}{{ 'seal-sans-peur-navy.png' | asset_url }}{% endif %}"
+              alt="Sans Peur — Dunrobin Highland Distillery"
+              width="{{ block.settings.size }}"
+              height="{{ block.settings.size }}"
+              style="width:{{ block.settings.size }}px;height:auto;{% if section.settings.alignment == 'center' %}margin-inline:auto;{% endif %}margin-bottom:2.4rem"
+              loading="lazy"
+              {{ block.shopify_attributes }}
+            >
+
+          {%- when 'button' -%}
+            <div class="rich-text__buttons" {{ block.shopify_attributes }}>
+              <a
+                href="{{ block.settings.link | default: '#' }}"
+                class="button {% if section.settings.color_scheme == 'brand' or section.settings.color_scheme == 'accent' %}button--light{% elsif block.settings.style == 'secondary' %}button--secondary{% endif %}"
+              >
+                {{ block.settings.label }}
+              </a>
+            </div>
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Rich text",
+  "tag": "section",
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Colour scheme",
+      "options": [
+        { "value": "default", "label": "White" },
+        { "value": "alt", "label": "Off-white" },
+        { "value": "brand", "label": "Brand navy" },
+        { "value": "accent", "label": "Forest green" }
+      ],
+      "default": "default"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Centre" }
+      ],
+      "default": "center"
+    },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 8, "unit": "px", "label": "Top padding", "default": 96 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 8, "unit": "px", "label": "Bottom padding", "default": 96 }
+  ],
+  "blocks": [
+    {
+      "type": "eyebrow",
+      "name": "Eyebrow label",
+      "settings": [{ "type": "text", "id": "text", "label": "Text", "default": "Our creed" }]
+    },
+    {
+      "type": "heading",
+      "name": "Heading",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Heading", "default": "Sans Peur" },
+        {
+          "type": "select",
+          "id": "size",
+          "label": "Size",
+          "options": [
+            { "value": "h3", "label": "Small" },
+            { "value": "h2", "label": "Medium" },
+            { "value": "h1", "label": "Large" }
+          ],
+          "default": "h1"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>“Without fear.” The motto of the House of Sutherland, carried from the stones of Dunrobin Castle into every bottle we fill.</p>"
+        }
+      ]
+    },
+    {
+      "type": "seal",
+      "name": "Sans Peur seal",
+      "limit": 1,
+      "settings": [
+        { "type": "range", "id": "size", "min": 60, "max": 240, "step": 10, "unit": "px", "label": "Size", "default": 120 }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "Button",
+      "limit": 2,
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Read our story" },
+        { "type": "url", "id": "link", "label": "Link" },
+        {
+          "type": "select",
+          "id": "style",
+          "label": "Style",
+          "options": [
+            { "value": "primary", "label": "Solid" },
+            { "value": "secondary", "label": "Outline" }
+          ],
+          "default": "primary"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Rich text",
+      "blocks": [{ "type": "eyebrow" }, { "type": "heading" }, { "type": "text" }, { "type": "button" }]
+    }
+  ]
+}
+{% endschema %}

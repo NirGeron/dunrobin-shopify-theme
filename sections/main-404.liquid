@@ -1,0 +1,10 @@
+<div class="page-width section-padding" style="--padding-top:120px;--padding-bottom:120px;text-align:center">
+  <p class="eyebrow">{{ 'general.404.eyebrow' | t }}</p>
+  <h1 class="h1">{{ 'general.404.title' | t }}</h1>
+  <p style="color:var(--text-muted);max-width:48rem;margin:0 auto 3.2rem">{{ 'general.404.subtext' | t }}</p>
+  <a href="{{ routes.root_url }}" class="button">{{ 'general.continue_shopping' | t }}</a>
+</div>
+
+{% schema %}
+{ "name": "404 page", "tag": "section", "settings": [] }
+{% endschema %}

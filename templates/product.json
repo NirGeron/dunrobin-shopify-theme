@@ -1,0 +1,98 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "eyebrow": { "type": "eyebrow", "settings": {} },
+        "title": { "type": "title", "settings": {} },
+        "price": { "type": "price", "settings": {} },
+        "specs": {
+          "type": "specs",
+          "settings": {
+            "label_1": "ABV",
+            "value_1": "45%",
+            "label_2": "Volume",
+            "value_2": "70cl",
+            "label_3": "Origin",
+            "value_3": "Golspie"
+          }
+        },
+        "description": { "type": "description", "settings": {} },
+        "variant_picker": { "type": "variant_picker", "settings": {} },
+        "quantity": { "type": "quantity", "settings": {} },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": { "show_dynamic_checkout": true }
+        },
+        "shipping_note": {
+          "type": "shipping_note",
+          "settings": { "text": "Complimentary UK shipping on orders over £100" }
+        },
+        "tasting": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Tasting notes",
+            "content": "<p>Scottish juniper, rhubarb, heather, Scots pine resin, bramble leaf, blaeberry, crab apple and toasted oats.</p>",
+            "open": false
+          }
+        },
+        "delivery": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Delivery",
+            "content": "<p>Complimentary UK shipping on orders over £100. All orders require an adult signature on delivery.</p>",
+            "open": false
+          }
+        },
+        "details": {
+          "type": "detail_rows",
+          "settings": {
+            "label_1": "Batch no.",
+            "value_1": "001",
+            "label_2": "Distillation",
+            "value_2": "Traditional pot still",
+            "label_3": "Units per bottle",
+            "value_3": "31.5 UK units"
+          }
+        }
+      },
+      "block_order": [
+        "eyebrow",
+        "title",
+        "price",
+        "specs",
+        "description",
+        "variant_picker",
+        "quantity",
+        "buy_buttons",
+        "shipping_note",
+        "tasting",
+        "delivery",
+        "details"
+      ],
+      "settings": {
+        "media_layout": "grid",
+        "media_ratio": "adapt",
+        "sticky_info": true,
+        "padding_top": 64,
+        "padding_bottom": 96
+      }
+    },
+    "related": {
+      "type": "featured-collection",
+      "settings": {
+        "eyebrow": "",
+        "heading": "You may also like",
+        "heading_alignment": "center",
+        "products_to_show": 4,
+        "columns": 4,
+        "image_ratio": "portrait",
+        "show_view_all": false,
+        "color_scheme": "alt",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
+    }
+  },
+  "order": ["main", "related"]
+}

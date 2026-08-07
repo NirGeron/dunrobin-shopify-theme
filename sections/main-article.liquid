@@ -1,0 +1,115 @@
+<article class="page-width section-padding" style="--padding-top:64px;--padding-bottom:96px">
+  {%- for block in section.blocks -%}
+    {%- case block.type -%}
+      {%- when 'header' -%}
+        <header class="article__header" {{ block.shopify_attributes }}>
+          {%- if block.settings.show_date -%}
+            <p class="eyebrow">{{ article.published_at | date: format: 'date' }}</p>
+          {%- endif -%}
+          <h1 class="h1">{{ article.title }}</h1>
+          {%- if block.settings.show_author and article.author != blank -%}
+            <p style="color:var(--text-muted)">{{ 'blogs.article.by_author' | t: author: article.author }}</p>
+          {%- endif -%}
+        </header>
+
+      {%- when 'featured_image' -%}
+        {%- if article.image -%}
+          <div class="media media--{{ block.settings.ratio }}" style="margin-bottom:4.8rem" {{ block.shopify_attributes }}>
+            <img
+              src="{{ article.image | image_url: width: 1800 }}"
+              srcset="{{ article.image | image_url: width: 900 }} 900w, {{ article.image | image_url: width: 1800 }} 1800w"
+              sizes="100vw"
+              alt="{{ article.image.alt | escape }}"
+              width="{{ article.image.width }}"
+              height="{{ article.image.height }}"
+              fetchpriority="high"
+            >
+          </div>
+        {%- endif -%}
+
+      {%- when 'content' -%}
+        <div class="article__body rte" {{ block.shopify_attributes }}>{{ article.content }}</div>
+
+      {%- when 'share' -%}
+        <div class="article__body" style="margin-top:4rem" {{ block.shopify_attributes }}>
+          <a class="link-arrow" href="{{ shop.url }}{{ article.url }}" data-share-link>{{ 'general.share' | t }}</a>
+        </div>
+    {%- endcase -%}
+  {%- endfor -%}
+
+  {%- if blog.comments_enabled? -%}
+    <div class="article__body" style="margin-top:6.4rem">
+      <h2 class="h3">{{ 'blogs.article.comments' | t: count: article.comments_count }}</h2>
+
+      {%- if article.comments_count > 0 -%}
+        {%- for comment in article.comments -%}
+          <div style="padding:2.4rem 0;border-bottom:1px solid var(--border)">
+            <div class="rte">{{ comment.content }}</div>
+            <p style="margin-top:1rem;font-size:1.2rem;color:var(--text-muted)">
+              {{ comment.author }} — {{ comment.created_at | date: format: 'date' }}
+            </p>
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+
+      {%- form 'new_comment', article -%}
+        {%- if form.posted_successfully? -%}
+          <p class="form__message form__message--success">{{ 'blogs.article.success' | t }}</p>
+        {%- elsif form.errors -%}
+          <p class="form__message form__message--error">{{ form.errors | default_errors }}</p>
+        {%- endif -%}
+        <div class="field">
+          <label class="field__label" for="CommentAuthor">{{ 'blogs.article.name' | t }}</label>
+          <input class="field__input" type="text" id="CommentAuthor" name="comment[author]" required>
+        </div>
+        <div class="field">
+          <label class="field__label" for="CommentEmail">{{ 'blogs.article.email' | t }}</label>
+          <input class="field__input" type="email" id="CommentEmail" name="comment[email]" required>
+        </div>
+        <div class="field">
+          <label class="field__label" for="CommentBody">{{ 'blogs.article.message' | t }}</label>
+          <textarea class="field__input" id="CommentBody" name="comment[body]" rows="5" required></textarea>
+        </div>
+        <button type="submit" class="button">{{ 'blogs.article.post' | t }}</button>
+      {%- endform -%}
+    </div>
+  {%- endif -%}
+</article>
+
+{% schema %}
+{
+  "name": "Blog post",
+  "tag": "section",
+  "blocks": [
+    {
+      "type": "header",
+      "name": "Title",
+      "limit": 1,
+      "settings": [
+        { "type": "checkbox", "id": "show_date", "label": "Show date", "default": true },
+        { "type": "checkbox", "id": "show_author", "label": "Show author", "default": false }
+      ]
+    },
+    {
+      "type": "featured_image",
+      "name": "Featured image",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "ratio",
+          "label": "Shape",
+          "options": [
+            { "value": "adapt", "label": "Adapt to image" },
+            { "value": "landscape", "label": "Landscape (3:2)" },
+            { "value": "wide", "label": "Wide (16:9)" }
+          ],
+          "default": "landscape"
+        }
+      ]
+    },
+    { "type": "content", "name": "Content", "limit": 1 },
+    { "type": "share", "name": "Share link", "limit": 1 }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,208 @@
+<div
+  class="scheme--{{ section.settings.color_scheme }} section-padding"
+  style="--padding-top:{{ section.settings.padding_top }}px;--padding-bottom:{{ section.settings.padding_bottom }}px"
+>
+  <div class="page-width">
+    <div class="image-with-text {% if section.settings.layout == 'text_first' %}image-with-text--reverse{% endif %} {% if section.settings.wide_media %}image-with-text--wide-media{% endif %}">
+      <div class="image-with-text__media reveal">
+        <div class="media media--{{ section.settings.image_ratio }}">
+          {%- if section.settings.image != blank -%}
+            <img
+              src="{{ section.settings.image | image_url: width: 1400 }}"
+              srcset="
+                {{ section.settings.image | image_url: width: 600 }} 600w,
+                {{ section.settings.image | image_url: width: 900 }} 900w,
+                {{ section.settings.image | image_url: width: 1400 }} 1400w
+              "
+              sizes="(min-width: 750px) 50vw, 100vw"
+              alt="{{ section.settings.image.alt | escape }}"
+              width="{{ section.settings.image.width }}"
+              height="{{ section.settings.image.height }}"
+              loading="lazy"
+            >
+          {%- else -%}
+            <img src="{{ 'highlands.jpg' | asset_url }}" alt="" width="2000" height="1125" loading="lazy">
+          {%- endif -%}
+        </div>
+      </div>
+
+      <div class="image-with-text__content reveal">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'eyebrow' -%}
+              <p class="eyebrow" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
+
+            {%- when 'heading' -%}
+              <h2 class="{{ block.settings.size }}" {{ block.shopify_attributes }}>{{ block.settings.text }}</h2>
+
+            {%- when 'text' -%}
+              <div class="rte" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+
+            {%- when 'specs' -%}
+              <div class="spec-bar" style="margin:3.2rem 0" {{ block.shopify_attributes }}>
+                {%- if block.settings.label_1 != blank -%}
+                  <div class="spec-bar__item">
+                    <span class="spec-bar__label">{{ block.settings.label_1 }}</span>
+                    <span class="spec-bar__value">{{ block.settings.value_1 }}</span>
+                  </div>
+                {%- endif -%}
+                {%- if block.settings.label_2 != blank -%}
+                  <div class="spec-bar__item">
+                    <span class="spec-bar__label">{{ block.settings.label_2 }}</span>
+                    <span class="spec-bar__value">{{ block.settings.value_2 }}</span>
+                  </div>
+                {%- endif -%}
+                {%- if block.settings.label_3 != blank -%}
+                  <div class="spec-bar__item">
+                    <span class="spec-bar__label">{{ block.settings.label_3 }}</span>
+                    <span class="spec-bar__value">{{ block.settings.value_3 }}</span>
+                  </div>
+                {%- endif -%}
+              </div>
+
+            {%- when 'button' -%}
+              <div class="image-with-text__buttons" {{ block.shopify_attributes }}>
+                {%- if block.settings.style == 'link' -%}
+                  <a href="{{ block.settings.link | default: '#' }}" class="link-arrow">
+                    {{ block.settings.label }}
+                    {% render 'icon', name: 'arrow-right' %}
+                  </a>
+                {%- else -%}
+                  <a
+                    href="{{ block.settings.link | default: '#' }}"
+                    class="button {% if section.settings.color_scheme == 'brand' or section.settings.color_scheme == 'accent' %}button--light{% elsif block.settings.style == 'secondary' %}button--secondary{% endif %}"
+                  >
+                    {{ block.settings.label }}
+                  </a>
+                {%- endif -%}
+              </div>
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Image with text",
+  "tag": "section",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image shape",
+      "options": [
+        { "value": "adapt", "label": "Adapt to image" },
+        { "value": "square", "label": "Square" },
+        { "value": "portrait", "label": "Portrait (4:5)" },
+        { "value": "landscape", "label": "Landscape (3:2)" }
+      ],
+      "default": "portrait"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "image_first", "label": "Image left" },
+        { "value": "text_first", "label": "Image right" }
+      ],
+      "default": "image_first"
+    },
+    { "type": "checkbox", "id": "wide_media", "label": "Give the image more width", "default": false },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Colour scheme",
+      "options": [
+        { "value": "default", "label": "White" },
+        { "value": "alt", "label": "Off-white" },
+        { "value": "brand", "label": "Brand navy" },
+        { "value": "accent", "label": "Forest green" }
+      ],
+      "default": "default"
+    },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 8, "unit": "px", "label": "Top padding", "default": 96 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 8, "unit": "px", "label": "Bottom padding", "default": 96 }
+  ],
+  "blocks": [
+    {
+      "type": "eyebrow",
+      "name": "Eyebrow label",
+      "settings": [{ "type": "text", "id": "text", "label": "Text", "default": "The distillery" }]
+    },
+    {
+      "type": "heading",
+      "name": "Heading",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Heading", "default": "A synthesis of the Sutherland territory" },
+        {
+          "type": "select",
+          "id": "size",
+          "label": "Size",
+          "options": [
+            { "value": "h3", "label": "Small" },
+            { "value": "h2", "label": "Medium" },
+            { "value": "h1", "label": "Large" }
+          ],
+          "default": "h2"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Our spirits are drawn from the land that surrounds the castle — the pine, the heather and the cold North Sea air that shapes everything that grows here.</p>"
+        }
+      ]
+    },
+    {
+      "type": "specs",
+      "name": "Specification bar",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "label_1", "label": "Label 1", "default": "ABV" },
+        { "type": "text", "id": "value_1", "label": "Value 1", "default": "45%" },
+        { "type": "text", "id": "label_2", "label": "Label 2", "default": "Volume" },
+        { "type": "text", "id": "value_2", "label": "Value 2", "default": "70cl" },
+        { "type": "text", "id": "label_3", "label": "Label 3", "default": "Origin" },
+        { "type": "text", "id": "value_3", "label": "Value 3", "default": "Golspie" }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "Button",
+      "limit": 2,
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Discover our heritage" },
+        { "type": "url", "id": "link", "label": "Link" },
+        {
+          "type": "select",
+          "id": "style",
+          "label": "Style",
+          "options": [
+            { "value": "primary", "label": "Solid" },
+            { "value": "secondary", "label": "Outline" },
+            { "value": "link", "label": "Underlined link" }
+          ],
+          "default": "link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image with text",
+      "blocks": [{ "type": "eyebrow" }, { "type": "heading" }, { "type": "text" }, { "type": "button" }]
+    }
+  ]
+}
+{% endschema %}

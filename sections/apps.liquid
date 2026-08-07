@@ -1,0 +1,36 @@
+<div
+  class="scheme--{{ section.settings.color_scheme }} section-padding"
+  style="--padding-top:{{ section.settings.padding_top }}px;--padding-bottom:{{ section.settings.padding_bottom }}px"
+>
+  <div class="{% if section.settings.full_width %}page-width--full{% else %}page-width{% endif %}">
+    {%- for block in section.blocks -%}
+      <div {{ block.shopify_attributes }}>
+        {% render block %}
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Apps",
+  "tag": "section",
+  "settings": [
+    { "type": "checkbox", "id": "full_width", "label": "Full width", "default": false },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Colour scheme",
+      "options": [
+        { "value": "default", "label": "White" },
+        { "value": "alt", "label": "Off-white" }
+      ],
+      "default": "default"
+    },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 8, "unit": "px", "label": "Top padding", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 8, "unit": "px", "label": "Bottom padding", "default": 48 }
+  ],
+  "blocks": [{ "type": "@app" }],
+  "presets": [{ "name": "Apps" }]
+}
+{% endschema %}

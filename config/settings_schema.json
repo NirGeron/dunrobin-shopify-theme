@@ -1,0 +1,343 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Dunrobin Highland Distillery",
+    "theme_version": "1.0.0",
+    "theme_author": "Dunrobin Highland Distillery",
+    "theme_documentation_url": "https://github.com/NirGeronn/dunrobin-shopify-theme",
+    "theme_support_url": "https://github.com/NirGeronn/dunrobin-shopify-theme/issues"
+  },
+  {
+    "name": "Colours",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Brand"
+      },
+      {
+        "type": "color",
+        "id": "color_brand",
+        "label": "Brand navy",
+        "default": "#1C348F",
+        "info": "Royal Blue from the brand guidelines. The core Dunrobin blue. Used for the logo lockup, buttons and dark sections."
+      },
+      {
+        "type": "color",
+        "id": "color_brand_dark",
+        "label": "Deep Blue (dark)",
+        "default": "#101C50",
+        "info": "Used for hover states on navy buttons."
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Forest Green (secondary)",
+        "default": "#123620",
+        "info": "Forest Green from the brand guidelines. The bottle-cap green."
+      },
+      {
+        "type": "header",
+        "content": "Page"
+      },
+      {
+        "type": "color",
+        "id": "color_background",
+        "label": "Background",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "color_background_alt",
+        "label": "Alternate background",
+        "default": "#F6F5F2",
+        "info": "Warm off-white used to separate sections."
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Body text",
+        "default": "#1A1A1A"
+      },
+      {
+        "type": "color",
+        "id": "color_text_muted",
+        "label": "Muted text",
+        "default": "#6B6B6B"
+      },
+      {
+        "type": "color",
+        "id": "color_border",
+        "label": "Borders and rules",
+        "default": "#DEDDD8"
+      },
+      {
+        "type": "header",
+        "content": "Buttons"
+      },
+      {
+        "type": "color",
+        "id": "color_button_text",
+        "label": "Button label",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "range",
+        "id": "button_radius",
+        "min": 0,
+        "max": 32,
+        "step": 2,
+        "unit": "px",
+        "label": "Button corner radius",
+        "default": 0
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Headings"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_heading",
+        "label": "Heading font",
+        "default": "cormorant_garamond_n4",
+        "info": "The brand primary is Junicode Condensed, which is not in Shopify's font library. Cormorant Garamond is the closest available match."
+      },
+      {
+        "type": "range",
+        "id": "font_heading_scale",
+        "min": 80,
+        "max": 140,
+        "step": 5,
+        "unit": "%",
+        "label": "Heading size scale",
+        "default": 100
+      },
+      {
+        "type": "select",
+        "id": "font_heading_transform",
+        "label": "Heading capitalisation",
+        "options": [
+          { "value": "none", "label": "As typed" },
+          { "value": "uppercase", "label": "UPPERCASE" }
+        ],
+        "default": "none"
+      },
+      {
+        "type": "header",
+        "content": "Body"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_body",
+        "label": "Body font",
+        "default": "work_sans_n4",
+        "info": "Work Sans is the brand secondary typeface."
+      },
+      {
+        "type": "range",
+        "id": "font_body_scale",
+        "min": 90,
+        "max": 130,
+        "step": 5,
+        "unit": "%",
+        "label": "Body size scale",
+        "default": 100
+      },
+      {
+        "type": "header",
+        "content": "Eyebrow labels"
+      },
+      {
+        "type": "range",
+        "id": "label_letter_spacing",
+        "min": 0,
+        "max": 40,
+        "step": 2,
+        "unit": "/100em",
+        "label": "Letter spacing",
+        "default": 20,
+        "info": "Wide tracking matches the HIGHLAND DISTILLERY lockup."
+      }
+    ]
+  },
+  {
+    "name": "Layout",
+    "settings": [
+      {
+        "type": "range",
+        "id": "page_width",
+        "min": 1100,
+        "max": 1600,
+        "step": 20,
+        "unit": "px",
+        "label": "Maximum page width",
+        "default": 1280
+      },
+      {
+        "type": "range",
+        "id": "spacing_sections",
+        "min": 0,
+        "max": 60,
+        "step": 4,
+        "unit": "px",
+        "label": "Space between sections",
+        "default": 0
+      }
+    ]
+  },
+  {
+    "name": "Brand assets",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo (navy on transparent)"
+      },
+      {
+        "type": "image_picker",
+        "id": "logo_light",
+        "label": "Logo (white on transparent)",
+        "info": "Used on navy and photographic backgrounds. Optional."
+      },
+      {
+        "type": "image_picker",
+        "id": "brand_mark",
+        "label": "Brand mark / favicon graphic"
+      },
+      {
+        "type": "image_picker",
+        "id": "pattern_image",
+        "label": "Brand pattern",
+        "info": "The blue-and-white arch and wave pattern. Used by the Pattern divider section."
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon",
+        "info": "Will be scaled to 32 × 32px."
+      }
+    ]
+  },
+  {
+    "name": "Product cards",
+    "settings": [
+      {
+        "type": "select",
+        "id": "card_image_ratio",
+        "label": "Image shape",
+        "options": [
+          { "value": "adapt", "label": "Adapt to image" },
+          { "value": "portrait", "label": "Portrait (4:5)" },
+          { "value": "square", "label": "Square" }
+        ],
+        "default": "portrait"
+      },
+      {
+        "type": "checkbox",
+        "id": "card_show_vendor",
+        "label": "Show vendor",
+        "default": false
+      },
+      {
+        "type": "select",
+        "id": "card_text_alignment",
+        "label": "Text alignment",
+        "options": [
+          { "value": "left", "label": "Left" },
+          { "value": "center", "label": "Centre" }
+        ],
+        "default": "center"
+      }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      {
+        "type": "select",
+        "id": "cart_type",
+        "label": "Cart type",
+        "options": [
+          { "value": "drawer", "label": "Slide-out drawer" },
+          { "value": "page", "label": "Cart page" }
+        ],
+        "default": "drawer"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_show_note",
+        "label": "Enable order notes",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Age verification",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Shows a full-screen gate on a visitor's first arrival. Their choice is remembered in the browser."
+      },
+      {
+        "type": "checkbox",
+        "id": "age_gate_enabled",
+        "label": "Enable age gate",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "age_gate_heading",
+        "label": "Heading",
+        "default": "Are you of legal drinking age?"
+      },
+      {
+        "type": "richtext",
+        "id": "age_gate_text",
+        "label": "Text",
+        "default": "<p>You must be of legal drinking age in your country of residence to enter Dunrobin Highland Distillery.</p>"
+      },
+      {
+        "type": "text",
+        "id": "age_gate_accept",
+        "label": "Confirm button",
+        "default": "Yes, enter"
+      },
+      {
+        "type": "text",
+        "id": "age_gate_decline",
+        "label": "Decline button",
+        "default": "No"
+      },
+      {
+        "type": "url",
+        "id": "age_gate_decline_url",
+        "label": "Decline redirects to",
+        "default": "https://www.drinkaware.co.uk/"
+      }
+    ]
+  },
+  {
+    "name": "Social media",
+    "settings": [
+      { "type": "text", "id": "social_instagram_link", "label": "Instagram" },
+      { "type": "text", "id": "social_facebook_link", "label": "Facebook" },
+      { "type": "text", "id": "social_twitter_link", "label": "X (Twitter)" },
+      { "type": "text", "id": "social_youtube_link", "label": "YouTube" },
+      { "type": "text", "id": "social_tiktok_link", "label": "TikTok" }
+    ]
+  },
+  {
+    "name": "Search engine sharing",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "share_image",
+        "label": "Default social sharing image"
+      }
+    ]
+  }
+]

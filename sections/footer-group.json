@@ -1,0 +1,53 @@
+{
+  "type": "footer",
+  "name": "Footer",
+  "sections": {
+    "pattern-divider": {
+      "type": "pattern-divider",
+      "settings": {
+        "height": 90,
+        "style": "navy"
+      }
+    },
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "brand": {
+          "type": "brand",
+          "settings": {
+            "text": "<p>Authentic craft spirits from the House of Sutherland.</p>",
+            "show_social": true
+          }
+        },
+        "menu": {
+          "type": "menu",
+          "settings": {
+            "heading": "Shop",
+            "menu": "footer"
+          }
+        },
+        "visit": {
+          "type": "text",
+          "settings": {
+            "heading": "Visit",
+            "text": "<p>Dunrobin Highland Distillery<br>Golspie, Sutherland KW10 6SF<br>United Kingdom</p><p><a href=\"mailto:info@dunrobindistillery.com\">info@dunrobindistillery.com</a><br><a href=\"tel:+447526070580\">+44 7526 070580</a></p>"
+          }
+        },
+        "newsletter": {
+          "type": "newsletter",
+          "settings": {
+            "heading": "The Dispatch",
+            "text": "<p>Batch releases, tastings at the castle and the occasional recipe.</p>"
+          }
+        }
+      },
+      "block_order": ["brand", "menu", "visit", "newsletter"],
+      "settings": {
+        "color_scheme": "brand",
+        "legal_text": "Please enjoy responsibly. The UK Chief Medical Officers recommend adults do not regularly drink more than 14 units per week. Licence numbers HC/CSR/30426/OL862/25 and HC/CSR/30641/OL917/25, issued by The Highland Council.",
+        "show_payment_icons": true
+      }
+    }
+  },
+  "order": ["pattern-divider", "footer"]
+}

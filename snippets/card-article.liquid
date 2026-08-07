@@ -1,0 +1,33 @@
+{%- liquid
+  assign ratio = ratio | default: 'landscape'
+-%}
+
+<div class="card">
+  <a href="{{ article.url }}" class="card__media media media--{{ ratio }}" tabindex="-1" aria-hidden="true">
+    {%- if article.image -%}
+      <img
+        src="{{ article.image | image_url: width: 900 }}"
+        srcset="{{ article.image | image_url: width: 450 }} 450w, {{ article.image | image_url: width: 900 }} 900w"
+        sizes="(min-width: 750px) 33vw, 100vw"
+        alt="{{ article.image.alt | escape }}"
+        width="{{ article.image.width }}"
+        height="{{ article.image.height }}"
+        loading="lazy"
+      >
+    {%- else -%}
+      {{ 'blog-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+    {%- endif -%}
+  </a>
+
+  <div class="article-card__meta">{{ article.published_at | date: format: 'date' }}</div>
+
+  <h3 class="card__title">
+    <a href="{{ article.url }}">{{ article.title }}</a>
+  </h3>
+
+  {%- if article.excerpt_or_content != blank -%}
+    <div class="article-card__excerpt">
+      {{ article.excerpt_or_content | strip_html | truncatewords: 24 }}
+    </div>
+  {%- endif -%}
+</div>

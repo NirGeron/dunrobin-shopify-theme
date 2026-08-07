@@ -1,0 +1,174 @@
+{%- liquid
+  assign featured = section.settings.product
+  assign variant = featured.selected_or_first_available_variant
+-%}
+
+<div
+  class="scheme--{{ section.settings.color_scheme }} section-padding"
+  style="--padding-top:{{ section.settings.padding_top }}px;--padding-bottom:{{ section.settings.padding_bottom }}px"
+>
+  <div class="page-width">
+    <div class="image-with-text {% if section.settings.layout == 'text_first' %}image-with-text--reverse{% endif %}">
+      <div class="image-with-text__media reveal">
+        <div class="media media--{{ section.settings.image_ratio }}" style="background:transparent">
+          {%- if featured.featured_media -%}
+            <img
+              src="{{ featured.featured_media | image_url: width: 1200 }}"
+              srcset="{{ featured.featured_media | image_url: width: 600 }} 600w, {{ featured.featured_media | image_url: width: 1200 }} 1200w"
+              sizes="(min-width: 750px) 50vw, 100vw"
+              alt="{{ featured.featured_media.alt | escape }}"
+              width="{{ featured.featured_media.width }}"
+              height="{{ featured.featured_media.height }}"
+              style="object-fit:contain"
+              loading="lazy"
+            >
+          {%- else -%}
+            <img
+              src="{{ 'bottle-gin.png' | asset_url }}"
+              alt=""
+              width="705"
+              height="993"
+              style="object-fit:contain"
+              loading="lazy"
+            >
+          {%- endif -%}
+        </div>
+      </div>
+
+      <div class="image-with-text__content reveal">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+
+        <h2 class="h1">{{ featured.title | default: section.settings.fallback_title }}</h2>
+
+        {%- if featured != blank -%}
+          <div class="product__price">{% render 'price', variant: variant %}</div>
+        {%- endif -%}
+
+        {%- if section.settings.show_specs -%}
+          <div class="spec-bar" style="margin:0 0 3.2rem">
+            <div class="spec-bar__item">
+              <span class="spec-bar__label">{{ section.settings.spec_label_1 }}</span>
+              <span class="spec-bar__value">{{ section.settings.spec_value_1 }}</span>
+            </div>
+            <div class="spec-bar__item">
+              <span class="spec-bar__label">{{ section.settings.spec_label_2 }}</span>
+              <span class="spec-bar__value">{{ section.settings.spec_value_2 }}</span>
+            </div>
+            <div class="spec-bar__item">
+              <span class="spec-bar__label">{{ section.settings.spec_label_3 }}</span>
+              <span class="spec-bar__value">{{ section.settings.spec_value_3 }}</span>
+            </div>
+          </div>
+        {%- endif -%}
+
+        <div class="rte">
+          {%- if section.settings.description != blank -%}
+            {{ section.settings.description }}
+          {%- elsif featured.description != blank -%}
+            {{ featured.description | strip_html | truncatewords: 60 }}
+          {%- endif -%}
+        </div>
+
+        <div class="image-with-text__buttons">
+          {%- if featured != blank -%}
+            {%- form 'product', featured, id: 'FeaturedProductForm', class: 'featured-product-form' -%}
+              <input type="hidden" name="id" value="{{ variant.id }}">
+              <button
+                type="submit"
+                name="add"
+                class="button {% if section.settings.color_scheme == 'brand' %}button--light{% endif %}"
+                {% unless variant.available %}disabled{% endunless %}
+              >
+                {%- if variant.available -%}
+                  {{ 'products.product.add_to_cart' | t }}
+                {%- else -%}
+                  {{ 'products.product.sold_out' | t }}
+                {%- endif -%}
+              </button>
+            {%- endform -%}
+
+            <a
+              href="{{ featured.url }}"
+              class="button button--secondary {% if section.settings.color_scheme == 'brand' %}button--outline-light{% endif %}"
+            >
+              {{ 'products.product.view_details' | t }}
+            </a>
+          {%- else -%}
+            <a href="{{ routes.all_products_collection_url }}" class="button">
+              {{ 'general.continue_shopping' | t }}
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Featured product",
+  "tag": "section",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Product" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow label", "default": "Highland boutique gin" },
+    {
+      "type": "text",
+      "id": "fallback_title",
+      "label": "Title when no product is selected",
+      "default": "Dunrobin Gin"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description override",
+      "default": "<p>Scottish juniper, rhubarb, heather, Scots pine resin, bramble leaf, blaeberry, crab apple and toasted oats.</p>"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "image_first", "label": "Image left" },
+        { "value": "text_first", "label": "Image right" }
+      ],
+      "default": "image_first"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image shape",
+      "options": [
+        { "value": "adapt", "label": "Adapt to image" },
+        { "value": "square", "label": "Square" },
+        { "value": "portrait", "label": "Portrait (4:5)" }
+      ],
+      "default": "portrait"
+    },
+    { "type": "header", "content": "Specification bar" },
+    { "type": "checkbox", "id": "show_specs", "label": "Show specifications", "default": true },
+    { "type": "text", "id": "spec_label_1", "label": "Label 1", "default": "ABV" },
+    { "type": "text", "id": "spec_value_1", "label": "Value 1", "default": "45%" },
+    { "type": "text", "id": "spec_label_2", "label": "Label 2", "default": "Volume" },
+    { "type": "text", "id": "spec_value_2", "label": "Value 2", "default": "70cl" },
+    { "type": "text", "id": "spec_label_3", "label": "Label 3", "default": "Origin" },
+    { "type": "text", "id": "spec_value_3", "label": "Value 3", "default": "Golspie" },
+    { "type": "header", "content": "Appearance" },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Colour scheme",
+      "options": [
+        { "value": "default", "label": "White" },
+        { "value": "alt", "label": "Off-white" },
+        { "value": "brand", "label": "Brand navy" }
+      ],
+      "default": "alt"
+    },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 8, "unit": "px", "label": "Top padding", "default": 96 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 8, "unit": "px", "label": "Bottom padding", "default": 96 }
+  ],
+  "presets": [{ "name": "Featured product" }]
+}
+{% endschema %}

@@ -1,0 +1,173 @@
+<div class="header-wrapper {% if section.settings.sticky %}header-wrapper--sticky{% endif %}">
+  <div class="page-width">
+    <header class="header {% if section.settings.layout == 'center' %}header--center{% endif %}">
+      {%- if section.settings.layout == 'center' -%}
+        <div class="header__nav" role="navigation">
+          {% render 'header-menu', menu: section.settings.menu, limit: 3 %}
+        </div>
+      {%- endif -%}
+
+      <div class="header__logo-wrapper">
+        {%- liquid
+          assign logo_image = section.settings.logo | default: settings.logo
+        -%}
+        <a href="{{ routes.root_url }}" class="header__logo" style="--logo-height: {{ section.settings.logo_height }}px">
+          {%- if logo_image != blank -%}
+            <img
+              src="{{ logo_image | image_url: width: 800 }}"
+              srcset="{{ logo_image | image_url: width: 400 }} 1x, {{ logo_image | image_url: width: 800 }} 2x"
+              alt="{{ shop.name | escape }}"
+              width="{{ logo_image.width }}"
+              height="{{ logo_image.height }}"
+            >
+          {%- else -%}
+            <img
+              src="{{ 'logo.png' | asset_url }}"
+              alt="{{ shop.name | escape }}"
+              width="1200"
+              height="363"
+            >
+          {%- endif -%}
+        </a>
+      </div>
+
+      {%- if section.settings.layout == 'center' -%}
+        <div class="header__nav" role="navigation">
+          {% render 'header-menu', menu: section.settings.menu, offset: 3 %}
+        </div>
+      {%- else -%}
+        <nav class="header__nav" role="navigation">
+          {% render 'header-menu', menu: section.settings.menu %}
+        </nav>
+      {%- endif -%}
+
+      <div class="header__icons">
+        <button
+          type="button"
+          class="header__icon header__menu-toggle"
+          data-mobile-nav-open
+          aria-label="{{ 'sections.header.menu' | t }}"
+          aria-controls="MobileNav"
+          aria-expanded="false"
+        >
+          {% render 'icon', name: 'menu' %}
+        </button>
+
+        {%- if section.settings.show_search -%}
+          <a href="{{ routes.search_url }}" class="header__icon" aria-label="{{ 'general.search.search' | t }}">
+            {% render 'icon', name: 'search' %}
+          </a>
+        {%- endif -%}
+
+        {%- if shop.customer_accounts_enabled and section.settings.show_account -%}
+          <a href="{{ routes.account_url }}" class="header__icon" aria-label="{{ 'customer.account.title' | t }}">
+            {% render 'icon', name: 'account' %}
+          </a>
+        {%- endif -%}
+
+        <a
+          href="{{ routes.cart_url }}"
+          class="header__icon header__cart"
+          data-cart-open
+          aria-label="{{ 'sections.cart.title' | t }}"
+        >
+          {% render 'icon', name: 'cart' %}
+          <span class="header__cart-count" data-cart-count {% if cart.item_count == 0 %}hidden{% endif %}>
+            {{ cart.item_count }}
+          </span>
+        </a>
+      </div>
+    </header>
+  </div>
+</div>
+
+<div class="mobile-nav" id="MobileNav">
+  <div class="mobile-nav__overlay" data-mobile-nav-close></div>
+  <div class="mobile-nav__panel">
+    <button
+      type="button"
+      class="header__icon"
+      data-mobile-nav-close
+      aria-label="{{ 'accessibility.close' | t }}"
+    >
+      {% render 'icon', name: 'close' %}
+    </button>
+
+    <ul class="mobile-nav__list">
+      {%- for link in section.settings.menu.links -%}
+        <li>
+          <a href="{{ link.url }}" {% if link.current %}aria-current="page"{% endif %}>{{ link.title }}</a>
+          {%- if link.links.size > 0 -%}
+            <ul>
+              {%- for child in link.links -%}
+                <li><a href="{{ child.url }}">{{ child.title }}</a></li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Header",
+  "class": "shopify-section-header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo",
+      "info": "Overrides the logo set in Theme settings > Brand assets."
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "min": 24,
+      "max": 90,
+      "step": 2,
+      "unit": "px",
+      "label": "Logo height",
+      "default": 44
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "left", "label": "Logo left, menu right" },
+        { "value": "center", "label": "Logo centred, menu split" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky",
+      "label": "Stick to top on scroll",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Show search icon",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_account",
+      "label": "Show account icon",
+      "default": true
+    }
+  ],
+  "enabled_on": {
+    "groups": ["header"]
+  }
+}
+{% endschema %}

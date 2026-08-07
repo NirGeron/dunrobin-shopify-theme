@@ -1,0 +1,186 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-banner",
+      "blocks": {
+        "eyebrow": {
+          "type": "eyebrow",
+          "settings": { "text": "House of Sutherland" }
+        },
+        "heading": {
+          "type": "heading",
+          "settings": { "text": "Sans Peur", "size": "h0" }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>On Scotland's north east coast, forest envelops a castle and meets the sea. Our gin is distilled to evoke that experience of forest and garden.</p>"
+          }
+        },
+        "buttons": {
+          "type": "buttons",
+          "settings": {
+            "button_label": "Shop the collection",
+            "button_label_2": "Our heritage"
+          }
+        }
+      },
+      "block_order": ["eyebrow", "heading", "text", "buttons"],
+      "settings": {
+        "height": "large",
+        "content_position": "left",
+        "duotone": true,
+        "duotone_opacity": 55,
+        "scrim": true,
+        "padding_top": 80,
+        "padding_bottom": 80
+      }
+    },
+    "featured-product": {
+      "type": "featured-product",
+      "settings": {
+        "eyebrow": "Highland boutique gin",
+        "fallback_title": "Dunrobin Gin",
+        "description": "<p>Scottish juniper, rhubarb, heather, Scots pine resin, bramble leaf, blaeberry, crab apple and toasted oats.</p>",
+        "layout": "image_first",
+        "image_ratio": "portrait",
+        "show_specs": true,
+        "spec_label_1": "ABV",
+        "spec_value_1": "45%",
+        "spec_label_2": "Volume",
+        "spec_value_2": "70cl",
+        "spec_label_3": "Origin",
+        "spec_value_3": "Golspie",
+        "color_scheme": "alt",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
+    },
+    "tasting-notes": {
+      "type": "multicolumn",
+      "blocks": {
+        "nose": {
+          "type": "column",
+          "settings": {
+            "number": "01",
+            "heading": "The nose",
+            "text": "<p>Scottish juniper first, then heather and a resinous note of Scots pine.</p>"
+          }
+        },
+        "palate": {
+          "type": "column",
+          "settings": {
+            "number": "02",
+            "heading": "The palate",
+            "text": "<p>Rhubarb and bramble leaf over crab apple, closing on toasted oats.</p>"
+          }
+        },
+        "serve": {
+          "type": "column",
+          "settings": {
+            "number": "03",
+            "heading": "The serve",
+            "text": "<p>A generous measure, plenty of ice, a light tonic and a sprig of heather.</p>"
+          }
+        }
+      },
+      "block_order": ["nose", "palate", "serve"],
+      "settings": {
+        "eyebrow": "Tasting notes",
+        "heading": "How it drinks",
+        "heading_alignment": "center",
+        "columns": 3,
+        "alignment": "left",
+        "bordered": true,
+        "color_scheme": "default",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
+    },
+    "pattern": {
+      "type": "pattern-divider",
+      "settings": { "style": "navy", "height": 120 }
+    },
+    "heritage": {
+      "type": "image-with-text",
+      "blocks": {
+        "eyebrow": {
+          "type": "eyebrow",
+          "settings": { "text": "Our heritage" }
+        },
+        "heading": {
+          "type": "heading",
+          "settings": { "text": "A synthesis of the Sutherland territory", "size": "h2" }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Dunrobin Castle has been the seat of the Earls of Sutherland for seven centuries. Our spirits are drawn from the land that surrounds it — the pine, the heather and the cold North Sea air that shapes everything that grows here.</p>"
+          }
+        },
+        "button": {
+          "type": "button",
+          "settings": { "label": "Discover our heritage", "style": "link" }
+        }
+      },
+      "block_order": ["eyebrow", "heading", "text", "button"],
+      "settings": {
+        "image_ratio": "portrait",
+        "layout": "image_first",
+        "wide_media": false,
+        "color_scheme": "default",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
+    },
+    "collection": {
+      "type": "featured-collection",
+      "settings": {
+        "eyebrow": "The collection",
+        "heading": "Our spirits",
+        "heading_alignment": "center",
+        "products_to_show": 4,
+        "columns": 4,
+        "image_ratio": "portrait",
+        "show_view_all": true,
+        "color_scheme": "default",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
+    },
+    "quote": {
+      "type": "quote",
+      "settings": {
+        "quote": "Without fear. Since the thirteenth century, these words have been the creed of the House of Sutherland.",
+        "attribution": "Sans Peur",
+        "show_seal": true,
+        "color_scheme": "brand",
+        "padding_top": 112,
+        "padding_bottom": 112
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "eyebrow": "The Dispatch",
+        "heading": "Word from the distillery",
+        "text": "<p>Batch releases, tastings at the castle and the occasional recipe. No more than once a month.</p>",
+        "button_label": "Subscribe",
+        "disclaimer": "<p>You must be of legal drinking age to subscribe. Unsubscribe at any time.</p>",
+        "color_scheme": "alt",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "featured-product",
+    "tasting-notes",
+    "pattern",
+    "heritage",
+    "collection",
+    "quote",
+    "newsletter"
+  ]
+}

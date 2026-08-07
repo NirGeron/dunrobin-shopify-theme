@@ -1,0 +1,214 @@
+<div
+  class="hero hero--{{ section.settings.height }} hero--{{ section.settings.content_position }}"
+  style="--padding-top:{{ section.settings.padding_top }}px;--padding-bottom:{{ section.settings.padding_bottom }}px"
+>
+  <div class="hero__media">
+    {%- if section.settings.image != blank -%}
+      <img
+        src="{{ section.settings.image | image_url: width: 2400 }}"
+        srcset="
+          {{ section.settings.image | image_url: width: 800 }} 800w,
+          {{ section.settings.image | image_url: width: 1400 }} 1400w,
+          {{ section.settings.image | image_url: width: 2000 }} 2000w,
+          {{ section.settings.image | image_url: width: 2800 }} 2800w
+        "
+        sizes="100vw"
+        alt="{{ section.settings.image.alt | escape }}"
+        width="{{ section.settings.image.width }}"
+        height="{{ section.settings.image.height }}"
+        {% if section.index == 1 %}fetchpriority="high"{% else %}loading="lazy"{% endif %}
+      >
+    {%- else -%}
+      <img
+        src="{{ 'castle-duotone.jpg' | asset_url }}"
+        alt=""
+        width="1600"
+        height="1101"
+        {% if section.index == 1 %}fetchpriority="high"{% else %}loading="lazy"{% endif %}
+      >
+    {%- endif -%}
+
+    {%- if section.settings.duotone -%}
+      <div class="hero__overlay" style="opacity: {{ section.settings.duotone_opacity | divided_by: 100.0 }}"></div>
+    {%- endif -%}
+
+    {%- if section.settings.scrim -%}
+      <div class="hero__scrim"></div>
+    {%- endif -%}
+  </div>
+
+  <div class="hero__content">
+    <div class="page-width">
+      <div class="hero__inner">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'logo' -%}
+              <img
+                class="hero__logo"
+                src="{% if block.settings.image != blank %}{{ block.settings.image | image_url: width: 800 }}{% else %}{{ 'logo-white.png' | asset_url }}{% endif %}"
+                alt="{{ shop.name | escape }}"
+                width="800"
+                height="242"
+                {{ block.shopify_attributes }}
+              >
+
+            {%- when 'eyebrow' -%}
+              <p class="eyebrow eyebrow--light" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
+
+            {%- when 'heading' -%}
+              <h2 class="hero__heading {{ block.settings.size }}" {{ block.shopify_attributes }}>
+                {{ block.settings.text }}
+              </h2>
+
+            {%- when 'text' -%}
+              <div class="hero__text rte" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+
+            {%- when 'buttons' -%}
+              <div class="hero__buttons" {{ block.shopify_attributes }}>
+                {%- if block.settings.button_label != blank -%}
+                  <a href="{{ block.settings.button_link | default: '#' }}" class="button button--light">
+                    {{ block.settings.button_label }}
+                  </a>
+                {%- endif -%}
+                {%- if block.settings.button_label_2 != blank -%}
+                  <a href="{{ block.settings.button_link_2 | default: '#' }}" class="button button--outline-light">
+                    {{ block.settings.button_label_2 }}
+                  </a>
+                {%- endif -%}
+              </div>
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Hero banner",
+  "tag": "section",
+  "class": "shopify-section--full-bleed",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Background image" },
+    {
+      "type": "select",
+      "id": "height",
+      "label": "Height",
+      "options": [
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" },
+        { "value": "full", "label": "Full screen" }
+      ],
+      "default": "large"
+    },
+    {
+      "type": "select",
+      "id": "content_position",
+      "label": "Content position",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Centre" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    { "type": "header", "content": "Image treatment" },
+    {
+      "type": "checkbox",
+      "id": "duotone",
+      "label": "Apply brand navy duotone",
+      "default": true,
+      "info": "Matches the brand guideline that every photograph carries a core brand colour."
+    },
+    {
+      "type": "range",
+      "id": "duotone_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Duotone strength",
+      "default": 55
+    },
+    {
+      "type": "checkbox",
+      "id": "scrim",
+      "label": "Darken the bottom for legibility",
+      "default": true
+    },
+    { "type": "header", "content": "Padding" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 8, "unit": "px", "label": "Top padding", "default": 80 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 8, "unit": "px", "label": "Bottom padding", "default": 80 }
+  ],
+  "blocks": [
+    {
+      "type": "logo",
+      "name": "Logo",
+      "limit": 1,
+      "settings": [{ "type": "image_picker", "id": "image", "label": "Logo", "info": "Defaults to the white brand logo." }]
+    },
+    {
+      "type": "eyebrow",
+      "name": "Eyebrow label",
+      "limit": 1,
+      "settings": [{ "type": "text", "id": "text", "label": "Text", "default": "House of Sutherland" }]
+    },
+    {
+      "type": "heading",
+      "name": "Heading",
+      "limit": 2,
+      "settings": [
+        { "type": "text", "id": "text", "label": "Heading", "default": "Sans Peur" },
+        {
+          "type": "select",
+          "id": "size",
+          "label": "Size",
+          "options": [
+            { "value": "h2", "label": "Small" },
+            { "value": "h1", "label": "Medium" },
+            { "value": "h0", "label": "Large" }
+          ],
+          "default": "h0"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Craft gin and single malt distilled in the shadow of Dunrobin Castle, on the far north coast of Scotland.</p>"
+        }
+      ]
+    },
+    {
+      "type": "buttons",
+      "name": "Buttons",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "button_label", "label": "First button", "default": "Shop the collection" },
+        { "type": "url", "id": "button_link", "label": "First link" },
+        { "type": "text", "id": "button_label_2", "label": "Second button", "default": "Our heritage" },
+        { "type": "url", "id": "button_link_2", "label": "Second link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero banner",
+      "blocks": [
+        { "type": "eyebrow" },
+        { "type": "heading" },
+        { "type": "text" },
+        { "type": "buttons" }
+      ]
+    }
+  ]
+}
+{% endschema %}

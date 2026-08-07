@@ -1,0 +1,72 @@
+{%- liquid
+  assign pattern = section.settings.image | default: settings.pattern_image
+-%}
+
+<div class="pattern-divider" style="height: {{ section.settings.height }}px">
+  {%- if pattern != blank -%}
+    <img
+      class="pattern-divider__image"
+      src="{{ pattern | image_url: width: 2400 }}"
+      alt=""
+      width="{{ pattern.width }}"
+      height="{{ pattern.height }}"
+      style="height: {{ section.settings.height }}px"
+      loading="lazy"
+    >
+  {%- else -%}
+    <img
+      class="pattern-divider__image"
+      src="{% if section.settings.style == 'navy' %}{{ 'pattern-navy.jpg' | asset_url }}{% else %}{{ 'pattern-white.jpg' | asset_url }}{% endif %}"
+      alt=""
+      width="1800"
+      height="588"
+      style="height: {{ section.settings.height }}px"
+      loading="lazy"
+    >
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Pattern divider",
+  "tag": "section",
+  "class": "shopify-section--full-bleed",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "A strip of the Dunrobin arch-and-wave pattern. Use it to separate major areas of a page."
+    },
+    {
+      "type": "select",
+      "id": "style",
+      "label": "Style",
+      "options": [
+        { "value": "navy", "label": "White pattern on navy" },
+        { "value": "white", "label": "Navy pattern on white" }
+      ],
+      "default": "navy"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Custom pattern image",
+      "info": "Overrides the style above and the pattern set in Theme settings."
+    },
+    {
+      "type": "range",
+      "id": "height",
+      "min": 40,
+      "max": 320,
+      "step": 10,
+      "unit": "px",
+      "label": "Height",
+      "default": 120
+    }
+  ],
+  "presets": [{ "name": "Pattern divider" }],
+  "enabled_on": {
+    "templates": ["*"],
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}

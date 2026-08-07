@@ -1,0 +1,57 @@
+<div
+  class="scheme--{{ section.settings.color_scheme }} section-padding"
+  style="--padding-top:{{ section.settings.padding_top }}px;--padding-bottom:{{ section.settings.padding_bottom }}px"
+>
+  <div class="page-width">
+    <blockquote class="quote reveal" style="margin:0">
+      {%- if section.settings.show_seal -%}
+        <img
+          src="{% if section.settings.color_scheme == 'brand' or section.settings.color_scheme == 'accent' %}{{ 'seal-sans-peur.png' | asset_url }}{% else %}{{ 'seal-sans-peur-navy.png' | asset_url }}{% endif %}"
+          alt=""
+          width="96"
+          height="96"
+          style="width:96px;height:auto;margin:0 auto 3.2rem"
+          loading="lazy"
+        >
+      {%- endif -%}
+
+      <p class="quote__text">{{ section.settings.quote }}</p>
+
+      {%- if section.settings.attribution != blank -%}
+        <cite class="quote__attribution" style="font-style:normal">— {{ section.settings.attribution }}</cite>
+      {%- endif -%}
+    </blockquote>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Quote",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "quote",
+      "label": "Quote",
+      "default": "A geometric and dynamic identity, where shapes shift position — transforming from pictograms into graphic elements and patterns."
+    },
+    { "type": "text", "id": "attribution", "label": "Attribution", "default": "House of Sutherland" },
+    { "type": "checkbox", "id": "show_seal", "label": "Show the Sans Peur seal", "default": true },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Colour scheme",
+      "options": [
+        { "value": "default", "label": "White" },
+        { "value": "alt", "label": "Off-white" },
+        { "value": "brand", "label": "Brand navy" },
+        { "value": "accent", "label": "Forest green" }
+      ],
+      "default": "brand"
+    },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 8, "unit": "px", "label": "Top padding", "default": 112 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 8, "unit": "px", "label": "Bottom padding", "default": 112 }
+  ],
+  "presets": [{ "name": "Quote" }]
+}
+{% endschema %}

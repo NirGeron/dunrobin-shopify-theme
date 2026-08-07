@@ -1,0 +1,100 @@
+{%- paginate collection.products by section.settings.products_per_page -%}
+  <div class="page-width">
+    {%- if section.settings.show_hero -%}
+      <div class="collection-hero">
+        <p class="eyebrow">{{ 'collections.general.eyebrow' | t }}</p>
+        <h1 class="h1">{{ collection.title }}</h1>
+        {%- if collection.description != blank -%}
+          <div class="rte" style="max-width:62rem;margin:2rem auto 0;color:var(--text-muted)">
+            {{ collection.description }}
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="collection-toolbar">
+      <span class="collection-toolbar__count">
+        {{ 'collections.general.items_count' | t: count: collection.products_count }}
+      </span>
+
+      {%- if section.settings.show_sorting -%}
+        <form method="get" action="{{ collection.url }}" class="select" data-auto-submit>
+          <label class="visually-hidden" for="SortBy">{{ 'collections.sorting.title' | t }}</label>
+          <select class="select__select" name="sort_by" id="SortBy">
+            {%- assign current_sort = collection.sort_by | default: collection.default_sort_by -%}
+            {%- for option in collection.sort_options -%}
+              <option value="{{ option.value }}" {% if option.value == current_sort %}selected{% endif %}>
+                {{ option.name }}
+              </option>
+            {%- endfor -%}
+          </select>
+        </form>
+      {%- endif -%}
+    </div>
+
+    {%- if collection.products.size > 0 -%}
+      <ul class="product-grid product-grid--{{ section.settings.columns }}" role="list">
+        {%- for product in collection.products -%}
+          <li>{% render 'card-product', product: product, ratio: section.settings.image_ratio %}</li>
+        {%- endfor -%}
+      </ul>
+
+      {%- if paginate.pages > 1 -%}
+        <nav class="pagination" role="navigation" aria-label="{{ 'general.pagination.label' | t }}">
+          {%- if paginate.previous -%}
+            <a href="{{ paginate.previous.url }}" aria-label="{{ 'general.pagination.previous' | t }}">&larr;</a>
+          {%- endif -%}
+          {%- for part in paginate.parts -%}
+            {%- if part.is_link -%}
+              <a href="{{ part.url }}">{{ part.title }}</a>
+            {%- else -%}
+              <span {% if part.title == paginate.current_page %}aria-current="page"{% endif %}>{{ part.title }}</span>
+            {%- endif -%}
+          {%- endfor -%}
+          {%- if paginate.next -%}
+            <a href="{{ paginate.next.url }}" aria-label="{{ 'general.pagination.next' | t }}">&rarr;</a>
+          {%- endif -%}
+        </nav>
+      {%- endif -%}
+    {%- else -%}
+      <div class="cart-empty">
+        <p class="h4">{{ 'collections.general.no_matches' | t }}</p>
+        <a class="button" href="{{ routes.all_products_collection_url }}">
+          {{ 'general.continue_shopping' | t }}
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "Product grid",
+  "tag": "section",
+  "settings": [
+    { "type": "checkbox", "id": "show_hero", "label": "Show collection title and description", "default": true },
+    { "type": "checkbox", "id": "show_sorting", "label": "Show sorting", "default": true },
+    { "type": "range", "id": "columns", "min": 2, "max": 5, "step": 1, "label": "Columns on desktop", "default": 3 },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "label": "Products per page",
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image shape",
+      "options": [
+        { "value": "adapt", "label": "Adapt to image" },
+        { "value": "square", "label": "Square" },
+        { "value": "portrait", "label": "Portrait (4:5)" }
+      ],
+      "default": "portrait"
+    }
+  ]
+}
+{% endschema %}

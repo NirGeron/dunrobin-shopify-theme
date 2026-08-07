@@ -1,0 +1,24 @@
+<div class="page-width section-padding" style="--padding-top:64px;--padding-bottom:96px">
+  <div class="collection-hero" style="padding-top:0">
+    <h1 class="h1">{{ 'sections.cart.title' | t }}</h1>
+  </div>
+
+  {%- if cart.item_count == 0 -%}
+    <div class="cart-empty">
+      <p class="h4">{{ 'sections.cart.empty' | t }}</p>
+      <a class="button" href="{{ routes.all_products_collection_url }}">{{ 'general.continue_shopping' | t }}</a>
+    </div>
+  {%- else -%}
+    <div class="product" style="align-items:start">
+      <div>{% render 'cart-items', cart: cart, context: 'page' %}</div>
+      <div class="product__info--sticky" style="border:1px solid var(--border);padding:3.2rem">
+        <h2 class="h4">{{ 'sections.cart.summary' | t }}</h2>
+        {% render 'cart-footer', cart: cart %}
+      </div>
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{ "name": "Cart", "tag": "section", "settings": [] }
+{% endschema %}

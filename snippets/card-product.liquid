@@ -1,0 +1,62 @@
+{%- comment -%}
+  Usage: {% render 'card-product', product: product, ratio: settings.card_image_ratio %}
+{%- endcomment -%}
+
+{%- liquid
+  assign ratio = ratio | default: settings.card_image_ratio
+  assign alignment = settings.card_text_alignment
+-%}
+
+<div class="card {% if alignment == 'center' %}card--center{% endif %}">
+  {%- if product == blank -%}
+    <div class="card__media media media--{{ ratio }}">
+      {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+    </div>
+    <h3 class="card__title">{{ 'onboarding.product_title' | t }}</h3>
+    <div class="card__price">{{ 1999 | money }}</div>
+  {%- else -%}
+    <a
+      href="{{ product.url }}"
+      class="card__media media media--{{ ratio }}"
+      aria-label="{{ product.title | escape }}"
+      tabindex="-1"
+    >
+      {%- if product.featured_media -%}
+        <img
+          src="{{ product.featured_media | image_url: width: 800 }}"
+          srcset="
+            {{ product.featured_media | image_url: width: 400 }} 400w,
+            {{ product.featured_media | image_url: width: 600 }} 600w,
+            {{ product.featured_media | image_url: width: 800 }} 800w,
+            {{ product.featured_media | image_url: width: 1200 }} 1200w
+          "
+          sizes="(min-width: 990px) 25vw, (min-width: 750px) 33vw, 50vw"
+          alt="{{ product.featured_media.alt | escape }}"
+          width="{{ product.featured_media.width }}"
+          height="{{ product.featured_media.height }}"
+          loading="lazy"
+        >
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      {%- endif -%}
+
+      {%- if product.available == false -%}
+        <span class="card__badge card__badge--sold-out">{{ 'products.product.sold_out' | t }}</span>
+      {%- elsif product.compare_at_price > product.price -%}
+        <span class="card__badge">{{ 'products.product.on_sale' | t }}</span>
+      {%- endif -%}
+    </a>
+
+    {%- if settings.card_show_vendor and product.vendor != blank -%}
+      <div class="card__vendor">{{ product.vendor }}</div>
+    {%- endif -%}
+
+    <h3 class="card__title">
+      <a href="{{ product.url }}">{{ product.title | escape }}</a>
+    </h3>
+
+    <div class="card__price">
+      {% render 'price', product: product %}
+    </div>
+  {%- endif -%}
+</div>

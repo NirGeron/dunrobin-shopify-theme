@@ -1,0 +1,40 @@
+{%- comment -%}
+  Renders the desktop menu. `limit` renders only the first N links, `offset`
+  skips the first N — together they split one menu across a centred logo.
+{%- endcomment -%}
+
+{%- for link in menu.links -%}
+  {%- liquid
+    if limit and forloop.index > limit
+      continue
+    endif
+    if offset and forloop.index <= offset
+      continue
+    endif
+  -%}
+
+  {%- if link.links.size > 0 -%}
+    <div class="header__menu-item">
+      <a
+        href="{{ link.url }}"
+        class="header__link"
+        {% if link.current %}aria-current="page"{% endif %}
+      >
+        {{ link.title }}
+      </a>
+      <ul class="header__submenu">
+        {%- for child in link.links -%}
+          <li><a href="{{ child.url }}">{{ child.title }}</a></li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  {%- else -%}
+    <a
+      href="{{ link.url }}"
+      class="header__link"
+      {% if link.current %}aria-current="page"{% endif %}
+    >
+      {{ link.title }}
+    </a>
+  {%- endif -%}
+{%- endfor -%}

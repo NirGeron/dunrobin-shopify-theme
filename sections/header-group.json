@@ -1,0 +1,42 @@
+{
+  "type": "header",
+  "name": "Header",
+  "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "blocks": {
+        "announcement-1": {
+          "type": "announcement",
+          "settings": {
+            "text": "Complimentary UK shipping on orders over £100"
+          }
+        },
+        "announcement-2": {
+          "type": "announcement",
+          "settings": {
+            "text": "Sans Peur — distilled at Dunrobin, Golspie, Sutherland"
+          }
+        }
+      },
+      "block_order": ["announcement-1", "announcement-2"],
+      "settings": {
+        "background": "#1C348F",
+        "text_color": "#FFFFFF",
+        "autorotate": true,
+        "speed": 6
+      }
+    },
+    "header": {
+      "type": "header",
+      "settings": {
+        "logo_height": 44,
+        "menu": "main-menu",
+        "layout": "left",
+        "sticky": true,
+        "show_search": true,
+        "show_account": true
+      }
+    }
+  },
+  "order": ["announcement-bar", "header"]
+}

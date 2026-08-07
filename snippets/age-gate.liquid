@@ -1,0 +1,32 @@
+<div class="age-gate" id="AgeGate" role="dialog" aria-modal="true" aria-labelledby="AgeGateHeading" hidden>
+  <div class="age-gate__inner">
+    {%- if settings.logo_light != blank -%}
+      <img
+        class="age-gate__logo"
+        src="{{ settings.logo_light | image_url: width: 600 }}"
+        alt="{{ shop.name | escape }}"
+        width="600"
+        height="{{ 600 | divided_by: settings.logo_light.aspect_ratio | round }}"
+      >
+    {%- else -%}
+      <img class="age-gate__logo" src="{{ 'logo-white.png' | asset_url }}" alt="{{ shop.name | escape }}" width="600" height="182">
+    {%- endif -%}
+
+    <h2 class="h3" id="AgeGateHeading">{{ settings.age_gate_heading }}</h2>
+
+    <div class="rte">{{ settings.age_gate_text }}</div>
+
+    <div class="age-gate__buttons">
+      <button type="button" class="button button--light" data-age-gate-accept>
+        {{ settings.age_gate_accept }}
+      </button>
+      <a
+        class="button button--outline-light"
+        href="{{ settings.age_gate_decline_url | default: 'https://www.drinkaware.co.uk/' }}"
+        rel="noopener"
+      >
+        {{ settings.age_gate_decline }}
+      </a>
+    </div>
+  </div>
+</div>

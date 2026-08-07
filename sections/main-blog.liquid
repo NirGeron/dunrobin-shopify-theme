@@ -1,0 +1,53 @@
+{%- paginate blog.articles by section.settings.posts_per_page -%}
+  <div class="page-width section-padding" style="--padding-top:64px;--padding-bottom:96px">
+    <div class="collection-hero">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+      <h1 class="h1">{{ blog.title }}</h1>
+    </div>
+
+    <ul class="product-grid product-grid--{{ section.settings.columns }}" role="list">
+      {%- for article in blog.articles -%}
+        <li>{% render 'card-article', article: article, ratio: section.settings.image_ratio %}</li>
+      {%- endfor -%}
+    </ul>
+
+    {%- if paginate.pages > 1 -%}
+      <nav class="pagination" role="navigation" aria-label="{{ 'general.pagination.label' | t }}">
+        {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}">&larr;</a>{%- endif -%}
+        {%- for part in paginate.parts -%}
+          {%- if part.is_link -%}
+            <a href="{{ part.url }}">{{ part.title }}</a>
+          {%- else -%}
+            <span {% if part.title == paginate.current_page %}aria-current="page"{% endif %}>{{ part.title }}</span>
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if paginate.next -%}<a href="{{ paginate.next.url }}">&rarr;</a>{%- endif -%}
+      </nav>
+    {%- endif -%}
+  </div>
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "Blog posts",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow label", "default": "Journal" },
+    { "type": "range", "id": "columns", "min": 2, "max": 4, "step": 1, "label": "Columns on desktop", "default": 3 },
+    { "type": "range", "id": "posts_per_page", "min": 3, "max": 24, "step": 3, "label": "Posts per page", "default": 9 },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image shape",
+      "options": [
+        { "value": "adapt", "label": "Adapt to image" },
+        { "value": "square", "label": "Square" },
+        { "value": "landscape", "label": "Landscape (3:2)" }
+      ],
+      "default": "landscape"
+    }
+  ]
+}
+{% endschema %}

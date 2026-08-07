@@ -1,0 +1,72 @@
+{
+  "current": {
+    "color_brand": "#1C348F",
+    "color_brand_dark": "#101C50",
+    "color_accent": "#123620",
+    "color_background": "#FFFFFF",
+    "color_background_alt": "#F6F5F2",
+    "color_text": "#1A1A1A",
+    "color_text_muted": "#6B6B6B",
+    "color_border": "#DEDDD8",
+    "color_button_text": "#FFFFFF",
+    "button_radius": 0,
+
+    "font_heading": "cormorant_garamond_n4",
+    "font_heading_scale": 100,
+    "font_heading_transform": "none",
+    "font_body": "work_sans_n4",
+    "font_body_scale": 100,
+    "label_letter_spacing": 20,
+
+    "page_width": 1280,
+    "spacing_sections": 0,
+
+    "card_image_ratio": "portrait",
+    "card_show_vendor": false,
+    "card_text_alignment": "center",
+
+    "cart_type": "drawer",
+    "cart_show_note": true,
+
+    "age_gate_enabled": true,
+    "age_gate_heading": "Are you 18 or over?",
+    "age_gate_text": "<p>It is an offence to sell alcohol to anyone under 18 in the UK. Please confirm you are of legal drinking age to enter Dunrobin Highland Distillery.</p>",
+    "age_gate_accept": "Yes, I am 18 or over",
+    "age_gate_decline": "No",
+    "age_gate_decline_url": "https://www.drinkaware.co.uk/",
+
+    "social_instagram_link": "",
+    "social_facebook_link": "",
+    "social_twitter_link": "",
+    "social_youtube_link": "",
+    "social_tiktok_link": ""
+  },
+  "presets": {
+    "Dunrobin": {
+      "color_brand": "#1C348F",
+      "color_brand_dark": "#101C50",
+      "color_accent": "#123620",
+      "color_background": "#FFFFFF",
+      "color_background_alt": "#F6F5F2",
+      "color_text": "#1A1A1A",
+      "color_text_muted": "#6B6B6B",
+      "color_border": "#DEDDD8",
+      "color_button_text": "#FFFFFF",
+      "button_radius": 0,
+      "font_heading": "cormorant_garamond_n4",
+      "font_heading_scale": 100,
+      "font_heading_transform": "none",
+      "font_body": "work_sans_n4",
+      "font_body_scale": 100,
+      "label_letter_spacing": 20,
+      "page_width": 1280,
+      "spacing_sections": 0,
+      "card_image_ratio": "portrait",
+      "card_show_vendor": false,
+      "card_text_alignment": "center",
+      "cart_type": "drawer",
+      "cart_show_note": true,
+      "age_gate_enabled": true
+    }
+  }
+}

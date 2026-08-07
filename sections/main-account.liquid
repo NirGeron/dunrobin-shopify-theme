@@ -1,0 +1,50 @@
+<div class="page-width section-padding" style="--padding-top:80px;--padding-bottom:96px">
+  <div class="collection-toolbar">
+    <h1 class="h2" style="margin:0">{{ 'customer.account.title' | t }}</h1>
+    <a href="{{ routes.account_logout_url }}" class="link-arrow">{{ 'customer.log_out' | t }}</a>
+  </div>
+
+  <div class="image-with-text" style="align-items:start">
+    <div>
+      <h2 class="h4">{{ 'customer.orders.title' | t }}</h2>
+      {%- paginate customer.orders by 12 -%}
+        {%- if customer.orders.size > 0 -%}
+          <table class="cart-page__table">
+            <thead>
+              <tr>
+                <th style="text-align:left;padding:1rem 0;border-bottom:1px solid var(--border)">{{ 'customer.orders.order_number' | t }}</th>
+                <th style="text-align:left;padding:1rem 0;border-bottom:1px solid var(--border)">{{ 'customer.orders.date' | t }}</th>
+                <th style="text-align:left;padding:1rem 0;border-bottom:1px solid var(--border)">{{ 'customer.orders.fulfillment_status' | t }}</th>
+                <th style="text-align:right;padding:1rem 0;border-bottom:1px solid var(--border)">{{ 'customer.orders.total' | t }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {%- for order in customer.orders -%}
+                <tr>
+                  <td style="padding:1.4rem 0;border-bottom:1px solid var(--border)"><a href="{{ order.customer_url }}">{{ order.name }}</a></td>
+                  <td style="padding:1.4rem 0;border-bottom:1px solid var(--border)">{{ order.created_at | date: format: 'date' }}</td>
+                  <td style="padding:1.4rem 0;border-bottom:1px solid var(--border)">{{ order.fulfillment_status_label }}</td>
+                  <td style="padding:1.4rem 0;border-bottom:1px solid var(--border);text-align:right">{{ order.total_price | money }}</td>
+                </tr>
+              {%- endfor -%}
+            </tbody>
+          </table>
+        {%- else -%}
+          <p style="color:var(--text-muted)">{{ 'customer.orders.none' | t }}</p>
+        {%- endif -%}
+      {%- endpaginate -%}
+    </div>
+
+    <div style="border:1px solid var(--border);padding:3.2rem">
+      <h2 class="h4">{{ 'customer.account.details' | t }}</h2>
+      {{ customer.default_address | format_address }}
+      <a href="{{ routes.account_addresses_url }}" class="link-arrow" style="margin-top:1.6rem">
+        {{ 'customer.account.view_addresses' | t }}
+      </a>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{ "name": "Account", "tag": "section", "settings": [] }
+{% endschema %}

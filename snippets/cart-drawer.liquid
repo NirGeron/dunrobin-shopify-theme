@@ -1,0 +1,22 @@
+<cart-drawer class="cart-drawer" id="CartDrawer" role="dialog" aria-modal="true" aria-label="{{ 'sections.cart.title' | t }}">
+  <div class="cart-drawer__overlay" data-cart-close></div>
+
+  <div class="cart-drawer__panel">
+    <div class="cart-drawer__header">
+      <h2 class="h4" style="margin:0">{{ 'sections.cart.title' | t }}</h2>
+      <button type="button" class="header__icon" data-cart-close aria-label="{{ 'accessibility.close' | t }}">
+        {% render 'icon', name: 'close' %}
+      </button>
+    </div>
+
+    <div class="cart-drawer__body" id="CartDrawerBody">
+      {% render 'cart-items', cart: cart, context: 'drawer' %}
+    </div>
+
+    {%- if cart.item_count > 0 -%}
+      <div class="cart-drawer__footer" id="CartDrawerFooter">
+        {% render 'cart-footer', cart: cart %}
+      </div>
+    {%- endif -%}
+  </div>
+</cart-drawer>

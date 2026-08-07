@@ -1,0 +1,185 @@
+<div
+  class="scheme--{{ section.settings.color_scheme }} section-padding"
+  style="--padding-top:{{ section.settings.padding_top }}px;--padding-bottom:{{ section.settings.padding_bottom }}px"
+>
+  <div class="page-width">
+    {%- if section.settings.heading != blank or section.settings.subheading != blank or section.settings.eyebrow != blank -%}
+      <div class="section-header section-header--{{ section.settings.heading_alignment }}">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="h2">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+        {%- if section.settings.subheading != blank -%}
+          <div class="section-header__text rte">{{ section.settings.subheading }}</div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="multicolumn multicolumn--{{ section.settings.columns }}">
+      {%- for block in section.blocks -%}
+        <div
+          class="multicolumn__item {% if section.settings.bordered %}multicolumn__item--bordered{% endif %} reveal"
+          {% if section.settings.alignment == 'center' %}style="text-align:center"{% endif %}
+          {{ block.shopify_attributes }}
+        >
+          {%- if block.settings.image != blank -%}
+            <div class="multicolumn__image media media--{{ section.settings.image_ratio }}">
+              <img
+                src="{{ block.settings.image | image_url: width: 800 }}"
+                srcset="{{ block.settings.image | image_url: width: 400 }} 400w, {{ block.settings.image | image_url: width: 800 }} 800w"
+                sizes="(min-width: 750px) 33vw, 100vw"
+                alt="{{ block.settings.image.alt | escape }}"
+                width="{{ block.settings.image.width }}"
+                height="{{ block.settings.image.height }}"
+                loading="lazy"
+              >
+            </div>
+          {%- elsif block.settings.number != blank -%}
+            <span class="multicolumn__number">{{ block.settings.number }}</span>
+          {%- endif -%}
+
+          {%- if block.settings.heading != blank -%}
+            <h3 class="multicolumn__title h4">{{ block.settings.heading }}</h3>
+          {%- endif -%}
+
+          {%- if block.settings.text != blank -%}
+            <div class="multicolumn__text rte">{{ block.settings.text }}</div>
+          {%- endif -%}
+
+          {%- if block.settings.link_label != blank -%}
+            <a href="{{ block.settings.link | default: '#' }}" class="link-arrow" style="margin-top:2rem">
+              {{ block.settings.link_label }}
+              {% render 'icon', name: 'arrow-right' %}
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Multi-column",
+  "tag": "section",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow label", "default": "Tasting notes" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "How it drinks" },
+    { "type": "richtext", "id": "subheading", "label": "Subheading" },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Heading alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Centre" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "label": "Columns on desktop",
+      "default": 3
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Column text alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Centre" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image shape",
+      "options": [
+        { "value": "adapt", "label": "Adapt to image" },
+        { "value": "square", "label": "Square" },
+        { "value": "portrait", "label": "Portrait (4:5)" },
+        { "value": "landscape", "label": "Landscape (3:2)" }
+      ],
+      "default": "landscape"
+    },
+    { "type": "checkbox", "id": "bordered", "label": "Outline each column", "default": true },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Colour scheme",
+      "options": [
+        { "value": "default", "label": "White" },
+        { "value": "alt", "label": "Off-white" },
+        { "value": "brand", "label": "Brand navy" },
+        { "value": "accent", "label": "Forest green" }
+      ],
+      "default": "alt"
+    },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 8, "unit": "px", "label": "Top padding", "default": 96 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 8, "unit": "px", "label": "Bottom padding", "default": 96 }
+  ],
+  "blocks": [
+    {
+      "type": "column",
+      "name": "Column",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Number or symbol",
+          "info": "Shown when no image is set."
+        },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "The nose" },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Scottish juniper first, then heather and a resinous note of Scots pine.</p>"
+        },
+        { "type": "text", "id": "link_label", "label": "Link label" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Multi-column",
+      "blocks": [
+        {
+          "type": "column",
+          "settings": {
+            "number": "01",
+            "heading": "The nose",
+            "text": "<p>Scottish juniper first, then heather and a resinous note of Scots pine.</p>"
+          }
+        },
+        {
+          "type": "column",
+          "settings": {
+            "number": "02",
+            "heading": "The palate",
+            "text": "<p>Rhubarb and bramble leaf over crab apple, closing on toasted oats.</p>"
+          }
+        },
+        {
+          "type": "column",
+          "settings": {
+            "number": "03",
+            "heading": "The serve",
+            "text": "<p>A generous measure, plenty of ice, a light tonic and a sprig of heather.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

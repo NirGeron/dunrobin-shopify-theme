@@ -1,0 +1,43 @@
+<div class="page-width section-padding" style="--padding-top:80px;--padding-bottom:96px">
+  <div class="collection-toolbar">
+    <h1 class="h2" style="margin:0">{{ 'customer.order.title' | t: name: order.name }}</h1>
+    <a href="{{ routes.account_url }}" class="link-arrow">{{ 'customer.account.return' | t }}</a>
+  </div>
+
+  <p style="color:var(--text-muted)">{{ 'customer.order.date' | t: date: order.created_at | date: format: 'date' }}</p>
+
+  <table class="cart-page__table" style="margin-top:3.2rem">
+    <thead>
+      <tr>
+        <th style="text-align:left;padding:1rem 0;border-bottom:1px solid var(--border)">{{ 'customer.order.product' | t }}</th>
+        <th style="text-align:right;padding:1rem 0;border-bottom:1px solid var(--border)">{{ 'customer.order.quantity' | t }}</th>
+        <th style="text-align:right;padding:1rem 0;border-bottom:1px solid var(--border)">{{ 'customer.order.total' | t }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for line_item in order.line_items -%}
+        <tr>
+          <td style="padding:1.4rem 0;border-bottom:1px solid var(--border)">
+            {{ line_item.title }}
+          </td>
+          <td style="padding:1.4rem 0;border-bottom:1px solid var(--border);text-align:right">{{ line_item.quantity }}</td>
+          <td style="padding:1.4rem 0;border-bottom:1px solid var(--border);text-align:right">{{ line_item.final_line_price | money }}</td>
+        </tr>
+      {%- endfor -%}
+    </tbody>
+  </table>
+
+  <div style="max-width:32rem;margin-left:auto;margin-top:3.2rem">
+    <div class="cart__totals"><span>{{ 'customer.order.subtotal' | t }}</span><span>{{ order.subtotal_price | money }}</span></div>
+    <div class="cart__totals"><span>{{ 'customer.order.shipping' | t }}</span><span>{{ order.shipping_price | money }}</span></div>
+    <div class="cart__totals"><span>{{ 'customer.order.tax' | t }}</span><span>{{ order.tax_price | money }}</span></div>
+    <div class="cart__totals">
+      <span class="cart__total-final">{{ 'customer.order.total' | t }}</span>
+      <span class="cart__total-final">{{ order.total_price | money }}</span>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{ "name": "Order", "tag": "section", "settings": [] }
+{% endschema %}

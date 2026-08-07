@@ -1,0 +1,98 @@
+{%- if cart.item_count == 0 -%}
+  <div class="cart-empty">
+    <p class="h4">{{ 'sections.cart.empty' | t }}</p>
+    <a class="button" href="{{ routes.all_products_collection_url }}">
+      {{ 'general.continue_shopping' | t }}
+    </a>
+  </div>
+{%- else -%}
+  <div class="cart-items">
+    {%- for item in cart.items -%}
+      <div class="cart-item" data-cart-item data-line="{{ forloop.index }}">
+        <a href="{{ item.url }}" class="cart-item__image" tabindex="-1" aria-hidden="true">
+          {%- if item.image -%}
+            <img
+              src="{{ item.image | image_url: width: 200 }}"
+              alt="{{ item.image.alt | escape }}"
+              width="80"
+              height="{{ 80 | divided_by: item.image.aspect_ratio | round }}"
+              loading="lazy"
+            >
+          {%- endif -%}
+        </a>
+
+        <div class="cart-item__details">
+          <div class="cart-item__title">
+            <a href="{{ item.url }}">{{ item.product.title | escape }}</a>
+          </div>
+
+          {%- unless item.product.has_only_default_variant -%}
+            <div class="cart-item__variant">{{ item.variant.title }}</div>
+          {%- endunless -%}
+
+          {%- if item.selling_plan_allocation -%}
+            <div class="cart-item__variant">{{ item.selling_plan_allocation.selling_plan.name }}</div>
+          {%- endif -%}
+
+          {%- for property in item.properties -%}
+            {%- unless property.last == blank or property.first startswith '_' -%}
+              <div class="cart-item__variant">{{ property.first }}: {{ property.last }}</div>
+            {%- endunless -%}
+          {%- endfor -%}
+
+          {%- if item.line_level_discount_allocations.size > 0 -%}
+            {%- for allocation in item.line_level_discount_allocations -%}
+              <div class="cart-item__variant">
+                {{ allocation.discount_application.title }} (&minus;{{ allocation.amount | money }})
+              </div>
+            {%- endfor -%}
+          {%- endif -%}
+
+          <div class="cart-item__footer">
+            <div class="product-form__quantity" style="margin:0">
+              <button
+                type="button"
+                class="quantity__button"
+                data-quantity-change="{{ forloop.index }}"
+                data-quantity-delta="-1"
+                aria-label="{{ 'products.product.quantity.decrease' | t: product: item.product.title | escape }}"
+              >
+                &minus;
+              </button>
+              <input
+                class="quantity__input"
+                type="number"
+                min="0"
+                value="{{ item.quantity }}"
+                data-quantity-input="{{ forloop.index }}"
+                aria-label="{{ 'products.product.quantity.label' | t }}"
+              >
+              <button
+                type="button"
+                class="quantity__button"
+                data-quantity-change="{{ forloop.index }}"
+                data-quantity-delta="1"
+                aria-label="{{ 'products.product.quantity.increase' | t: product: item.product.title | escape }}"
+              >
+                +
+              </button>
+            </div>
+
+            <div class="cart-item__price">
+              {%- if item.original_line_price != item.final_line_price -%}
+                <s style="opacity:.6">{{ item.original_line_price | money }}</s>
+                {{ item.final_line_price | money }}
+              {%- else -%}
+                {{ item.original_line_price | money }}
+              {%- endif -%}
+            </div>
+          </div>
+
+          <button type="button" class="cart-item__remove" data-cart-remove="{{ forloop.index }}">
+            {{ 'sections.cart.remove' | t }}
+          </button>
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+{%- endif -%}

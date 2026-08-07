@@ -1,0 +1,96 @@
+<div
+  class="scheme--{{ section.settings.color_scheme }} section-padding"
+  style="--padding-top:{{ section.settings.padding_top }}px;--padding-bottom:{{ section.settings.padding_bottom }}px"
+>
+  <div class="page-width">
+    <div class="newsletter reveal">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="eyebrow {% if section.settings.color_scheme == 'brand' or section.settings.color_scheme == 'accent' %}eyebrow--light{% endif %}">
+          {{ section.settings.eyebrow }}
+        </p>
+      {%- endif -%}
+
+      {%- if section.settings.heading != blank -%}
+        <h2 class="h2">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+
+      {%- if section.settings.text != blank -%}
+        <div class="rte">{{ section.settings.text }}</div>
+      {%- endif -%}
+
+      {%- form 'customer', class: 'newsletter__form' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <div class="field">
+          <label class="visually-hidden" for="NewsletterEmail-{{ section.id }}">
+            {{ 'newsletter.label' | t }}
+          </label>
+          <input
+            class="field__input"
+            type="email"
+            name="contact[email]"
+            id="NewsletterEmail-{{ section.id }}"
+            placeholder="{{ 'newsletter.label' | t }}"
+            autocomplete="email"
+            required
+          >
+        </div>
+        <button
+          type="submit"
+          class="button {% if section.settings.color_scheme == 'brand' or section.settings.color_scheme == 'accent' %}button--light{% endif %}"
+        >
+          {{ section.settings.button_label | default: 'Subscribe' }}
+        </button>
+
+        {%- if form.posted_successfully? -%}
+          <p class="form__message form__message--success" style="width:100%">{{ 'newsletter.success' | t }}</p>
+        {%- endif -%}
+        {%- if form.errors -%}
+          <p class="form__message form__message--error" style="width:100%">{{ form.errors.messages.email }}</p>
+        {%- endif -%}
+      {%- endform -%}
+
+      {%- if section.settings.disclaimer != blank -%}
+        <div class="rte" style="margin-top:2rem;font-size:1.2rem;opacity:.7">{{ section.settings.disclaimer }}</div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow label", "default": "The Dispatch" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Word from the distillery" },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Batch releases, tastings at the castle and the occasional recipe. No more than once a month.</p>"
+    },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Subscribe" },
+    {
+      "type": "richtext",
+      "id": "disclaimer",
+      "label": "Small print",
+      "default": "<p>You must be of legal drinking age to subscribe. Unsubscribe at any time.</p>"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Colour scheme",
+      "options": [
+        { "value": "default", "label": "White" },
+        { "value": "alt", "label": "Off-white" },
+        { "value": "brand", "label": "Brand navy" },
+        { "value": "accent", "label": "Forest green" }
+      ],
+      "default": "alt"
+    },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 8, "unit": "px", "label": "Top padding", "default": 96 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 8, "unit": "px", "label": "Bottom padding", "default": 96 }
+  ],
+  "presets": [{ "name": "Newsletter" }]
+}
+{% endschema %}
