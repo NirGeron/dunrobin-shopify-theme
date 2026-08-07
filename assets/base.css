@@ -468,16 +468,53 @@ textarea.field__input {
   top: 0;
 }
 
+/* Three tracks with matching outer columns, so the middle track sits dead
+   centre in the header regardless of how wide the logo or the icons are.
+   Columns are assigned explicitly because the nav is display:none on mobile,
+   and implicit placement would otherwise shuffle the icons into its cell. */
 .header {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 2rem;
   min-height: 8rem;
 }
 
-.header--center {
-  grid-template-columns: 1fr auto 1fr;
+.header__logo-wrapper {
+  grid-column: 1;
+  justify-self: start;
+}
+
+.header > .header__nav {
+  grid-column: 2;
+}
+
+.header__icons {
+  grid-column: 3;
+  justify-self: end;
+}
+
+/* Centred variant: menu splits either side of the logo, icons ride along
+   with the second half so the logo stays on the true centre line. */
+.header--center .header__nav--start {
+  grid-column: 1;
+}
+
+.header--center .header__logo-wrapper {
+  grid-column: 2;
+  justify-self: center;
+}
+
+.header__end {
+  grid-column: 3;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 2rem;
+}
+
+.header__end .header__nav {
+  justify-content: flex-end;
 }
 
 .header__logo {
@@ -507,11 +544,12 @@ textarea.field__input {
   .header__nav {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 3.2rem;
   }
 
-  .header--center .header__nav {
-    justify-content: center;
+  .header--center .header__nav--start {
+    justify-content: flex-start;
   }
 }
 

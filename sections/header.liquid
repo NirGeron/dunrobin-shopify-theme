@@ -2,9 +2,9 @@
   <div class="page-width">
     <header class="header {% if section.settings.layout == 'center' %}header--center{% endif %}">
       {%- if section.settings.layout == 'center' -%}
-        <div class="header__nav" role="navigation">
+        <nav class="header__nav header__nav--start" role="navigation">
           {% render 'header-menu', menu: section.settings.menu, limit: 3 %}
-        </div>
+        </nav>
       {%- endif -%}
 
       <div class="header__logo-wrapper">
@@ -32,9 +32,10 @@
       </div>
 
       {%- if section.settings.layout == 'center' -%}
-        <div class="header__nav" role="navigation">
-          {% render 'header-menu', menu: section.settings.menu, offset: 3 %}
-        </div>
+        <div class="header__end">
+          <nav class="header__nav" role="navigation">
+            {% render 'header-menu', menu: section.settings.menu, offset: 3 %}
+          </nav>
       {%- else -%}
         <nav class="header__nav" role="navigation">
           {% render 'header-menu', menu: section.settings.menu %}
@@ -77,6 +78,9 @@
           </span>
         </a>
       </div>
+      {%- if section.settings.layout == 'center' -%}
+        </div>
+      {%- endif -%}
     </header>
   </div>
 </div>
