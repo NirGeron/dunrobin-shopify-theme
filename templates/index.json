@@ -36,7 +36,9 @@
       "settings": {
         "height": "medium",
         "caption": "",
-        "fit_mobile": true
+        "fit_mobile": true,
+        "show_seal": true,
+        "seal_size": 30
       }
     },
     "expression": {

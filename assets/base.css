@@ -1354,15 +1354,19 @@ textarea.field__input {
    Pattern divider
    -------------------------------------------------------------------------- */
 
+/* The motif keeps its aspect ratio and simply repeats more times on wider
+   screens, so the strip reads the same at 390px and at 1440px. */
 .pattern-divider {
   position: relative;
   overflow: hidden;
   background-color: var(--brand);
+  background-repeat: repeat-x;
+  background-position: left center;
+  background-size: auto 100%;
 }
 
-.pattern-divider__image {
-  width: 100%;
-  object-fit: cover;
+.pattern-divider--white {
+  background-color: #fff;
 }
 
 /* CSS fallback pattern when no image is chosen: the arch-and-square motif. */
@@ -1866,6 +1870,24 @@ textarea.field__input {
   background: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent);
   color: #fff;
   text-align: center;
+}
+
+/* Seal lockup centred over the image — the Sans Peur wildcat. */
+.image-banner__seal {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.image-banner__seal img {
+  width: var(--seal-size, 30%);
+  height: auto;
+  max-width: 42rem;
+  min-width: 12rem;
+  object-fit: contain;
 }
 
 /* --------------------------------------------------------------------------
@@ -2450,6 +2472,14 @@ textarea.field__input {
    -------------------------------------------------------------------------- */
 
 @media screen and (max-width: 749px) {
+  /* The hero band is 20% shorter on a phone — 10% off the top and 10% off the
+     bottom. The image is object-fit: cover and centred, so it simply crops in
+     from both edges rather than rescaling. */
+  .hero--small { min-height: 38.4rem; }
+  .hero--medium { min-height: 49.6rem; }
+  .hero--large { min-height: 62.4rem; }
+  .hero--full { min-height: 80svh; }
+
   /* Dispatches become a swipeable rail. The negative margin lets cards bleed
      to the screen edge while the first one still lines up with the page grid. */
   .dispatch-grid--carousel {

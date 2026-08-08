@@ -66,10 +66,10 @@
           </a>
         {%- endif -%}
 
+        {%- comment -%} Goes straight to the cart page — no drawer. {%- endcomment -%}
         <a
           href="{{ routes.cart_url }}"
           class="header__icon header__cart"
-          data-cart-open
           aria-label="{{ 'sections.cart.title' | t }}"
         >
           {% render 'icon', name: 'cart' %}
