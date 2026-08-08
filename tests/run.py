@@ -238,6 +238,11 @@ def test_structure():
     check('cart drawer: page-only markup is stripped on refresh',
           "classList.remove('cart-items--page')" in js and '.cart-items__header' in js,
           'the cart page column layout would leak into the drawer')
+    # If the cart page cannot render its lines, grafting only the footer shows
+    # "your bag is empty" above a real subtotal. That must count as a failure.
+    check('cart drawer: a missing item list is treated as a failed refresh',
+          "if (!newItems) throw" in js,
+          'the drawer would contradict itself instead of falling back')
 
     # The age checkbox, when present, must gate only the cart page's own button.
     check('age gate is scoped to the cart page',

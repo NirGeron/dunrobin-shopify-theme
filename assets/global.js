@@ -251,7 +251,13 @@
         var newItems = doc.querySelector('.cart-items') || doc.querySelector('.cart-empty');
         var newFooter = doc.getElementById('CartFooterForm');
 
-        if (body && newItems) {
+        // If the cart page could not render its lines — a Liquid error in the
+        // items snippet, say — grafting only the footer would leave the drawer
+        // claiming the bag is empty above a non-zero subtotal. Treat a missing
+        // list as a failed refresh so the catch below takes over.
+        if (!newItems) throw new Error('cart markup missing');
+
+        if (body) {
           // The markup arrives dressed for the cart page. Strip the page-only
           // parts so the drawer keeps its own compact layout.
           newItems.classList.remove('cart-items--page');
