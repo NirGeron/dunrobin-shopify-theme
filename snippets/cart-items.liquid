@@ -53,8 +53,14 @@
             <div class="cart-item__variant">{{ item.selling_plan_allocation.selling_plan.name }}</div>
           {%- endif -%}
 
+          {%- comment -%}
+            Properties whose name begins with an underscore are private and are
+            not shown. Liquid has no startswith operator, so slice the first
+            character off instead.
+          {%- endcomment -%}
           {%- for property in item.properties -%}
-            {%- unless property.last == blank or property.first startswith '_' -%}
+            {%- assign property_prefix = property.first | slice: 0 -%}
+            {%- unless property.last == blank or property_prefix == '_' -%}
               <div class="cart-item__variant">{{ property.first }}: {{ property.last }}</div>
             {%- endunless -%}
           {%- endfor -%}

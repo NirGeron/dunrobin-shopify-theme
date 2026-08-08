@@ -185,6 +185,17 @@ def test_structure():
             for k in re.findall(r"'([a-z0-9_]+(?:\.[a-z0-9_]+)+)'\s*\|\s*t\b", src):
                 check(f'{label}: translation "{k}"', has_key(k))
 
+            # Shopify Liquid only knows ==, !=, >, <, >=, <=, and, or, contains.
+            # Anything else in a conditional throws a syntax error at render
+            # time, which no amount of schema checking would catch.
+            bad_ops = []
+            for tag in re.findall(r'\{%-?\s*(?:if|elsif|unless)\b(.*?)-?%\}', src, re.S):
+                for bad in ('startswith', 'endswith', 'includes', '&&', '||', '!=='):
+                    if bad in tag:
+                        bad_ops.append(f'{bad} in "{" ".join(tag.split())[:60]}"')
+            check(f'{label}: conditionals use only Liquid operators',
+                  not bad_ops, '; '.join(bad_ops))
+
     # Every <img> in Liquid must declare width and height, or the page shifts
     # as images load. Placeholder SVGs and app blocks are exempt.
     for sub in ('sections', 'snippets', 'layout'):
@@ -219,11 +230,16 @@ def test_structure():
     check('cart drawer: refresh has a fallback to the cart page',
           'window.location.href = routes.cart_url' in js,
           'a failed refresh must not strand the shopper in an empty drawer')
-    check('cart drawer: checkout is never inherited disabled',
-          'b.disabled = false' in js,
-          'the cart page gates checkout behind its age checkbox; the drawer must not inherit that')
+    # The drawer rebuilds from the cart page's markup, so it must not inherit
+    # that page's checkout button — it links to the cart page instead.
+    check('cart drawer: checkout becomes a link to the cart page',
+          "b.replaceWith(link)" in js and "link.href = routes.cart_url" in js,
+          'the drawer must not submit the cart page\'s checkout button')
+    check('cart drawer: page-only markup is stripped on refresh',
+          "classList.remove('cart-items--page')" in js and '.cart-items__header' in js,
+          'the cart page column layout would leak into the drawer')
 
-    # The age checkbox must gate only the cart page's own button.
+    # The age checkbox, when present, must gate only the cart page's own button.
     check('age gate is scoped to the cart page',
           ".cart-page" in js and "scope.querySelector('button[name=\"checkout\"]')" in js)
 
@@ -340,15 +356,22 @@ window.addEventListener('load', function () {
       if (closeBtn) { closeBtn.click(); out.drawerCloses = !mob.classList.contains('is-open'); }
     }
 
-    // Cart age confirmation gates checkout.
+    // Cart age confirmation gates checkout, when the merchant has it switched
+    // on. It is a theme setting, so its absence is a valid configuration.
     var box = document.querySelector('[data-age-confirm]');
     var checkout = document.querySelector('button[name="checkout"]');
-    if (box && checkout) {
-      out.checkoutBlockedInitially = checkout.disabled === true;
-      box.checked = true; box.dispatchEvent(new Event('change', { bubbles: true }));
-      out.checkoutEnabledAfterTick = checkout.disabled === false;
-      box.checked = false; box.dispatchEvent(new Event('change', { bubbles: true }));
-      out.checkoutReblocked = checkout.disabled === true;
+    if (checkout) {
+      out.hasAgeConfirm = !!box;
+      if (box) {
+        out.checkoutBlockedInitially = checkout.disabled === true;
+        box.checked = true; box.dispatchEvent(new Event('change', { bubbles: true }));
+        out.checkoutEnabledAfterTick = checkout.disabled === false;
+        box.checked = false; box.dispatchEvent(new Event('change', { bubbles: true }));
+        out.checkoutReblocked = checkout.disabled === true;
+      } else {
+        // Nothing to confirm, so nothing may block the shopper from paying.
+        out.checkoutReachable = checkout.disabled === false;
+      }
     }
 
     var rail = document.querySelector('.dispatch-grid--carousel');
@@ -597,12 +620,17 @@ def test_render():
                           f'nav {d["navCentre"]} vs header {d["headerCentre"]}')
 
             if page == 'cart.html':
-                check(f'{tag}: checkout blocked before age confirmation',
-                      d.get('checkoutBlockedInitially') is True)
-                check(f'{tag}: checkout enabled after confirming',
-                      d.get('checkoutEnabledAfterTick') is True)
-                check(f'{tag}: checkout re-blocked when unticked',
-                      d.get('checkoutReblocked') is True)
+                if d.get('hasAgeConfirm'):
+                    check(f'{tag}: checkout blocked before age confirmation',
+                          d.get('checkoutBlockedInitially') is True)
+                    check(f'{tag}: checkout enabled after confirming',
+                          d.get('checkoutEnabledAfterTick') is True)
+                    check(f'{tag}: checkout re-blocked when unticked',
+                          d.get('checkoutReblocked') is True)
+                else:
+                    check(f'{tag}: checkout is reachable with no age confirmation',
+                          d.get('checkoutReachable') is True,
+                          'nothing gates the button, so it must not be disabled')
 
 
 # ---------------------------------------------------------------------------

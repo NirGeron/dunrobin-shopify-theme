@@ -1677,6 +1677,25 @@ textarea.field__input {
   white-space: nowrap;
 }
 
+/* The details column has to be allowed to shrink, or the stepper and remove
+   button set a floor that pushes the row wider than the screen. */
+.cart-item__details {
+  min-width: 0;
+}
+
+/* Too narrow for a third column: the total sits under the details instead. */
+@media screen and (max-width: 749px) {
+  .cart-item {
+    grid-template-columns: 8rem 1fr;
+  }
+
+  .cart-item__price {
+    grid-column: 2;
+    text-align: left;
+    margin-top: 0.8rem;
+  }
+}
+
 .cart-item__image {
   background: var(--bg-alt);
 }
