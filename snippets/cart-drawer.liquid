@@ -21,7 +21,7 @@
     {%- endcomment -%}
     <div class="cart-drawer__footer" id="CartDrawerFooter" {% if cart.item_count == 0 %}hidden{% endif %}>
       {%- if cart.item_count > 0 -%}
-        {% render 'cart-footer', cart: cart %}
+        {% render 'cart-footer', cart: cart, context: 'drawer' %}
       {%- endif -%}
     </div>
   </div>

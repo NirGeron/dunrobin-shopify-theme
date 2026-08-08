@@ -48,6 +48,7 @@
   "products": {
     "product": {
       "add_to_cart": "Add to bag",
+      "added": "Added to bag",
       "sold_out": "Sold out",
       "unavailable": "Unavailable",
       "on_sale": "Sale",
@@ -77,7 +78,14 @@
       "note": "Add a note to your order",
       "subtotal": "Subtotal",
       "taxes_and_shipping_at_checkout": "Taxes and shipping calculated at checkout. All orders require an adult signature on delivery.",
-      "checkout": "Checkout"
+      "checkout": "Checkout",
+      "each": "each",
+      "remove_item": "Remove {{ product }} from your bag",
+      "headings": {
+        "product": "Product",
+        "quantity": "Quantity",
+        "total": "Total"
+      }
     },
     "featured_collection": {
       "view_all": "View all"

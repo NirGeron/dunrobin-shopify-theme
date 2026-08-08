@@ -66,10 +66,14 @@
           </a>
         {%- endif -%}
 
-        {%- comment -%} Goes straight to the cart page — no drawer. {%- endcomment -%}
+        {%- comment -%}
+          Opens the cart drawer when there is one; the href is the fallback so
+          the icon still works without JavaScript, and when the cart is a page.
+        {%- endcomment -%}
         <a
           href="{{ routes.cart_url }}"
           class="header__icon header__cart"
+          data-cart-open
           aria-label="{{ 'sections.cart.title' | t }}"
         >
           {% render 'icon', name: 'cart' %}

@@ -28,7 +28,17 @@
 
   <p class="cart__tax-note">{{ 'sections.cart.taxes_and_shipping_at_checkout' | t }}</p>
 
-  <button type="submit" name="checkout" class="button button--full">
-    {{ 'sections.cart.checkout' | t }}
-  </button>
+  {%- comment -%}
+    The drawer is a preview, so its button leads to the cart page. Only the
+    cart page itself submits to checkout.
+  {%- endcomment -%}
+  {%- if context == 'drawer' -%}
+    <a class="button button--full" href="{{ routes.cart_url }}">
+      {{ 'sections.cart.checkout' | t }}
+    </a>
+  {%- else -%}
+    <button type="submit" name="checkout" class="button button--full">
+      {{ 'sections.cart.checkout' | t }}
+    </button>
+  {%- endif -%}
 </form>

@@ -6,7 +6,26 @@
     </a>
   </div>
 {%- else -%}
-  <div class="cart-items">
+  {%- liquid
+    assign is_page = false
+    if context == 'page'
+      assign is_page = true
+    endif
+  -%}
+
+  <div class="cart-items {% if is_page %}cart-items--page{% endif %}">
+    {%- if is_page -%}
+      {%- comment -%}
+        Column headings so the quantity and total columns are labelled rather
+        than left to be inferred. Hidden on mobile, where the row stacks.
+      {%- endcomment -%}
+      <div class="cart-items__header" aria-hidden="true">
+        <span>{{ 'sections.cart.headings.product' | t }}</span>
+        <span>{{ 'sections.cart.headings.quantity' | t }}</span>
+        <span>{{ 'sections.cart.headings.total' | t }}</span>
+      </div>
+    {%- endif -%}
+
     {%- for item in cart.items -%}
       <div class="cart-item" data-cart-item data-line="{{ forloop.index }}">
         <a href="{{ item.url }}" class="cart-item__image" tabindex="-1" aria-hidden="true">
@@ -48,6 +67,9 @@
             {%- endfor -%}
           {%- endif -%}
 
+          {%- comment -%} What one of them costs, so the line total adds up visibly. {%- endcomment -%}
+          <div class="cart-item__unit">{{ item.original_price | money }} {{ 'sections.cart.each' | t }}</div>
+
           <div class="cart-item__footer">
             <div class="product-form__quantity" style="margin:0">
               <button
@@ -78,19 +100,25 @@
               </button>
             </div>
 
-            <div class="cart-item__price">
-              {%- if item.original_line_price != item.final_line_price -%}
-                <s style="opacity:.6">{{ item.original_line_price | money }}</s>
-                {{ item.final_line_price | money }}
-              {%- else -%}
-                {{ item.original_line_price | money }}
-              {%- endif -%}
-            </div>
+            <button
+              type="button"
+              class="cart-item__remove"
+              data-cart-remove="{{ forloop.index }}"
+              aria-label="{{ 'sections.cart.remove_item' | t: product: item.product.title | escape }}"
+            >
+              {% render 'icon', name: 'trash' %}
+              <span class="cart-item__remove-label">{{ 'sections.cart.remove' | t }}</span>
+            </button>
           </div>
+        </div>
 
-          <button type="button" class="cart-item__remove" data-cart-remove="{{ forloop.index }}">
-            {{ 'sections.cart.remove' | t }}
-          </button>
+        <div class="cart-item__price">
+          {%- if item.original_line_price != item.final_line_price -%}
+            <s style="opacity:.6">{{ item.original_line_price | money }}</s>
+            {{ item.final_line_price | money }}
+          {%- else -%}
+            {{ item.original_line_price | money }}
+          {%- endif -%}
         </div>
       </div>
     {%- endfor -%}

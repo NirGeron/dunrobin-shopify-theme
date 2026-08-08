@@ -57,7 +57,7 @@
             </div>
           {%- endif -%}
 
-          {% render 'cart-footer', cart: cart %}
+          {% render 'cart-footer', cart: cart, context: 'page' %}
 
           {%- if section.settings.trust_text != blank -%}
             <p class="cart-checkout-note">{{ section.settings.trust_text }}</p>

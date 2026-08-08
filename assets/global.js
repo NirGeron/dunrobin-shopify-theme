@@ -252,6 +252,12 @@
         var newFooter = doc.getElementById('CartFooterForm');
 
         if (body && newItems) {
+          // The markup arrives dressed for the cart page. Strip the page-only
+          // parts so the drawer keeps its own compact layout.
+          newItems.classList.remove('cart-items--page');
+          var heading = newItems.querySelector('.cart-items__header');
+          if (heading) heading.remove();
+
           body.innerHTML = '';
           body.appendChild(newItems);
         }
@@ -259,10 +265,15 @@
         if (footer) {
           footer.innerHTML = '';
           if (newFooter) {
-            // The cart page gates checkout behind its age checkbox; the drawer
-            // has no such checkbox, so never inherit a disabled button.
+            // The page submits straight to checkout behind its age checkbox.
+            // The drawer has no checkbox, so it sends the shopper to the cart
+            // page to tick it rather than inheriting that button.
             newFooter.querySelectorAll('button[name="checkout"]').forEach(function (b) {
-              b.disabled = false;
+              var link = document.createElement('a');
+              link.className = b.className;
+              link.href = routes.cart_url || '/cart';
+              link.textContent = b.textContent.trim();
+              b.replaceWith(link);
             });
             footer.appendChild(newFooter);
             footer.hidden = false;
@@ -341,7 +352,9 @@
 
     document.addEventListener('submit', function (e) {
       var form = e.target.closest('[data-product-form]');
-      if (!form || !cartDrawer) return;
+      // Adding is always done in the background, drawer or no drawer. Letting
+      // the form post natively would send the visitor off to the cart page.
+      if (!form) return;
 
       e.preventDefault();
 
@@ -365,8 +378,7 @@
             if (label) label.textContent = data.description || data.message;
             return;
           }
-          if (label) label.textContent = original;
-          return fetch(routes.cart_url || '/cart.js')
+          return fetch('/cart.js')
             .then(function (r) {
               return r.json();
             })
@@ -374,7 +386,16 @@
               updateCartCount(cart.item_count);
               return refreshCartDrawer();
             })
-            .then(openCart);
+            .then(function () {
+              if (openCart()) return;
+              // No drawer to confirm with, so the button says so instead and
+              // settles back to its own label.
+              if (!label) return;
+              label.textContent = label.getAttribute('data-added-label') || 'Added';
+              setTimeout(function () {
+                label.textContent = original;
+              }, 2000);
+            });
         })
         .catch(function () {
           form.submit();

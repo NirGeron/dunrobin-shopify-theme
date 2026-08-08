@@ -1664,10 +1664,17 @@ textarea.field__input {
 
 .cart-item {
   display: grid;
-  grid-template-columns: 8rem 1fr;
+  /* Image, details, then the line total held to the right of the row. */
+  grid-template-columns: 8rem 1fr auto;
   gap: 1.6rem;
   padding: 1.6rem 0;
   border-bottom: 1px solid var(--border);
+  align-items: start;
+}
+
+.cart-item__price {
+  text-align: right;
+  white-space: nowrap;
 }
 
 .cart-item__image {
@@ -1696,15 +1703,77 @@ textarea.field__input {
   margin-top: 1rem;
 }
 
+.cart-item__unit {
+  font-size: 1.3rem;
+  color: var(--text-muted);
+}
+
 .cart-item__remove {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
   border: 0;
   background: none;
   padding: 0.6rem 0;
   min-height: 2.4rem;
   font-size: 1.2rem;
   color: var(--text-muted);
-  text-decoration: underline;
   cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.cart-item__remove svg {
+  width: 1.8rem;
+  height: 1.8rem;
+}
+
+.cart-item__remove:hover {
+  color: var(--brand);
+}
+
+.cart-item__remove-label {
+  text-decoration: underline;
+}
+
+/* --------------------------------------------------------------------------
+   Cart page list — product, quantity and total as labelled columns
+   -------------------------------------------------------------------------- */
+
+.cart-items__header {
+  display: none;
+}
+
+.cart-items--page .cart-item__price {
+  font-size: 1.6rem;
+}
+
+@media screen and (min-width: 750px) {
+  .cart-items__header {
+    display: grid;
+    grid-template-columns: 10rem 1fr 12rem;
+    gap: 2rem;
+    padding-bottom: 1.2rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 1.2rem;
+    letter-spacing: var(--label-tracking);
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* One label per column, each sitting over what it describes: the product
+     over the image, the quantity over the stepper, the total on the right. */
+  .cart-items__header > :last-child { text-align: right; }
+
+  .cart-items--page .cart-item {
+    grid-template-columns: 10rem 1fr 12rem;
+    gap: 2rem;
+    padding: 2.4rem 0;
+    align-items: start;
+  }
+
+  .cart-items--page .cart-item__price {
+    text-align: right;
+  }
 }
 
 .cart__totals {

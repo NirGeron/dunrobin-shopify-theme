@@ -248,7 +248,7 @@
                     data-add-to-cart
                     {% unless current_variant.available %}disabled{% endunless %}
                   >
-                    <span data-add-to-cart-text>
+                    <span data-add-to-cart-text data-added-label="{{ 'products.product.added' | t }}">
                       {%- if current_variant == null -%}
                         {{ 'products.product.unavailable' | t }}
                       {%- elsif current_variant.available -%}
