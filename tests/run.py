@@ -360,15 +360,26 @@ window.addEventListener('load', function () {
       out.railSnaps = cs.scrollSnapType.indexOf('x') !== -1;
     }
 
-    var fit = document.querySelector('.image-banner--fit-mobile');
+    var fit = document.querySelector('.image-banner--fit-mobile, .image-banner--fit');
     if (fit) {
       var img = fit.querySelector('img');
       out.bannerFit = img ? getComputedStyle(img).objectFit : null;
-      // Uncropped means the rendered box keeps the file's aspect ratio.
+      out.bannerTrimmed = fit.classList.contains('image-banner--fit');
+
       if (img && img.naturalWidth) {
         var br = img.getBoundingClientRect();
-        out.bannerAspectDrift = Math.abs(
-          (br.width / br.height) - (img.naturalWidth / img.naturalHeight));
+        var natural = img.naturalWidth / img.naturalHeight;
+
+        if (out.bannerTrimmed) {
+          // "Whole image, trimmed": cover scales the file to the box width, so
+          // nothing is lost off the sides and the overflow is the intended
+          // slice off the top and bottom. Measure how much that slice is.
+          var scale = br.width / img.naturalWidth;
+          out.bannerCropFraction = 1 - (br.height / (img.naturalHeight * scale));
+        } else {
+          // Uncropped means the rendered box keeps the file's aspect ratio.
+          out.bannerAspectDrift = Math.abs((br.width / br.height) - natural);
+        }
       }
     }
 
@@ -554,11 +565,20 @@ def test_render():
                           'rail is not horizontally scrollable on mobile')
                     check(f'{tag}: carousel snaps', d.get('railSnaps') is True)
                 if 'bannerFit' in d:
-                    check(f'{tag}: banner image not cropped', d['bannerFit'] == 'contain',
-                          f'object-fit is {d["bannerFit"]}')
-                    check(f'{tag}: banner keeps its aspect ratio',
-                          d.get('bannerAspectDrift', 9) < 0.05,
-                          f'drift {d.get("bannerAspectDrift")}')
+                    if d.get('bannerTrimmed'):
+                        # The banner shows the whole picture across the full
+                        # width, with a deliberate slice off the top and bottom.
+                        check(f'{tag}: banner fills the width', d['bannerFit'] == 'cover',
+                              f'object-fit is {d["bannerFit"]}')
+                        crop = d.get('bannerCropFraction', 9)
+                        check(f'{tag}: banner trims 10% off the top and bottom',
+                              abs(crop - 0.2) < 0.02, f'crops {crop:.3f} of the height')
+                    else:
+                        check(f'{tag}: banner image not cropped', d['bannerFit'] == 'contain',
+                              f'object-fit is {d["bannerFit"]}')
+                        check(f'{tag}: banner keeps its aspect ratio',
+                              d.get('bannerAspectDrift', 9) < 0.05,
+                              f'drift {d.get("bannerAspectDrift")}')
                 check(f'{tag}: desktop nav hidden', d['navDisplay'] == 'none', d['navDisplay'])
                 check(f'{tag}: menu toggle visible', d['toggleDisplay'] != 'none')
                 check(f'{tag}: drawer opens', d.get('drawerOpens') is True)

@@ -178,6 +178,15 @@ a {
   padding-bottom: var(--padding-bottom, 6.4rem);
 }
 
+/* Section padding is authored for a desktop canvas. Left as-is on a phone, two
+   stacked sections can put 200px of dead space between them, so scale it back. */
+@media screen and (max-width: 749px) {
+  .section-padding {
+    padding-top: calc(var(--padding-top, 6.4rem) * 0.6);
+    padding-bottom: calc(var(--padding-bottom, 6.4rem) * 0.6);
+  }
+}
+
 .text-center { text-align: center; }
 .text-left { text-align: left; }
 
@@ -1070,9 +1079,130 @@ textarea.field__input {
   }
 }
 
+/* On a phone the gallery is a swipeable rail rather than a tall stack, so the
+   buy button stays within reach. Same negative-margin trick as the dispatches
+   carousel: cards bleed to the screen edge, the first still meets the grid. */
+@media screen and (max-width: 749px) {
+  /* Grid items default to min-width:auto, which would let the rail push the
+     page wider instead of scrolling. */
+  .product__media-wrapper {
+    min-width: 0;
+  }
+
+  .product__media-list {
+    min-width: 0;
+    grid-auto-flow: column;
+    grid-auto-columns: 82vw;
+    grid-template-columns: none;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline-start: 2rem;
+    margin-inline: -2rem;
+    padding-inline: 2rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .product__media-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .product__media-list > li {
+    scroll-snap-align: start;
+  }
+}
+
 .product__media img {
   width: 100%;
   height: auto;
+}
+
+/* --------------------------------------------------------------------------
+   Product gallery — one large preview with a thumbnail rail
+   -------------------------------------------------------------------------- */
+
+.product-gallery {
+  display: grid;
+  gap: 1.2rem;
+  min-width: 0;
+}
+
+.product-gallery__stage {
+  min-width: 0;
+  background: var(--bg-alt);
+}
+
+.product-gallery__slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-gallery__thumbs {
+  display: flex;
+  gap: 1.2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+
+.product-gallery__thumbs::-webkit-scrollbar {
+  display: none;
+}
+
+.product-gallery__thumb {
+  display: block;
+  width: 7.2rem;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: var(--bg-alt);
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.product-gallery__thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.product-gallery__thumb:hover {
+  border-color: var(--text-muted);
+}
+
+.product-gallery__thumb.is-active {
+  border-color: var(--brand);
+}
+
+.product-gallery__thumb:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
+/* Thumbnails sit beside the preview once there is room for them. */
+@media screen and (min-width: 750px) {
+  .product-gallery {
+    grid-template-columns: minmax(0, 1fr) 8.4rem;
+    align-items: start;
+  }
+
+  .product-gallery__thumbs {
+    flex-direction: column;
+    overflow-x: visible;
+    overflow-y: auto;
+    max-height: 100%;
+  }
+
+  .product-gallery__thumb {
+    width: 8.4rem;
+  }
 }
 
 .product__title {
@@ -1861,6 +1991,14 @@ textarea.field__input {
 .image-banner--large { height: 78vh; min-height: 48rem; }
 .image-banner--auto { height: auto; }
 
+/* Whole image across the full width, with a slice taken off top and bottom.
+   The ratio already accounts for the trim, so this holds at every width. */
+.image-banner--fit {
+  height: auto;
+  min-height: 0;
+  aspect-ratio: var(--banner-ratio, 16 / 9);
+}
+
 .image-banner__caption {
   position: absolute;
   left: 0;
@@ -2507,12 +2645,14 @@ textarea.field__input {
   }
 
   /* Narrative images show whole on a phone rather than being cropped to a band. */
-  .image-banner--fit-mobile {
+  /* The "Whole image" height already fits the picture and keeps its trim, so
+     it opts out of the contain-on-mobile treatment. */
+  .image-banner--fit-mobile:not(.image-banner--fit) {
     height: auto;
     min-height: 0;
   }
 
-  .image-banner--fit-mobile img {
+  .image-banner--fit-mobile:not(.image-banner--fit) img {
     height: auto;
     object-fit: contain;
   }

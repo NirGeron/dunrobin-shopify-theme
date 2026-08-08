@@ -1,4 +1,29 @@
-<div class="image-banner image-banner--{{ section.settings.height }} {% if section.settings.fit_mobile %}image-banner--fit-mobile{% endif %}">
+{%- liquid
+  comment
+    "Whole image" shows the picture at full width and trims a slice off the top
+    and bottom. The box is given the image's own ratio divided by how much of
+    its height survives the trim, so object-fit: cover crops exactly that much
+    and nothing is lost off the sides.
+  endcomment
+  assign banner_ratio = ''
+
+  if section.settings.height == 'fit'
+    if section.settings.image != blank
+      assign source_ratio = section.settings.image.aspect_ratio
+    else
+      assign source_ratio = 1.4532
+    endif
+
+    assign trim = section.settings.vertical_trim | times: 2
+    assign visible = 100.0 | minus: trim
+    assign banner_ratio = source_ratio | times: 100.0 | divided_by: visible
+  endif
+-%}
+
+<div
+  class="image-banner image-banner--{{ section.settings.height }} {% if section.settings.fit_mobile %}image-banner--fit-mobile{% endif %}"
+  {% if banner_ratio != '' %}style="--banner-ratio: {{ banner_ratio }}"{% endif %}
+>
   {%- if section.settings.image != blank -%}
     <img
       src="{{ section.settings.image | image_url: width: 2400 }}"
@@ -60,9 +85,21 @@
         { "value": "small", "label": "Small" },
         { "value": "medium", "label": "Medium" },
         { "value": "large", "label": "Large" },
+        { "value": "fit", "label": "Whole image, trimmed top and bottom" },
         { "value": "auto", "label": "Full image height" }
       ],
       "default": "medium"
+    },
+    {
+      "type": "range",
+      "id": "vertical_trim",
+      "label": "Trim off the top and bottom",
+      "min": 0,
+      "max": 25,
+      "step": 1,
+      "unit": "%",
+      "default": 10,
+      "info": "Only used by the \"Whole image\" height. Taken off each edge."
     },
     {
       "type": "checkbox",

@@ -6,35 +6,102 @@
   <div class="page-width">
     <div class="product">
       <div class="product__media-wrapper">
-        <ul class="product__media-list {% if section.settings.media_layout == 'grid' %}product__media-list--grid{% endif %}" role="list">
-          {%- if product.media.size > 0 -%}
-            {%- for media in product.media -%}
-              <li class="product__media media media--{{ section.settings.media_ratio }}">
-                {%- if media.media_type == 'image' -%}
-                  <img
-                    src="{{ media | image_url: width: 1600 }}"
-                    srcset="
-                      {{ media | image_url: width: 600 }} 600w,
-                      {{ media | image_url: width: 1000 }} 1000w,
-                      {{ media | image_url: width: 1600 }} 1600w
-                    "
-                    sizes="(min-width: 990px) 55vw, 100vw"
-                    alt="{{ media.alt | escape }}"
-                    width="{{ media.width }}"
-                    height="{{ media.height }}"
-                    {% if forloop.first %}fetchpriority="high"{% else %}loading="lazy"{% endif %}
+        {%- if section.settings.media_layout == 'gallery' -%}
+          {%- comment -%}
+            One large preview with a thumbnail rail. Every image is rendered into
+            the stage and all but the active one hidden, so switching is instant
+            and needs no second request. Without JS the first image still shows.
+          {%- endcomment -%}
+          <product-gallery class="product-gallery">
+            <div class="product-gallery__stage">
+              {%- if product.media.size > 0 -%}
+                {%- for media in product.media -%}
+                  <div
+                    class="product-gallery__slide media media--{{ section.settings.media_ratio }}"
+                    data-gallery-slide="{{ media.id }}"
+                    {% unless forloop.first %}hidden{% endunless %}
                   >
-                {%- else -%}
-                  {{ media | media_tag: image_size: '1600x', autoplay: false, loop: false, controls: true }}
-                {%- endif -%}
+                    {%- if media.media_type == 'image' -%}
+                      <img
+                        src="{{ media | image_url: width: 1600 }}"
+                        srcset="
+                          {{ media | image_url: width: 600 }} 600w,
+                          {{ media | image_url: width: 1000 }} 1000w,
+                          {{ media | image_url: width: 1600 }} 1600w
+                        "
+                        sizes="(min-width: 990px) 45vw, 100vw"
+                        alt="{{ media.alt | escape }}"
+                        width="{{ media.width }}"
+                        height="{{ media.height }}"
+                        {% if forloop.first %}fetchpriority="high"{% else %}loading="lazy"{% endif %}
+                      >
+                    {%- else -%}
+                      {{ media | media_tag: image_size: '1600x', autoplay: false, loop: false, controls: true }}
+                    {%- endif -%}
+                  </div>
+                {%- endfor -%}
+              {%- else -%}
+                <div class="product-gallery__slide media media--{{ section.settings.media_ratio }}">
+                  {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                </div>
+              {%- endif -%}
+            </div>
+
+            {%- if product.media.size > 1 -%}
+              <ul class="product-gallery__thumbs" role="list">
+                {%- for media in product.media -%}
+                  <li>
+                    <button
+                      type="button"
+                      class="product-gallery__thumb{% if forloop.first %} is-active{% endif %}"
+                      data-gallery-thumb="{{ media.id }}"
+                      aria-label="{{ 'products.product.media.gallery_thumbnail' | t: index: forloop.index }}"
+                      aria-current="{% if forloop.first %}true{% else %}false{% endif %}"
+                    >
+                      <img
+                        src="{{ media.preview_image | image_url: width: 320 }}"
+                        alt="{{ media.alt | escape }}"
+                        width="{{ media.preview_image.width }}"
+                        height="{{ media.preview_image.height }}"
+                        loading="lazy"
+                      >
+                    </button>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+          </product-gallery>
+        {%- else -%}
+          <ul class="product__media-list {% if section.settings.media_layout == 'grid' %}product__media-list--grid{% endif %}" role="list">
+            {%- if product.media.size > 0 -%}
+              {%- for media in product.media -%}
+                <li class="product__media media media--{{ section.settings.media_ratio }}">
+                  {%- if media.media_type == 'image' -%}
+                    <img
+                      src="{{ media | image_url: width: 1600 }}"
+                      srcset="
+                        {{ media | image_url: width: 600 }} 600w,
+                        {{ media | image_url: width: 1000 }} 1000w,
+                        {{ media | image_url: width: 1600 }} 1600w
+                      "
+                      sizes="(min-width: 990px) 55vw, 100vw"
+                      alt="{{ media.alt | escape }}"
+                      width="{{ media.width }}"
+                      height="{{ media.height }}"
+                      {% if forloop.first %}fetchpriority="high"{% else %}loading="lazy"{% endif %}
+                    >
+                  {%- else -%}
+                    {{ media | media_tag: image_size: '1600x', autoplay: false, loop: false, controls: true }}
+                  {%- endif -%}
+                </li>
+              {%- endfor -%}
+            {%- else -%}
+              <li class="product__media media media--{{ section.settings.media_ratio }}">
+                {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
               </li>
-            {%- endfor -%}
-          {%- else -%}
-            <li class="product__media media media--{{ section.settings.media_ratio }}">
-              {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
-            </li>
-          {%- endif -%}
-        </ul>
+            {%- endif -%}
+          </ul>
+        {%- endif -%}
       </div>
 
       <div class="product__info {% if section.settings.sticky_info %}product__info--sticky{% endif %}">
@@ -278,10 +345,11 @@
       "id": "media_layout",
       "label": "Media layout",
       "options": [
+        { "value": "gallery", "label": "Large preview with thumbnails" },
         { "value": "stacked", "label": "Stacked" },
         { "value": "grid", "label": "Grid (first image full width)" }
       ],
-      "default": "grid"
+      "default": "gallery"
     },
     {
       "type": "select",

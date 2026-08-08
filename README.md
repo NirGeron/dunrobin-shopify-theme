@@ -69,9 +69,17 @@ made in the theme editor are committed back to the branch.
 
 ## Age verification
 
-On by default, configured under **Theme settings → Age verification**. The visitor's
-choice is stored in `localStorage`, and the gate is suppressed inside the theme editor
-so it does not block previewing.
+On by default, configured under **Theme settings → Age verification**. It asks once
+per browsing session — the confirmation is kept in `sessionStorage`, so a visitor
+returning in a fresh session is asked again. Switch to **Once per device** in the
+settings to use `localStorage` instead.
+
+Declining swaps the panel for an apology, counts down, and then sends the visitor to
+the **Decline redirects to** URL (Google by default). The heading, message, delay and
+destination are all theme settings. Without JavaScript the decline button is a plain
+link and goes straight there.
+
+The gate is suppressed inside the theme editor so it does not block previewing.
 
 ## Legal
 

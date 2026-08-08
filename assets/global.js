@@ -164,6 +164,50 @@
       },
       gate
     );
+
+    // Declining swaps in an apology and then leaves, rather than jumping away
+    // the instant the visitor clicks.
+    on(
+      '[data-age-gate-decline]',
+      'click',
+      function (e, link) {
+        var ask = gate.querySelector('[data-age-gate-ask]');
+        var farewell = gate.querySelector('[data-age-gate-farewell]');
+        if (!farewell) return; // no panel rendered — let the link do its job
+
+        e.preventDefault();
+
+        if (ask) ask.hidden = true;
+        farewell.hidden = false;
+
+        var remaining = parseInt(farewell.getAttribute('data-delay'), 10);
+        if (isNaN(remaining) || remaining < 1) remaining = 5;
+
+        var note = farewell.querySelector('[data-age-gate-countdown]');
+
+        function paint() {
+          if (!note) return;
+          var template =
+            remaining === 1
+              ? note.getAttribute('data-singular')
+              : note.getAttribute('data-plural');
+          if (template) note.textContent = template.replace('__COUNT__', remaining);
+        }
+
+        paint();
+
+        var timer = setInterval(function () {
+          remaining -= 1;
+          if (remaining > 0) {
+            paint();
+            return;
+          }
+          clearInterval(timer);
+          window.location.href = link.href;
+        }, 1000);
+      },
+      gate
+    );
   }
 
   /* ---------------------------------------------------------------------
@@ -458,8 +502,33 @@
     });
   }
 
+  /* ---------------------------------------------------------------------
+     Product gallery — thumbnails swap the large preview
+     --------------------------------------------------------------------- */
+  function initGallery() {
+    on('[data-gallery-thumb]', 'click', function (e, thumb) {
+      e.preventDefault();
+
+      var gallery = thumb.closest('product-gallery');
+      if (!gallery) return;
+
+      var id = thumb.dataset.galleryThumb;
+
+      gallery.querySelectorAll('[data-gallery-slide]').forEach(function (slide) {
+        slide.hidden = slide.dataset.gallerySlide !== id;
+      });
+
+      gallery.querySelectorAll('[data-gallery-thumb]').forEach(function (el) {
+        var active = el === thumb;
+        el.classList.toggle('is-active', active);
+        el.setAttribute('aria-current', active ? 'true' : 'false');
+      });
+    });
+  }
+
   function init() {
     initReveal();
+    initGallery();
     initMobileNav();
     initAgeGate();
     initCart();

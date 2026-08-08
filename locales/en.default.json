@@ -27,6 +27,12 @@
     "password_page": {
       "password": "Password",
       "enter": "Enter"
+    },
+    "age_gate": {
+      "redirecting": {
+        "one": "Taking you away in {{ count }} second.",
+        "other": "Taking you away in {{ count }} seconds."
+      }
     }
   },
   "accessibility": {
@@ -53,6 +59,9 @@
         "label": "Quantity",
         "increase": "Increase quantity for {{ product }}",
         "decrease": "Decrease quantity for {{ product }}"
+      },
+      "media": {
+        "gallery_thumbnail": "Show image {{ index }}"
       }
     }
   },

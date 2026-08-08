@@ -336,10 +336,36 @@
         "default": "Please enjoy responsibly."
       },
       {
+        "type": "header",
+        "content": "If the visitor is under 18"
+      },
+      {
+        "type": "text",
+        "id": "age_gate_decline_heading",
+        "label": "Message heading",
+        "default": "We are sorry"
+      },
+      {
+        "type": "richtext",
+        "id": "age_gate_decline_text",
+        "label": "Message",
+        "default": "<p>You need to be 18 or over to visit Dunrobin Highland Distillery. You will be taken somewhere else in a moment.</p>"
+      },
+      {
         "type": "url",
         "id": "age_gate_decline_url",
         "label": "Decline redirects to",
-        "default": "https://www.drinkaware.co.uk/"
+        "default": "https://www.google.com/"
+      },
+      {
+        "type": "range",
+        "id": "age_gate_decline_delay",
+        "label": "Wait before redirecting",
+        "min": 2,
+        "max": 15,
+        "step": 1,
+        "unit": "s",
+        "default": 5
       }
     ]
   },

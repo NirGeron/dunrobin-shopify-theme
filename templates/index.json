@@ -34,7 +34,8 @@
     "stills": {
       "type": "image-banner",
       "settings": {
-        "height": "medium",
+        "height": "fit",
+        "vertical_trim": 10,
         "caption": "",
         "fit_mobile": true,
         "show_seal": true,

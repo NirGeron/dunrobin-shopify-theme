@@ -74,7 +74,7 @@
         "details"
       ],
       "settings": {
-        "media_layout": "grid",
+        "media_layout": "gallery",
         "media_ratio": "adapt",
         "sticky_info": true,
         "padding_top": 64,

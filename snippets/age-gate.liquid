@@ -27,7 +27,7 @@
     {%- endif -%}
   </div>
 
-  <div class="age-gate__panel">
+  <div class="age-gate__panel" data-age-gate-ask>
     {%- if gate_logo != blank -%}
       <img
         class="age-gate__logo"
@@ -50,10 +50,15 @@
       <button type="button" class="button" data-age-gate-accept>
         {{ settings.age_gate_accept }}
       </button>
+      {%- comment -%}
+        A link, so it still works without JS. With JS it shows the farewell
+        panel first and follows the same href once the delay is up.
+      {%- endcomment -%}
       <a
         class="button button--secondary"
-        href="{{ settings.age_gate_decline_url | default: 'https://www.drinkaware.co.uk/' }}"
+        href="{{ settings.age_gate_decline_url | default: 'https://www.google.com/' }}"
         rel="noopener"
+        data-age-gate-decline
       >
         {{ settings.age_gate_decline }}
       </a>
@@ -62,5 +67,30 @@
     {%- if settings.age_gate_note != blank -%}
       <p class="age-gate__note">{{ settings.age_gate_note }}</p>
     {%- endif -%}
+  </div>
+
+  <div
+    class="age-gate__panel age-gate__panel--farewell"
+    data-age-gate-farewell
+    data-delay="{{ settings.age_gate_decline_delay | default: 5 }}"
+    hidden
+  >
+    <h2 class="age-gate__heading h3">
+      {{ settings.age_gate_decline_heading | default: 'We are sorry' }}
+    </h2>
+
+    {%- if settings.age_gate_decline_text != blank -%}
+      <div class="age-gate__text rte">{{ settings.age_gate_decline_text }}</div>
+    {%- endif -%}
+
+    {%- comment -%} __COUNT__ is swapped for the remaining seconds each tick. {%- endcomment -%}
+    <p
+      class="age-gate__note"
+      data-age-gate-countdown
+      data-singular="{{ 'general.age_gate.redirecting.one' | t: count: '__COUNT__' | escape }}"
+      data-plural="{{ 'general.age_gate.redirecting.other' | t: count: '__COUNT__' | escape }}"
+      role="status"
+      aria-live="polite"
+    ></p>
   </div>
 </div>
