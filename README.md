@@ -36,7 +36,7 @@ templates/    JSON templates — the section order for each page type
 ## Sections a merchant can add
 
 Hero banner · Rich text · Image with text · Featured product · Featured collection ·
-Collection list · Multi-column · Quote · Pattern divider · Newsletter ·
+Collection list · Multi-column · Quote · Pattern divider · Google reviews · Newsletter ·
 Collapsible content · Video · Contact form · Apps
 
 Each has its own settings and, where it makes sense, reorderable blocks. The product
@@ -66,6 +66,18 @@ Derived from the brand guideline deck and the supplied logo files.
 
 Once connected, commits pushed to `main` sync to the theme automatically, and edits
 made in the theme editor are committed back to the branch.
+
+## Google reviews
+
+A carousel styled after Google's own review widget — badge with star rating,
+white cards on a brand-navy background, avatars, "Read more" on long quotes,
+and a "View all reviews" link. It is **static, not live**: Google Maps has no
+public feed a theme can call, so there's nothing to poll. Add the section,
+paste real quotes copied from your Google Business Profile into its review
+blocks, and set **Google listing link** to your Maps place URL — that link
+powers both the badge and "View all reviews", so a shopper can always verify
+the reviews on Google itself. Keep the blocks current by hand as new reviews
+come in.
 
 ## Age verification
 

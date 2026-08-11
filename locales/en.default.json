@@ -89,6 +89,14 @@
     },
     "featured_collection": {
       "view_all": "View all"
+    },
+    "google_reviews": {
+      "previous": "Previous review",
+      "next": "Next review",
+      "read_more": "Read more",
+      "read_less": "Read less",
+      "rating": "Rated {{ rating }} out of 5 stars",
+      "verified": "Verified"
     }
   },
   "collections": {

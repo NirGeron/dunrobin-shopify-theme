@@ -1,0 +1,244 @@
+{%- comment -%}
+  Static, merchant-filled reviews carousel styled after a Google reviews
+  widget. There is no live feed here — Google Maps has no public review API,
+  so a merchant copies real quotes from their Google Business Profile into
+  the blocks below. "View all reviews" links out to the real listing so a
+  shopper can verify the reviews and leave their own.
+{%- endcomment -%}
+
+<div
+  class="scheme--{{ section.settings.color_scheme }} section-padding google-reviews"
+  style="--padding-top:{{ section.settings.padding_top }}px;--padding-bottom:{{ section.settings.padding_bottom }}px"
+>
+  <div class="page-width">
+    <div class="google-reviews__header">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="google-reviews__heading h2">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+
+      <a
+        href="{{ section.settings.google_url | default: '#' }}"
+        class="google-reviews__badge"
+        {% if section.settings.google_url != blank %}target="_blank" rel="noopener"{% endif %}
+      >
+        <span class="google-reviews__badge-label">{{ section.settings.badge_label }}</span>
+        <span class="google-reviews__stars" aria-hidden="true">
+          {%- for i in (1..5) -%}
+            {% render 'icon', name: 'star-filled' %}
+          {%- endfor -%}
+        </span>
+        {% render 'icon', name: 'google' %}
+      </a>
+
+      {%- if section.settings.review_count_label != blank -%}
+        <p class="google-reviews__count">{{ section.settings.review_count_label }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="google-reviews__viewport">
+        <button
+          type="button"
+          class="google-reviews__arrow google-reviews__arrow--prev"
+          data-reviews-prev
+          aria-label="{{ 'sections.google_reviews.previous' | t }}"
+        >
+          {% render 'icon', name: 'arrow-left' %}
+        </button>
+
+        <ul class="google-reviews__rail" role="list" data-reviews-rail>
+          {%- for block in section.blocks -%}
+            <li class="google-reviews__card" data-rating="{{ block.settings.rating }}" {{ block.shopify_attributes }}>
+              <div class="google-reviews__card-head">
+                <span class="google-reviews__avatar" aria-hidden="true">
+                  {%- if block.settings.photo != blank -%}
+                    <img
+                      src="{{ block.settings.photo | image_url: width: 96 }}"
+                      alt=""
+                      width="{{ block.settings.photo.width }}"
+                      height="{{ block.settings.photo.height }}"
+                      loading="lazy"
+                    >
+                  {%- else -%}
+                    <span class="google-reviews__initial">{{ block.settings.name | slice: 0, 1 }}</span>
+                  {%- endif -%}
+                </span>
+                <span class="google-reviews__who">
+                  <span class="google-reviews__name">{{ block.settings.name }}</span>
+                  {%- if block.settings.date_label != blank -%}
+                    <span class="google-reviews__date">{{ block.settings.date_label }}</span>
+                  {%- endif -%}
+                </span>
+                {% render 'icon', name: 'google' %}
+              </div>
+
+              <span class="google-reviews__rating">
+                {%- for i in (1..5) -%}
+                  <span class="google-reviews__star{% if i <= block.settings.rating %} is-filled{% endif %}" aria-hidden="true">
+                    {%- if i <= block.settings.rating -%}
+                      {% render 'icon', name: 'star-filled' %}
+                    {%- else -%}
+                      {% render 'icon', name: 'star' %}
+                    {%- endif -%}
+                  </span>
+                {%- endfor -%}
+                <span class="visually-hidden">{{ 'sections.google_reviews.rating' | t: rating: block.settings.rating }}</span>
+                {%- if block.settings.verified -%}
+                  {% render 'icon', name: 'verified' %}
+                  <span class="visually-hidden">{{ 'sections.google_reviews.verified' | t }}</span>
+                {%- endif -%}
+              </span>
+
+              {%- if block.settings.review != blank -%}
+                <p class="google-reviews__text google-reviews__text--clamped" data-reviews-text>
+                  {{ block.settings.review }}
+                </p>
+                <button
+                  type="button"
+                  class="google-reviews__more"
+                  data-reviews-more
+                  data-more-label="{{ 'sections.google_reviews.read_more' | t }}"
+                  data-less-label="{{ 'sections.google_reviews.read_less' | t }}"
+                >
+                  {{ 'sections.google_reviews.read_more' | t }}
+                </button>
+              {%- endif -%}
+
+              {%- if block.settings.photo_1 != blank or block.settings.photo_2 != blank or block.settings.photo_3 != blank -%}
+                <ul class="google-reviews__photos" role="list">
+                  {%- if block.settings.photo_1 != blank -%}
+                    <li>
+                      <img
+                        src="{{ block.settings.photo_1 | image_url: width: 200 }}"
+                        alt=""
+                        width="{{ block.settings.photo_1.width }}"
+                        height="{{ block.settings.photo_1.height }}"
+                        loading="lazy"
+                      >
+                    </li>
+                  {%- endif -%}
+                  {%- if block.settings.photo_2 != blank -%}
+                    <li>
+                      <img
+                        src="{{ block.settings.photo_2 | image_url: width: 200 }}"
+                        alt=""
+                        width="{{ block.settings.photo_2.width }}"
+                        height="{{ block.settings.photo_2.height }}"
+                        loading="lazy"
+                      >
+                    </li>
+                  {%- endif -%}
+                  {%- if block.settings.photo_3 != blank -%}
+                    <li>
+                      <img
+                        src="{{ block.settings.photo_3 | image_url: width: 200 }}"
+                        alt=""
+                        width="{{ block.settings.photo_3.width }}"
+                        height="{{ block.settings.photo_3.height }}"
+                        loading="lazy"
+                      >
+                    </li>
+                  {%- endif -%}
+                </ul>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+
+        <button
+          type="button"
+          class="google-reviews__arrow google-reviews__arrow--next"
+          data-reviews-next
+          aria-label="{{ 'sections.google_reviews.next' | t }}"
+        >
+          {% render 'icon', name: 'arrow-right' %}
+        </button>
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.google_url != blank -%}
+      <div class="google-reviews__view-all">
+        <a href="{{ section.settings.google_url }}" class="button button--secondary" target="_blank" rel="noopener">
+          {{ section.settings.view_all_label | default: 'View all reviews' }}
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Google reviews",
+  "tag": "section",
+  "class": "shopify-section--full-bleed",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "A carousel of reviews styled after Google's own widget. Google Maps has no public feed, so copy real quotes from your Google Business Profile into the blocks below and keep them current by hand."
+    },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow label", "default": "Reviews" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "What visitors say on Google" },
+    { "type": "header", "content": "Rating badge" },
+    { "type": "text", "id": "badge_label", "label": "Badge label", "default": "Excellent" },
+    { "type": "text", "id": "review_count_label", "label": "Review count text", "default": "Based on 120+ reviews" },
+    {
+      "type": "url",
+      "id": "google_url",
+      "label": "Google listing link",
+      "info": "Used by the badge and the \"View all reviews\" button. Paste your Google Maps place link."
+    },
+    { "type": "text", "id": "view_all_label", "label": "\"View all reviews\" button label", "default": "View all reviews" },
+    { "type": "header", "content": "Appearance" },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Colour scheme",
+      "options": [
+        { "value": "default", "label": "White" },
+        { "value": "alt", "label": "Off-white" },
+        { "value": "brand", "label": "Brand navy" },
+        { "value": "accent", "label": "Forest green" }
+      ],
+      "default": "brand"
+    },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 8, "unit": "px", "label": "Top padding", "default": 96 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 8, "unit": "px", "label": "Bottom padding", "default": 96 }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Reviewer name", "default": "Customer name" },
+        { "type": "image_picker", "id": "photo", "label": "Reviewer photo", "info": "Leave empty to show their initial instead." },
+        { "type": "text", "id": "date_label", "label": "Date text", "default": "a month ago" },
+        { "type": "range", "id": "rating", "min": 1, "max": 5, "step": 1, "label": "Rating", "default": 5 },
+        { "type": "checkbox", "id": "verified", "label": "Show \"verified\" badge", "default": true },
+        {
+          "type": "textarea",
+          "id": "review",
+          "label": "Review text",
+          "default": "Copy the customer's actual words from your Google Business Profile here."
+        },
+        { "type": "header", "content": "Photos" },
+        { "type": "image_picker", "id": "photo_1", "label": "Photo 1" },
+        { "type": "image_picker", "id": "photo_2", "label": "Photo 2" },
+        { "type": "image_picker", "id": "photo_3", "label": "Photo 3" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Google reviews",
+      "blocks": [
+        { "type": "review" },
+        { "type": "review" },
+        { "type": "review" }
+      ]
+    }
+  ]
+}
+{% endschema %}

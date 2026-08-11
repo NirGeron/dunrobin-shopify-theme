@@ -162,6 +162,7 @@ def test_structure():
     snippets = {f[:-7] for f in os.listdir(rel('snippets'))}
     assets = set(os.listdir(rel('assets')))
     locale = json.load(open(rel('locales/en.default.json')))
+    icon_cases = set(re.findall(r"when\s+'([\w-]+)'", open(rel('snippets/icon.liquid')).read()))
 
     def has_key(k):
         cur = locale
@@ -184,6 +185,18 @@ def test_structure():
                 check(f'{label}: asset "{a}"', a in assets)
             for k in re.findall(r"'([a-z0-9_]+(?:\.[a-z0-9_]+)+)'\s*\|\s*t\b", src):
                 check(f'{label}: translation "{k}"', has_key(k))
+
+            # Every rendered icon name must have a matching case in icon.liquid.
+            for name in re.findall(r"render\s+'icon'\s*,\s*name:\s*'([\w-]+)'", src):
+                check(f'{label}: icon "{name}" exists', name in icon_cases)
+
+            # A link that opens a new tab must also cut window.opener access,
+            # or the new page can navigate the shop tab (a reverse tabnabbing risk).
+            for m in re.finditer(r'<a\b[^>]*>', src, re.S):
+                tag = m.group(0)
+                if re.search(r'target=["\']_blank["\']', tag):
+                    check(f'{label}: target="_blank" link has rel="noopener"',
+                          'noopener' in tag, ' '.join(tag.split())[:90])
 
             # Shopify Liquid only knows ==, !=, >, <, >=, <=, and, or, contains.
             # Anything else in a conditional throws a syntax error at render
@@ -261,6 +274,62 @@ def test_structure():
     schema_ids_local = {x['id'] for g in json.load(open(rel('config/settings_schema.json')))
                         for x in g.get('settings', []) if 'id' in x}
     check('age gate: frequency is a theme setting', 'age_gate_frequency' in schema_ids_local)
+
+    # Pattern divider tiles a fixed-height strip; it must not go back to
+    # stretching a single image across the full viewport width, which
+    # squashed the motif differently at every breakpoint.
+    css = open(rel('assets/base.css')).read()
+    m = re.search(r'\.pattern-divider\s*\{([^}]*)\}', css, re.S)
+    check('pattern divider: background tiles horizontally',
+          bool(m) and 'background-repeat' in m.group(1) and 'repeat' in m.group(1),
+          'must tile the motif rather than stretch a single image')
+    check('pattern divider: no leftover stretched-image rule',
+          bool(m) and 'object-fit' not in m.group(1),
+          'object-fit on the divider means it is stretching an <img>, not tiling a background')
+    divider_liquid = open(rel('sections/pattern-divider.liquid')).read()
+    check('pattern divider: renders as a background, not an <img>',
+          '<img' not in divider_liquid)
+
+    # The castle banner on the home page carries the seal by default, per the
+    # README — a merchant edit could flip this without anyone noticing.
+    index_tpl = json.load(open(rel('templates/index.json')))
+    castle_banners = [s for s in index_tpl['sections'].values()
+                       if s['type'] == 'image-banner' and s.get('settings', {}).get('show_seal')]
+    check('home page: the castle banner shows the seal', bool(castle_banners))
+
+    # The cart drawer must be reachable from the header icon and dismissible
+    # by more than one control (overlay click and an explicit close button).
+    header_src = open(rel('sections/header.liquid')).read()
+    check('header: cart icon opens the drawer', 'data-cart-open' in header_src)
+    drawer_src = open(rel('snippets/cart-drawer.liquid')).read()
+    check('cart drawer: overlay and button both close it',
+          drawer_src.count('data-cart-close') >= 2)
+
+    # The gallery's JS wiring must exist wherever the markup expects it.
+    check('product gallery: thumbnail click handler present in global.js',
+          'data-gallery-thumb' in js and 'initGallery' in js)
+
+    # Google reviews: there is no live feed (Google Maps has no public review
+    # API), so the section must give merchants a real link out to the actual
+    # listing rather than pretending to be "live". The section itself stays
+    # in the theme for merchants who want it, but the home page dropped it
+    # in favour of a Shopify App Store reviews app with a real live feed —
+    # so presence on the home page is no longer required, just validity
+    # if/when an instance exists.
+    reviews_liquid = open(rel('sections/google-reviews.liquid')).read()
+    check('google reviews: JS wiring present in global.js',
+          'data-reviews-rail' in js and 'initGoogleReviews' in js)
+    check('google reviews: "read more" toggle only binds once per card',
+          'reviewsBound' in js, 'missing the guard means duplicate click handlers')
+    reviews_sections = [s for s in index_tpl['sections'].values() if s['type'] == 'google-reviews']
+    for s in reviews_sections:
+        url = s.get('settings', {}).get('google_url', '')
+        check('google reviews: home page instance links to a real Google URL',
+              url.startswith('https://maps.app.goo.gl/') or 'google.com' in url,
+              f'got {url!r}')
+        for block in s.get('blocks', {}).values():
+            check(f'google reviews: block "{block["settings"].get("name")}" rating is 1-5',
+                  1 <= block['settings'].get('rating', 0) <= 5)
 
     # Required theme files.
     for required in ('layout/theme.liquid', 'config/settings_schema.json',
@@ -359,6 +428,88 @@ window.addEventListener('load', function () {
       out.drawerOpens = mob.classList.contains('is-open');
       var closeBtn = mob.querySelector('[data-mobile-nav-close]');
       if (closeBtn) { closeBtn.click(); out.drawerCloses = !mob.classList.contains('is-open'); }
+    }
+
+    // Cart drawer opens from the header icon and closes again.
+    var cartOpener = document.querySelector('[data-cart-open]');
+    var cartDrawerEl = document.getElementById('CartDrawer');
+    if (cartOpener && cartDrawerEl) {
+      cartOpener.click();
+      out.cartDrawerOpens = cartDrawerEl.classList.contains('is-open');
+      var cartCloseBtn = cartDrawerEl.querySelector('[data-cart-close]');
+      if (cartCloseBtn) {
+        cartCloseBtn.click();
+        out.cartDrawerCloses = !cartDrawerEl.classList.contains('is-open');
+      }
+    }
+
+    // Product gallery: clicking a thumbnail swaps the active slide.
+    var gallery = document.querySelector('product-gallery');
+    if (gallery) {
+      var thumbs = gallery.querySelectorAll('[data-gallery-thumb]');
+      if (thumbs.length > 1) {
+        thumbs[1].click();
+        var activeId = thumbs[1].getAttribute('data-gallery-thumb');
+        var activeSlide = gallery.querySelector('[data-gallery-slide="' + activeId + '"]');
+        var firstSlide = gallery.querySelector('[data-gallery-slide]');
+        out.gallerySwitchesSlide = !!activeSlide && activeSlide.hidden === false;
+        out.galleryHidesPrevious = firstSlide.hidden === true;
+        out.galleryMarksAriaCurrent = thumbs[1].getAttribute('aria-current') === 'true';
+        out.galleryClearsPreviousAriaCurrent = thumbs[0].getAttribute('aria-current') === 'false';
+      }
+    }
+
+    // Pattern divider tiles a fixed-height strip rather than stretching a
+    // single image, so its height must not vary with viewport width.
+    var divider = document.querySelector('.pattern-divider');
+    if (divider) {
+      out.dividerHeight = divider.getBoundingClientRect().height;
+      out.dividerRepeats = getComputedStyle(divider).backgroundRepeat;
+    }
+
+    // Google reviews: each card's filled stars must match its configured
+    // rating, "read more" must expand and re-collapse a clamped review, and
+    // an overflowing rail must actually scroll when the next arrow is used.
+    var reviewCards = document.querySelectorAll('.google-reviews__card');
+    if (reviewCards.length) {
+      out.reviewStarCounts = Array.prototype.map.call(reviewCards, function (c) {
+        return {
+          configured: parseInt(c.dataset.rating, 10),
+          filled: c.querySelectorAll('.google-reviews__star.is-filled').length
+        };
+      });
+
+      var moreBtn = document.querySelector('[data-reviews-more]:not([hidden])');
+      if (moreBtn) {
+        var moreText = moreBtn.previousElementSibling;
+        var wasClamped = moreText.classList.contains('google-reviews__text--clamped');
+        moreBtn.click();
+        out.reviewsExpandToggles = moreText.classList.contains('google-reviews__text--clamped') !== wasClamped;
+        out.reviewsLabelUpdates = moreBtn.textContent.trim() === moreBtn.dataset.lessLabel;
+        moreBtn.click();
+        out.reviewsCollapsesAgain = moreText.classList.contains('google-reviews__text--clamped') === wasClamped;
+      }
+
+      var reviewsRail = document.querySelector('[data-reviews-rail]');
+      var reviewsNext = document.querySelector('[data-reviews-next]');
+      if (reviewsRail && reviewsNext && reviewsRail.scrollWidth > reviewsRail.clientWidth + 4) {
+        var beforeScroll = reviewsRail.scrollLeft;
+        reviewsNext.click();
+        out.reviewsRailScrolls = reviewsRail.scrollLeft > beforeScroll;
+      }
+    }
+
+    // The castle banner's seal sits centred over the image.
+    var seal = document.querySelector('.image-banner__seal');
+    if (seal) {
+      var sealImg = seal.querySelector('img');
+      var bannerEl = seal.closest('.image-banner');
+      if (sealImg && bannerEl) {
+        var sr = sealImg.getBoundingClientRect();
+        var brct = bannerEl.getBoundingClientRect();
+        out.sealVisible = sr.width > 0 && sr.height > 0;
+        out.sealCentred = Math.abs((sr.left + sr.width / 2) - (brct.left + brct.width / 2));
+      }
     }
 
     // Cart age confirmation gates checkout, when the merchant has it switched
@@ -573,6 +724,43 @@ def test_render():
                 check(f'{tag}: bottle centred in its section',
                       d['bottleOffset'] < 2,
                       f'{d["bottleOffset"]:.1f}px off centre')
+
+            if 'cartDrawerOpens' in d:
+                check(f'{tag}: cart icon opens the drawer', d['cartDrawerOpens'] is True)
+                check(f'{tag}: cart drawer closes', d.get('cartDrawerCloses') is True)
+
+            if 'gallerySwitchesSlide' in d:
+                check(f'{tag}: gallery thumbnail switches the active slide',
+                      d['gallerySwitchesSlide'])
+                check(f'{tag}: gallery hides the previous slide', d['galleryHidesPrevious'])
+                check(f'{tag}: gallery marks the clicked thumbnail aria-current',
+                      d['galleryMarksAriaCurrent'])
+                check(f'{tag}: gallery clears aria-current from the previous thumbnail',
+                      d['galleryClearsPreviousAriaCurrent'])
+
+            if 'dividerHeight' in d:
+                check(f'{tag}: pattern divider holds its configured height',
+                      abs(d['dividerHeight'] - 90) < 1.5,
+                      f'{d["dividerHeight"]}px, expected ~90px')
+                check(f'{tag}: pattern divider tiles instead of stretching',
+                      d['dividerRepeats'] in ('repeat-x', 'repeat'), d['dividerRepeats'])
+
+            if 'reviewStarCounts' in d:
+                mismatches = [r for r in d['reviewStarCounts'] if r['filled'] != r['configured']]
+                check(f'{tag}: filled stars match each review\'s configured rating',
+                      not mismatches, str(mismatches))
+                if 'reviewsExpandToggles' in d:
+                    check(f'{tag}: "read more" expands a clamped review', d['reviewsExpandToggles'])
+                    check(f'{tag}: expanding relabels the button "Read less"', d['reviewsLabelUpdates'])
+                    check(f'{tag}: clicking again collapses it back', d['reviewsCollapsesAgain'])
+                if 'reviewsRailScrolls' in d:
+                    check(f'{tag}: overflowing reviews rail scrolls on next click',
+                          d['reviewsRailScrolls'])
+
+            if 'sealVisible' in d:
+                check(f'{tag}: castle banner seal is visible', d['sealVisible'])
+                check(f'{tag}: castle banner seal centred over the image',
+                      d['sealCentred'] < 2, f'{d["sealCentred"]:.1f}px off centre')
 
             if 'gateFrequency' in d:
                 check(f'{tag}: age gate asks per session', d['gateFrequency'] == 'session',
