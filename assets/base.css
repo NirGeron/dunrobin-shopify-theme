@@ -1350,6 +1350,26 @@ textarea.field__input {
   font-size: calc(2rem * var(--heading-scale));
 }
 
+/* Three columns on a 375px screen leave each cell about 78px of usable
+   width once the side padding is taken out — not enough for a value like
+   "Golspie", which the global overflow-wrap then split mid-word into
+   "Golspi / e". Trimming the side padding and the value size buys the room
+   a normal one-word value needs. break-word still applies as a last resort,
+   so an unusually long value wraps rather than escaping the viewport. */
+@media screen and (max-width: 749px) {
+  .spec-bar__item {
+    padding: 1.6rem 0.8rem;
+  }
+
+  .spec-bar__label {
+    font-size: 1.1rem;
+  }
+
+  .spec-bar__value {
+    font-size: calc(1.7rem * var(--heading-scale));
+  }
+}
+
 /* Accordion — tasting notes, delivery, FAQ */
 .accordion {
   border-top: 1px solid var(--border);
@@ -1478,274 +1498,6 @@ textarea.field__input {
   text-transform: uppercase;
   letter-spacing: var(--label-tracking);
   opacity: 0.7;
-}
-
-/* --------------------------------------------------------------------------
-   Google reviews — static, merchant-filled carousel styled after Google's
-   own review widget. Cards are always white-on-dark regardless of the
-   section's colour scheme, matching the source material.
-   -------------------------------------------------------------------------- */
-
-.google-reviews__header {
-  max-width: 60rem;
-  margin: 0 auto 4rem;
-  text-align: center;
-}
-
-.google-reviews__heading {
-  margin: 0.4rem 0 2.4rem;
-}
-
-.google-reviews__badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.8rem;
-  min-height: 2.4rem;
-  color: inherit;
-  text-decoration: none;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  font-size: 1.3rem;
-}
-
-.google-reviews__stars {
-  display: inline-flex;
-  gap: 0.1rem;
-  color: #f5a623;
-}
-
-.google-reviews__stars svg {
-  width: 1.6rem;
-  height: 1.6rem;
-}
-
-.google-reviews__badge > svg {
-  width: 2.2rem;
-  height: 2.2rem;
-}
-
-.google-reviews__count {
-  margin: 0.8rem 0 0;
-  font-size: 1.3rem;
-  opacity: 0.75;
-}
-
-.google-reviews__viewport {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 1.2rem;
-}
-
-.google-reviews__rail {
-  display: flex;
-  gap: 2rem;
-  min-width: 0;
-  flex: 1;
-  margin: 0;
-  padding: 0.4rem;
-  list-style: none;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-}
-
-.google-reviews__rail::-webkit-scrollbar {
-  display: none;
-}
-
-.google-reviews__card {
-  flex: 0 0 32rem;
-  max-width: calc(100% - 2rem);
-  scroll-snap-align: start;
-  background-color: #fff;
-  color: #1a1a1a;
-  border-radius: 1.2rem;
-  padding: 2.4rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
-}
-
-.google-reviews__card-head {
-  display: flex;
-  align-items: center;
-  gap: 1.2rem;
-}
-
-.google-reviews__avatar {
-  flex-shrink: 0;
-  width: 4.8rem;
-  height: 4.8rem;
-  border-radius: 50%;
-  overflow: hidden;
-  background-color: var(--bg-alt);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-}
-
-.google-reviews__avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.google-reviews__who {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-.google-reviews__name {
-  font-weight: 700;
-}
-
-.google-reviews__date {
-  font-size: 1.2rem;
-  opacity: 0.6;
-}
-
-.google-reviews__card-head > svg {
-  flex-shrink: 0;
-  width: 2rem;
-  height: 2rem;
-}
-
-.google-reviews__rating {
-  display: flex;
-  align-items: center;
-  gap: 0.2rem;
-  margin: 1.2rem 0 0.8rem;
-  color: #f5a623;
-}
-
-.google-reviews__star svg {
-  width: 1.6rem;
-  height: 1.6rem;
-}
-
-.google-reviews__rating > svg {
-  width: 1.8rem;
-  height: 1.8rem;
-  margin-left: 0.4rem;
-}
-
-.google-reviews__text {
-  margin: 0;
-  font-size: 1.5rem;
-  line-height: 1.6;
-}
-
-.google-reviews__text--clamped {
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.google-reviews__more {
-  display: inline-block;
-  margin-top: 0.6rem;
-  padding: 0;
-  border: 0;
-  background: none;
-  font: inherit;
-  color: var(--text-muted);
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.google-reviews__photos {
-  display: flex;
-  gap: 0.8rem;
-  margin: 1.6rem 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.google-reviews__photos img {
-  width: 6.4rem;
-  height: 6.4rem;
-  border-radius: 0.6rem;
-  object-fit: cover;
-}
-
-.google-reviews__arrow {
-  flex-shrink: 0;
-  width: 4rem;
-  height: 4rem;
-  border-radius: 50%;
-  border: 1px solid currentColor;
-  background: transparent;
-  color: inherit;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0.85;
-  cursor: pointer;
-}
-
-.google-reviews__arrow svg {
-  width: 1.8rem;
-  height: 1.8rem;
-}
-
-.google-reviews__arrow:disabled {
-  opacity: 0.25;
-  cursor: default;
-}
-
-.google-reviews__view-all {
-  margin-top: 4rem;
-  text-align: center;
-}
-
-/* Below 750px the prev/next arrows would otherwise squeeze the card down to
-   a sliver (32rem basis fighting two 4rem buttons for a ~340px viewport), so
-   they step aside for a native swipe and the rail bleeds to the screen edges
-   with a peek of the next card to hint there's more to scroll. */
-@media screen and (max-width: 749px) {
-  .google-reviews__header {
-    margin-bottom: 2.8rem;
-  }
-
-  .google-reviews__badge {
-    flex-wrap: wrap;
-    justify-content: center;
-    row-gap: 0.6rem;
-  }
-
-  .google-reviews__arrow {
-    display: none;
-  }
-
-  .google-reviews__rail {
-    margin: 0 -2rem;
-    padding: 0.4rem 2rem 0.8rem;
-    gap: 1.2rem;
-  }
-
-  .google-reviews__card {
-    flex: 0 0 86%;
-    max-width: 86%;
-    padding: 2rem;
-  }
-
-  .google-reviews__avatar {
-    width: 4rem;
-    height: 4rem;
-  }
-
-  .google-reviews__photos img {
-    width: 5.6rem;
-    height: 5.6rem;
-  }
-
-  .google-reviews__view-all {
-    margin-top: 2.8rem;
-  }
 }
 
 /* --------------------------------------------------------------------------
@@ -2022,6 +1774,16 @@ textarea.field__input {
   text-decoration: underline;
 }
 
+/* "Remove" sat at 30px tall — under the 44px a fingertip needs, and it lives
+   right beside the quantity stepper, so a near miss hits the wrong control.
+   The extra height is padding, so the label itself doesn't grow. */
+@media screen and (max-width: 749px) {
+  .cart-item__remove {
+    min-height: 4.4rem;
+    padding: 1rem 0;
+  }
+}
+
 /* --------------------------------------------------------------------------
    Cart page list — product, quantity and total as labelled columns
    -------------------------------------------------------------------------- */
@@ -2119,6 +1881,55 @@ textarea.field__input {
   }
 }
 
+/* On a phone the four blocks stack into one column, so the desktop
+   breathing room turns into roughly a screen and a half of footer before
+   the visitor reaches the bottom. Tightening the frame — outer padding,
+   the gaps between blocks, and the space under each heading — pulls that
+   back without touching the content or shrinking any tap target. */
+@media screen and (max-width: 749px) {
+  /* Contact and the policy links are both short lists, so on a phone they
+     share one row instead of taking a full-width stack each. Everything
+     else — the brand lockup, and the licence block with its paragraph of
+     legal text — keeps the full width, which is what that content wants.
+
+     The pair is selected by relationship rather than by position: the text
+     block immediately before the policy list. That is Contact, and it stays
+     Contact if a merchant adds or reorders blocks around it. Where :has()
+     isn't supported the rule simply doesn't match and both blocks fall back
+     to full width, which is the old layout. */
+  .footer__top {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 3.2rem 2rem;
+    padding: 4.8rem 0 4rem;
+  }
+
+  .footer__block {
+    grid-column: 1 / -1;
+  }
+
+  .footer__block--text:has(+ .footer__block--policies),
+  .footer__block--policies {
+    grid-column: span 1;
+  }
+
+  .footer__block-title {
+    margin-bottom: 1.2rem;
+  }
+
+  .footer__logo {
+    max-width: 19rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .footer__social {
+    margin-top: 1.2rem;
+  }
+
+  .footer__bottom {
+    padding: 2rem 0 2.4rem;
+  }
+}
+
 .footer__block-title {
   margin-bottom: 2rem;
   font-family: var(--font-body);
@@ -2144,6 +1955,29 @@ textarea.field__input {
 }
 
 .footer__list a:hover { opacity: 1; text-decoration: underline; }
+
+/* The policy links were 19px-tall targets stacked 10px apart — accurate
+   tapping territory. Turning each into a block with its own padding gives a
+   44px row while keeping the visible rhythm of the list roughly as it was,
+   since the li margin gives way to the padding. */
+@media screen and (max-width: 749px) {
+  .footer__list li {
+    margin-bottom: 0;
+  }
+
+  .footer__list a {
+    display: block;
+    padding: 1rem 0;
+  }
+
+  /* The footer's prose is addresses, a licence number and policy links —
+     reference material, read once. The body line-height is tuned for
+     running text and is looser than this needs, so pulling it in reclaims
+     height without making a single character smaller. */
+  .footer .rte {
+    line-height: 1.5;
+  }
+}
 
 .footer__logo {
   max-width: 24rem;
@@ -2188,6 +2022,31 @@ textarea.field__input {
 .footer__social a:hover { opacity: 1; }
 
 .footer__social svg { width: 1.8rem; height: 1.8rem; }
+
+/* 40px boxes are 4px short of a comfortable touch target. Nudging them to
+   44px on phones costs nothing visually and matches the header icons.
+   The tel: and mailto: links in the footer's rich-text block are the other
+   half of this: "tap to call" is a real thing a visitor does from a phone,
+   and a 19px line of text is a poor target for it. */
+@media screen and (max-width: 749px) {
+  .footer__social a {
+    width: 4.4rem;
+    height: 4.4rem;
+  }
+
+  /* Padding is tuned against the tightened .rte line-height above, so that
+     tapping to call still lands a full 44px target. inline-block shrink-wraps
+     to the text, so an address longer than the half-width column — which
+     info@dunrobindistillery.com is — would otherwise sit on one line and
+     print straight over the Licence column beside it. */
+  .footer .rte a[href^='tel:'],
+  .footer .rte a[href^='mailto:'] {
+    display: inline-block;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    padding: 1.1rem 0;
+  }
+}
 
 /* --------------------------------------------------------------------------
    Age gate — first-visit confirmation over the brand pattern

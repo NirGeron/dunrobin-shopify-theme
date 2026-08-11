@@ -309,27 +309,18 @@ def test_structure():
     check('product gallery: thumbnail click handler present in global.js',
           'data-gallery-thumb' in js and 'initGallery' in js)
 
-    # Google reviews: there is no live feed (Google Maps has no public review
-    # API), so the section must give merchants a real link out to the actual
-    # listing rather than pretending to be "live". The section itself stays
-    # in the theme for merchants who want it, but the home page dropped it
-    # in favour of a Shopify App Store reviews app with a real live feed —
-    # so presence on the home page is no longer required, just validity
-    # if/when an instance exists.
-    reviews_liquid = open(rel('sections/google-reviews.liquid')).read()
-    check('google reviews: JS wiring present in global.js',
-          'data-reviews-rail' in js and 'initGoogleReviews' in js)
-    check('google reviews: "read more" toggle only binds once per card',
-          'reviewsBound' in js, 'missing the guard means duplicate click handlers')
-    reviews_sections = [s for s in index_tpl['sections'].values() if s['type'] == 'google-reviews']
-    for s in reviews_sections:
-        url = s.get('settings', {}).get('google_url', '')
-        check('google reviews: home page instance links to a real Google URL',
-              url.startswith('https://maps.app.goo.gl/') or 'google.com' in url,
-              f'got {url!r}')
-        for block in s.get('blocks', {}).values():
-            check(f'google reviews: block "{block["settings"].get("name")}" rating is 1-5',
-                  1 <= block['settings'].get('rating', 0) <= 5)
+    # The Google reviews section was removed in favour of a Shopify App Store
+    # reviews app, which has a real live feed. Guard against it creeping back
+    # in piecemeal: a stray rule or string left behind is dead weight, and a
+    # template referencing the section would render nothing at all.
+    check('google reviews: section file is gone',
+          not os.path.exists(rel('sections/google-reviews.liquid')))
+    check('google reviews: no leftover CSS', 'google-reviews' not in css)
+    check('google reviews: no leftover JS',
+          'initGoogleReviews' not in js and 'data-reviews' not in js)
+    check('google reviews: no template still references the section',
+          not any(s['type'] == 'google-reviews'
+                  for s in index_tpl['sections'].values()))
 
     # Required theme files.
     for required in ('layout/theme.liquid', 'config/settings_schema.json',
@@ -465,38 +456,6 @@ window.addEventListener('load', function () {
     if (divider) {
       out.dividerHeight = divider.getBoundingClientRect().height;
       out.dividerRepeats = getComputedStyle(divider).backgroundRepeat;
-    }
-
-    // Google reviews: each card's filled stars must match its configured
-    // rating, "read more" must expand and re-collapse a clamped review, and
-    // an overflowing rail must actually scroll when the next arrow is used.
-    var reviewCards = document.querySelectorAll('.google-reviews__card');
-    if (reviewCards.length) {
-      out.reviewStarCounts = Array.prototype.map.call(reviewCards, function (c) {
-        return {
-          configured: parseInt(c.dataset.rating, 10),
-          filled: c.querySelectorAll('.google-reviews__star.is-filled').length
-        };
-      });
-
-      var moreBtn = document.querySelector('[data-reviews-more]:not([hidden])');
-      if (moreBtn) {
-        var moreText = moreBtn.previousElementSibling;
-        var wasClamped = moreText.classList.contains('google-reviews__text--clamped');
-        moreBtn.click();
-        out.reviewsExpandToggles = moreText.classList.contains('google-reviews__text--clamped') !== wasClamped;
-        out.reviewsLabelUpdates = moreBtn.textContent.trim() === moreBtn.dataset.lessLabel;
-        moreBtn.click();
-        out.reviewsCollapsesAgain = moreText.classList.contains('google-reviews__text--clamped') === wasClamped;
-      }
-
-      var reviewsRail = document.querySelector('[data-reviews-rail]');
-      var reviewsNext = document.querySelector('[data-reviews-next]');
-      if (reviewsRail && reviewsNext && reviewsRail.scrollWidth > reviewsRail.clientWidth + 4) {
-        var beforeScroll = reviewsRail.scrollLeft;
-        reviewsNext.click();
-        out.reviewsRailScrolls = reviewsRail.scrollLeft > beforeScroll;
-      }
     }
 
     // The castle banner's seal sits centred over the image.
@@ -745,17 +704,6 @@ def test_render():
                 check(f'{tag}: pattern divider tiles instead of stretching',
                       d['dividerRepeats'] in ('repeat-x', 'repeat'), d['dividerRepeats'])
 
-            if 'reviewStarCounts' in d:
-                mismatches = [r for r in d['reviewStarCounts'] if r['filled'] != r['configured']]
-                check(f'{tag}: filled stars match each review\'s configured rating',
-                      not mismatches, str(mismatches))
-                if 'reviewsExpandToggles' in d:
-                    check(f'{tag}: "read more" expands a clamped review', d['reviewsExpandToggles'])
-                    check(f'{tag}: expanding relabels the button "Read less"', d['reviewsLabelUpdates'])
-                    check(f'{tag}: clicking again collapses it back', d['reviewsCollapsesAgain'])
-                if 'reviewsRailScrolls' in d:
-                    check(f'{tag}: overflowing reviews rail scrolls on next click',
-                          d['reviewsRailScrolls'])
 
             if 'sealVisible' in d:
                 check(f'{tag}: castle banner seal is visible', d['sealVisible'])

@@ -2,7 +2,7 @@
   <div class="page-width">
     <div class="footer__top">
       {%- for block in section.blocks -%}
-        <div class="footer__block" {{ block.shopify_attributes }}>
+        <div class="footer__block footer__block--{{ block.type }}" {{ block.shopify_attributes }}>
           {%- case block.type -%}
             {%- when 'brand' -%}
               {%- liquid

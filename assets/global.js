@@ -553,63 +553,6 @@
     });
   }
 
-  /* ---------------------------------------------------------------------
-     Google reviews — rail carousel and "read more" truncation
-     --------------------------------------------------------------------- */
-  function initGoogleReviews() {
-    document.querySelectorAll('[data-reviews-rail]').forEach(function (rail) {
-      var viewport = rail.closest('.google-reviews__viewport');
-      if (!viewport) return;
-
-      var prev = viewport.querySelector('[data-reviews-prev]');
-      var next = viewport.querySelector('[data-reviews-next]');
-      var card = rail.querySelector('.google-reviews__card');
-
-      function update() {
-        if (prev) prev.disabled = rail.scrollLeft <= 1;
-        if (next) next.disabled = rail.scrollLeft >= rail.scrollWidth - rail.clientWidth - 1;
-      }
-
-      function scrollByCard(dir) {
-        var amount = (card ? card.getBoundingClientRect().width + 20 : rail.clientWidth) * dir;
-        rail.scrollBy({ left: amount, behavior: 'auto' });
-        update();
-      }
-
-      if (prev) prev.addEventListener('click', function () { scrollByCard(-1); });
-      if (next) next.addEventListener('click', function () { scrollByCard(1); });
-      rail.addEventListener('scroll', update);
-      update();
-    });
-
-    // Long reviews collapse behind a "Read more" toggle. A review that
-    // already fits within the clamp needs no toggle at all. Measured more
-    // than once: web fonts can still be swapping in when this first runs,
-    // and that changes how many lines the clamp actually holds.
-    function setUpReadMore() {
-      document.querySelectorAll('[data-reviews-more]').forEach(function (btn) {
-        if (btn.dataset.reviewsBound) return;
-
-        var text = btn.previousElementSibling;
-        if (!text || !text.hasAttribute('data-reviews-text')) return;
-
-        var overflows = text.scrollHeight > text.clientHeight + 2;
-        btn.hidden = !overflows;
-        if (!overflows) return;
-
-        btn.dataset.reviewsBound = '1';
-        btn.addEventListener('click', function () {
-          var stillClamped = text.classList.toggle('google-reviews__text--clamped');
-          btn.textContent = stillClamped ? btn.dataset.moreLabel : btn.dataset.lessLabel;
-        });
-      });
-    }
-
-    setUpReadMore();
-    if (document.readyState !== 'complete') window.addEventListener('load', setUpReadMore);
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(setUpReadMore);
-  }
-
   function init() {
     initReveal();
     initGallery();
@@ -621,7 +564,6 @@
     initAgeConfirm();
     initAutoSubmit();
     initShare();
-    initGoogleReviews();
   }
 
   if (document.readyState === 'loading') {
