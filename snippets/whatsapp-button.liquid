@@ -1,0 +1,32 @@
+{%- comment -%}
+  Floating WhatsApp button, bottom right of every page.
+
+  The link is built from the phone number rather than stored whole, so a
+  merchant only ever edits the number. url_encode turns the leading "+"
+  into %2B, which is what api.whatsapp.com expects — a bare "+" in a query
+  string is read as a space by some clients and the number fails to match.
+
+  It sits below the cart drawer, mobile nav and age gate in the stacking
+  order (see the z-index scale in base.css), so it never floats over a
+  panel the visitor has opened or over the age gate.
+{%- endcomment -%}
+
+{%- liquid
+  assign wa_phone = settings.whatsapp_phone | strip
+  if settings.whatsapp_enabled and wa_phone != blank
+    assign wa_number = wa_phone | url_encode
+    assign wa_href = 'https://api.whatsapp.com/send/?phone=' | append: wa_number
+  endif
+-%}
+
+{%- if wa_href != blank -%}
+  <a
+    class="whatsapp-float"
+    href="{{ wa_href }}"
+    target="_blank"
+    rel="noopener"
+    aria-label="{{ 'general.whatsapp.label' | t }}"
+  >
+    {% render 'icon', name: 'whatsapp' %}
+  </a>
+{%- endif -%}

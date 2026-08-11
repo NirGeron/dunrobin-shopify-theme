@@ -121,8 +121,14 @@
         "id": "font_heading_transform",
         "label": "Heading capitalisation",
         "options": [
-          { "value": "none", "label": "As typed" },
-          { "value": "uppercase", "label": "UPPERCASE" }
+          {
+            "value": "none",
+            "label": "As typed"
+          },
+          {
+            "value": "uppercase",
+            "label": "UPPERCASE"
+          }
         ],
         "default": "none"
       },
@@ -230,9 +236,18 @@
         "id": "card_image_ratio",
         "label": "Image shape",
         "options": [
-          { "value": "adapt", "label": "Adapt to image" },
-          { "value": "portrait", "label": "Portrait (4:5)" },
-          { "value": "square", "label": "Square" }
+          {
+            "value": "adapt",
+            "label": "Adapt to image"
+          },
+          {
+            "value": "portrait",
+            "label": "Portrait (4:5)"
+          },
+          {
+            "value": "square",
+            "label": "Square"
+          }
         ],
         "default": "portrait"
       },
@@ -247,8 +262,14 @@
         "id": "card_text_alignment",
         "label": "Text alignment",
         "options": [
-          { "value": "left", "label": "Left" },
-          { "value": "center", "label": "Centre" }
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Centre"
+          }
         ],
         "default": "center"
       }
@@ -262,8 +283,14 @@
         "id": "cart_type",
         "label": "Cart type",
         "options": [
-          { "value": "drawer", "label": "Slide-out drawer" },
-          { "value": "page", "label": "Cart page" }
+          {
+            "value": "drawer",
+            "label": "Slide-out drawer"
+          },
+          {
+            "value": "page",
+            "label": "Cart page"
+          }
         ],
         "default": "drawer"
       },
@@ -293,8 +320,14 @@
         "id": "age_gate_frequency",
         "label": "How often to ask",
         "options": [
-          { "value": "session", "label": "Every new browsing session" },
-          { "value": "device", "label": "Once per device" }
+          {
+            "value": "session",
+            "label": "Every new browsing session"
+          },
+          {
+            "value": "device",
+            "label": "Once per device"
+          }
         ],
         "default": "session",
         "info": "Per session uses sessionStorage, so the gate returns whenever the visitor starts a fresh session."
@@ -372,11 +405,53 @@
   {
     "name": "Social media",
     "settings": [
-      { "type": "text", "id": "social_instagram_link", "label": "Instagram" },
-      { "type": "text", "id": "social_facebook_link", "label": "Facebook" },
-      { "type": "text", "id": "social_twitter_link", "label": "X (Twitter)" },
-      { "type": "text", "id": "social_youtube_link", "label": "YouTube" },
-      { "type": "text", "id": "social_tiktok_link", "label": "TikTok" }
+      {
+        "type": "text",
+        "id": "social_instagram_link",
+        "label": "Instagram"
+      },
+      {
+        "type": "text",
+        "id": "social_facebook_link",
+        "label": "Facebook"
+      },
+      {
+        "type": "text",
+        "id": "social_twitter_link",
+        "label": "X (Twitter)"
+      },
+      {
+        "type": "text",
+        "id": "social_youtube_link",
+        "label": "YouTube"
+      },
+      {
+        "type": "text",
+        "id": "social_tiktok_link",
+        "label": "TikTok"
+      }
+    ]
+  },
+  {
+    "name": "WhatsApp button",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "A floating WhatsApp button in the bottom right of every page. Enter the number in full international form, starting with +."
+      },
+      {
+        "type": "checkbox",
+        "id": "whatsapp_enabled",
+        "label": "Show WhatsApp button",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "whatsapp_phone",
+        "label": "WhatsApp number",
+        "default": "+447799887770",
+        "info": "Full international format, e.g. +447799887770. Leave empty to hide the button."
+      }
     ]
   },
   {

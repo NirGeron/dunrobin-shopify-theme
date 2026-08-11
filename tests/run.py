@@ -322,6 +322,44 @@ def test_structure():
           not any(s['type'] == 'google-reviews'
                   for s in index_tpl['sections'].values()))
 
+    # Floating WhatsApp button. The link is assembled from the number rather
+    # than stored whole, so the thing worth pinning down is that the number is
+    # url_encoded — a bare "+" in a query string is read as a space and the
+    # number silently fails to match. It also has to render on every page,
+    # which means being in the layout rather than in a section.
+    wa_src = open(rel('snippets/whatsapp-button.liquid')).read()
+    layout_src = open(rel('layout/theme.liquid')).read()
+    check('whatsapp: rendered from the layout so it appears on every page',
+          "render 'whatsapp-button'" in layout_src)
+    # Match the assign itself, not the whole file — the word "url_encode" also
+    # appears in this snippet's comment explaining why it is there, so a plain
+    # substring check passes even after the filter is deleted from the code.
+    wa_code = re.sub(r'\{%-?\s*comment\s*-?%\}.*?\{%-?\s*endcomment\s*-?%\}', '',
+                     wa_src, flags=re.S)
+    check('whatsapp: number is url_encoded into the link',
+          bool(re.search(r'assign\s+\w+\s*=\s*wa_phone\s*\|\s*url_encode', wa_code)) and
+          'api.whatsapp.com/send/?phone=' in wa_code)
+    check('whatsapp: opens in a new tab without handing over the opener',
+          'target="_blank"' in wa_src and 'rel="noopener"' in wa_src)
+    check('whatsapp: has an accessible label', 'aria-label' in wa_src)
+    check('whatsapp: hidden when disabled or the number is blank',
+          'settings.whatsapp_enabled' in wa_src and 'wa_href != blank' in wa_src)
+    check('whatsapp: icon exists in the icon snippet',
+          "when 'whatsapp'" in open(rel('snippets/icon.liquid')).read())
+
+    # It must sit under the panels rather than punching through them.
+    wa_z = re.search(r'\.whatsapp-float\s*\{[^}]*z-index:\s*(\d+)', css)
+    check('whatsapp: has a z-index', bool(wa_z))
+    if wa_z:
+        wa_z = int(wa_z.group(1))
+        for name, sel in (('cart drawer', r'\.cart-drawer\s*\{'),
+                          ('mobile nav', r'\.mobile-nav\s*\{'),
+                          ('age gate', r'\.age-gate\s*\{')):
+            m = re.search(sel + r'[^}]*z-index:\s*(\d+)', css)
+            if m:
+                check(f'whatsapp: sits below the {name}', wa_z < int(m.group(1)),
+                      f'whatsapp {wa_z} vs {name} {m.group(1)}')
+
     # Required theme files.
     for required in ('layout/theme.liquid', 'config/settings_schema.json',
                      'config/settings_data.json', 'locales/en.default.json',

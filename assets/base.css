@@ -2049,6 +2049,56 @@ textarea.field__input {
 }
 
 /* --------------------------------------------------------------------------
+   Floating WhatsApp button
+   -------------------------------------------------------------------------- */
+
+/* z-index 50 puts it over page content and the header (40) but under the
+   mobile nav (60), cart drawer (70) and age gate (100), so an open panel
+   always covers it rather than the button punching through.
+   The bottom offset adds the iOS safe-area inset, otherwise the button sits
+   under the home indicator on a notched iPhone. */
+.whatsapp-float {
+  position: fixed;
+  right: 1.6rem;
+  bottom: calc(1.6rem + env(safe-area-inset-bottom, 0px));
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 5.6rem;
+  height: 5.6rem;
+  border-radius: 50%;
+  background-color: #25d366;
+  color: #fff;
+  box-shadow: 0 0.2rem 1.2rem rgba(0, 0, 0, 0.28);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.whatsapp-float svg {
+  width: 3.2rem;
+  height: 3.2rem;
+}
+
+.whatsapp-float:hover {
+  transform: scale(1.06);
+  box-shadow: 0 0.4rem 1.6rem rgba(0, 0, 0, 0.34);
+}
+
+@media screen and (min-width: 750px) {
+  .whatsapp-float {
+    right: 2.4rem;
+    bottom: 2.4rem;
+    width: 6rem;
+    height: 6rem;
+  }
+
+  .whatsapp-float svg {
+    width: 3.4rem;
+    height: 3.4rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
    Age gate — first-visit confirmation over the brand pattern
    -------------------------------------------------------------------------- */
 

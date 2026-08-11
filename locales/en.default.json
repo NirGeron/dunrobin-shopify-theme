@@ -33,6 +33,9 @@
         "one": "Taking you away in {{ count }} second.",
         "other": "Taking you away in {{ count }} seconds."
       }
+    },
+    "whatsapp": {
+      "label": "Chat with us on WhatsApp"
     }
   },
   "accessibility": {
