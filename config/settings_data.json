@@ -46,6 +46,8 @@
     "social_twitter_link": "https://x.com/DunrobinGin",
     "social_youtube_link": "",
     "social_tiktok_link": "",
+    "whatsapp_enabled": true,
+    "whatsapp_phone": "+447799887770",
     "age_gate_note": "",
     "age_gate_frequency": "session",
     "content_for_index": [],
