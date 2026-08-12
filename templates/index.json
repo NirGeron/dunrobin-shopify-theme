@@ -40,73 +40,10 @@
         "padding_bottom": 80
       }
     },
-    "1786549912a9f82cd7": {
-      "type": "apps",
-      "blocks": {
-        "google_reviews_repocean_repocean_reviews_carousel_GFyb6z": {
-          "type": "shopify://apps/google-reviews-repocean/blocks/repocean-reviews-carousel/019aa132-98b1-7055-b64e-581f915ade43",
-          "settings": {
-            "section_title": "",
-            "section_title_tag": "h2",
-            "section_title_color": "",
-            "section_description": "",
-            "min_rating": "4",
-            "show_no_text_reviews": "no",
-            "only_with_photos": false,
-            "hide_reviews_with_keywords": "",
-            "max_reviews": 100,
-            "autoplay_style": "slide",
-            "autoplay_speed": 5,
-            "review_line_clamp": 5,
-            "show_headline": true,
-            "show_review_count": false,
-            "show_google_logo": true,
-            "show_review_time": false,
-            "show_verified_icon": true,
-            "show_profile_picture": true,
-            "show_review_photos": true,
-            "show_nav_arrows": true,
-            "reviewer_name_format": "none",
-            "padding_top": 36,
-            "padding_bottom": 36,
-            "cards_per_row_desktop": "0",
-            "card_radius": 20,
-            "background_color": "#F3F3F3",
-            "border_color": "#FFFFFF",
-            "headline_color": "#6B7280",
-            "star_color": "#f5a300",
-            "name_color": "#111111",
-            "time_color": "#6b7280",
-            "text_color": "#1f2937",
-            "arrow_bg_color": "#FFFFFF",
-            "arrow_icon_color": "#111111",
-            "arrow_border_color": "#0000001A",
-            "show_leave_review": false,
-            "leave_btn_label": "Leave a review on Google",
-            "leave_btn_text_color": "#FFFFFF",
-            "leave_btn_bg_color": "#1A73E8",
-            "leave_btn_border_color": "#1A73E866",
-            "leave_btn_radius": 16,
-            "leave_btn_padding_y": 11,
-            "leave_btn_padding_x": 20,
-            "dark_mode": false
-          }
-        }
-      },
-      "block_order": [
-        "google_reviews_repocean_repocean_reviews_carousel_GFyb6z"
-      ],
-      "settings": {
-        "full_width": false,
-        "color_scheme": "default",
-        "padding_top": 0,
-        "padding_bottom": 0
-      }
-    },
     "dispatches": {
       "type": "blog-posts",
       "settings": {
-        "blog": "",
+        "blog": "news",
         "eyebrow": "",
         "heading": "Recent Dispatches",
         "posts_to_show": 3,
@@ -115,18 +52,18 @@
         "stagger": true,
         "image_ratio": "portrait",
         "show_filters": false,
-        "filters_to_show": 4,
+        "filters_to_show": 3,
         "accent_color": "#8a6a3b",
         "show_tag": true,
-        "show_date": false,
+        "show_date": true,
         "show_excerpt": true,
-        "excerpt_words": 40,
+        "excerpt_words": 30,
         "read_more_label": "Read more",
         "show_view_all": false,
         "view_all_label": "View all dispatches",
         "color_scheme": "alt",
-        "padding_top": 96,
-        "padding_bottom": 96
+        "padding_top": 40,
+        "padding_bottom": 32
       }
     },
     "intro": {
@@ -158,6 +95,69 @@
         "caption": "",
         "show_seal": true,
         "seal_size": 30
+      }
+    },
+    "1786549912a9f82cd7": {
+      "type": "apps",
+      "blocks": {
+        "google_reviews_repocean_repocean_reviews_carousel_GFyb6z": {
+          "type": "shopify://apps/google-reviews-repocean/blocks/repocean-reviews-carousel/019aa132-98b1-7055-b64e-581f915ade43",
+          "settings": {
+            "section_title": "",
+            "section_title_tag": "h2",
+            "section_title_color": "",
+            "section_description": "",
+            "min_rating": "4",
+            "show_no_text_reviews": "no",
+            "only_with_photos": false,
+            "hide_reviews_with_keywords": "",
+            "max_reviews": 100,
+            "autoplay_style": "slide",
+            "autoplay_speed": 5,
+            "review_line_clamp": 5,
+            "show_headline": true,
+            "show_review_count": false,
+            "show_google_logo": true,
+            "show_review_time": false,
+            "show_verified_icon": true,
+            "show_profile_picture": true,
+            "show_review_photos": true,
+            "show_nav_arrows": true,
+            "reviewer_name_format": "none",
+            "padding_top": 36,
+            "padding_bottom": 36,
+            "cards_per_row_desktop": "0",
+            "card_radius": 20,
+            "background_color": "#f3f3f3",
+            "border_color": "#ffffff",
+            "headline_color": "#6b7280",
+            "star_color": "#f5a300",
+            "name_color": "#111111",
+            "time_color": "#6b7280",
+            "text_color": "#1f2937",
+            "arrow_bg_color": "#ffffff",
+            "arrow_icon_color": "#111111",
+            "arrow_border_color": "#0000001a",
+            "show_leave_review": false,
+            "leave_btn_label": "Leave a review on Google",
+            "leave_btn_text_color": "#ffffff",
+            "leave_btn_bg_color": "#1a73e8",
+            "leave_btn_border_color": "#1a73e866",
+            "leave_btn_radius": 16,
+            "leave_btn_padding_y": 11,
+            "leave_btn_padding_x": 20,
+            "dark_mode": false
+          }
+        }
+      },
+      "block_order": [
+        "google_reviews_repocean_repocean_reviews_carousel_GFyb6z"
+      ],
+      "settings": {
+        "full_width": false,
+        "color_scheme": "default",
+        "padding_top": 0,
+        "padding_bottom": 0
       }
     },
     "team": {
@@ -217,10 +217,10 @@
   },
   "order": [
     "hero",
-    "1786549912a9f82cd7",
     "dispatches",
     "intro",
     "stills",
+    "1786549912a9f82cd7",
     "team",
     "expression"
   ]
