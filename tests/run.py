@@ -322,6 +322,21 @@ def test_structure():
           not any(s['type'] == 'google-reviews'
                   for s in index_tpl['sections'].values()))
 
+    # A default in settings_schema.json does NOT reach a theme that already
+    # has a settings_data.json — Shopify reads the saved file, and a key that
+    # isn't in it comes back nil. So a feature gated on `if settings.foo`
+    # silently never renders, with nothing in the theme looking wrong. That is
+    # exactly how the WhatsApp button shipped invisible. Image pickers are
+    # excluded: they have no default because the merchant uploads them.
+    schema_defaults = [s['id']
+                       for g in json.load(open(rel('config/settings_schema.json')))
+                       for s in g.get('settings', [])
+                       if s.get('id') and 'default' in s]
+    absent = [i for i in schema_defaults if i not in data['current']]
+    check('settings: every setting with a default is present in settings_data',
+          not absent,
+          f'missing {absent} — a feature gated on these renders nothing')
+
     # Floating WhatsApp button. The link is assembled from the number rather
     # than stored whole, so the thing worth pinning down is that the number is
     # url_encoded — a bare "+" in a query string is read as a space and the
