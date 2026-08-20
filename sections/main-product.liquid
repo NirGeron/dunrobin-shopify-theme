@@ -288,7 +288,7 @@
               </div>
 
             {%- when 'detail_rows' -%}
-              <div style="margin-top:3.2rem;padding-top:2.4rem;border-top:1px solid var(--border)" {{ block.shopify_attributes }}>
+              <div class="detail-rows" {{ block.shopify_attributes }}>
                 {%- for i in (1..4) -%}
                   {%- liquid
                     case i
@@ -426,7 +426,7 @@
           "type": "text",
           "id": "text",
           "label": "Text",
-          "default": "Complimentary UK shipping on orders over £100"
+          "default": "Shipping calculated at checkout · Adult signature required on delivery"
         }
       ]
     },

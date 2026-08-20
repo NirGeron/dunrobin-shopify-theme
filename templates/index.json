@@ -13,13 +13,22 @@
         "text": {
           "type": "text",
           "settings": {
-            "text": "<p>On Scotland's North East coast, forest envelops a castle and meets the sea, spring water gathers in the hills and flows from the sphagnum moss coated hillside down to Golspie Burn. Lush and fragrant, the forest and castle garden meet. Gathering aromatic leaves and roots that reflect earthy and green scents, we shaped our gin to evoke the experience of forest and garden.</p>"
+            "text": "<p>On Scotland's North East coast, forest envelops a castle and meets the sea. From aromatic leaves and roots gathered where the two meet, we shaped our gin to evoke the experience of forest and garden.</p>"
+          }
+        },
+        "buttons": {
+          "type": "buttons",
+          "settings": {
+            "button_label": "Shop the collection",
+            "button_link": "shopify://collections/all",
+            "button_label_2": ""
           }
         }
       },
       "block_order": [
         "heading",
-        "text"
+        "text",
+        "buttons"
       ],
       "settings": {
         "height": "large",
