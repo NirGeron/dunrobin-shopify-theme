@@ -115,6 +115,33 @@
         </li>
       {%- endfor -%}
     </ul>
+
+    <div class="mobile-nav__footer">
+      {%- if settings.social_instagram_link != blank
+        or settings.social_facebook_link != blank
+        or settings.social_twitter_link != blank
+        or settings.social_youtube_link != blank
+        or settings.social_tiktok_link != blank
+      -%}
+        <ul class="footer__social mobile-nav__social">
+          {%- if settings.social_instagram_link != blank -%}
+            <li><a href="{{ settings.social_instagram_link }}" aria-label="Instagram" rel="noopener" target="_blank">{% render 'icon', name: 'instagram' %}</a></li>
+          {%- endif -%}
+          {%- if settings.social_facebook_link != blank -%}
+            <li><a href="{{ settings.social_facebook_link }}" aria-label="Facebook" rel="noopener" target="_blank">{% render 'icon', name: 'facebook' %}</a></li>
+          {%- endif -%}
+          {%- if settings.social_twitter_link != blank -%}
+            <li><a href="{{ settings.social_twitter_link }}" aria-label="X" rel="noopener" target="_blank">{% render 'icon', name: 'twitter' %}</a></li>
+          {%- endif -%}
+          {%- if settings.social_youtube_link != blank -%}
+            <li><a href="{{ settings.social_youtube_link }}" aria-label="YouTube" rel="noopener" target="_blank">{% render 'icon', name: 'youtube' %}</a></li>
+          {%- endif -%}
+          {%- if settings.social_tiktok_link != blank -%}
+            <li><a href="{{ settings.social_tiktok_link }}" aria-label="TikTok" rel="noopener" target="_blank">{% render 'icon', name: 'tiktok' %}</a></li>
+          {%- endif -%}
+        </ul>
+      {%- endif -%}
+    </div>
   </div>
 </div>
 

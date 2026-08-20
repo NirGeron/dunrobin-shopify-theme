@@ -43,7 +43,7 @@
         "tasting": {
           "type": "accordion",
           "settings": {
-            "heading": "Tasting notes",
+            "heading": "Botanicals",
             "content": "<p>Scottish juniper, rhubarb, heather, Scots pine resin, bramble leaf, blaeberry, crab apple and toasted oats.</p>",
             "open": false
           }

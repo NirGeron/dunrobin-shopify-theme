@@ -29,6 +29,10 @@
       return;
     }
 
+    // The margin extends the trigger area a fifth of a screen below the
+    // fold, so content is already fading in as it arrives rather than
+    // appearing late — a fast flick or an anchor jump would otherwise land
+    // on a blank section waiting for its animation.
     var observer = new IntersectionObserver(
       function (entries) {
         entries.forEach(function (entry) {
@@ -38,10 +42,17 @@
           }
         });
       },
-      { threshold: 0.12, rootMargin: '0px 0px -60px 0px' }
+      { threshold: 0.05, rootMargin: '0px 0px 20% 0px' }
     );
 
     items.forEach(function (el) {
+      // Anything the page loads already scrolled past — landing on an
+      // anchor, or a restored scroll position — has had its entrance;
+      // animating it if the visitor scrolls back up would look broken.
+      if (el.getBoundingClientRect().bottom < 0) {
+        el.classList.add('is-visible');
+        return;
+      }
       observer.observe(el);
     });
   }
@@ -53,9 +64,18 @@
     var nav = document.getElementById('MobileNav');
     if (!nav) return;
 
+    // The toggle announces the drawer's state to screen readers; without
+    // this, "Menu, button" gives no clue that pressing it again closes it.
+    function setExpanded(value) {
+      document.querySelectorAll('[data-mobile-nav-open]').forEach(function (btn) {
+        btn.setAttribute('aria-expanded', value ? 'true' : 'false');
+      });
+    }
+
     function open() {
       nav.classList.add('is-open');
       document.body.style.overflow = 'hidden';
+      setExpanded(true);
       var first = nav.querySelector('a, button');
       if (first) first.focus();
     }
@@ -63,6 +83,7 @@
     function close() {
       nav.classList.remove('is-open');
       document.body.style.overflow = '';
+      setExpanded(false);
     }
 
     on('[data-mobile-nav-open]', 'click', open);

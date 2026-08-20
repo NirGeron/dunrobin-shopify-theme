@@ -1,0 +1,8 @@
+{
+  "name": "dunrobin-shopify-theme",
+  "private": true,
+  "description": "Dev tooling only — the theme itself has no build step. Playwright powers the cross-browser render checks in tests/browsers.mjs.",
+  "devDependencies": {
+    "playwright": "1.62.1"
+  }
+}

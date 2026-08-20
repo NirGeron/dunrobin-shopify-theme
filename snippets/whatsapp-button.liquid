@@ -12,8 +12,11 @@
 {%- endcomment -%}
 
 {%- liquid
+  # Not on the cart page: the button sits exactly where the full-width
+  # checkout button ends up while scrolling, and nothing should compete
+  # with checkout for that tap.
   assign wa_phone = settings.whatsapp_phone | strip
-  if settings.whatsapp_enabled and wa_phone != blank
+  if settings.whatsapp_enabled and wa_phone != blank and template.name != 'cart'
     assign wa_number = wa_phone | url_encode
     assign wa_href = 'https://api.whatsapp.com/send/?phone=' | append: wa_number
   endif
