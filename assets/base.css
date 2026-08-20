@@ -648,6 +648,22 @@ textarea.field__input {
 
 .header__icon:hover { color: var(--brand); }
 
+/* On the narrowest phones the equal side tracks let the icon row's
+   min-content crush the logo to a ~50px sliver. Flexible logo track,
+   natural icon track, tighter boxes: the lockup keeps a legible size and
+   every icon stays comfortably above the 24px tap minimum. */
+@media screen and (max-width: 399px) {
+  .header {
+    gap: 1rem;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+  }
+
+  .header__icon {
+    width: 3.6rem;
+    height: 3.6rem;
+  }
+}
+
 .header__icon svg {
   width: 2rem;
   height: 2rem;
@@ -710,6 +726,8 @@ textarea.field__input {
   top: 0;
   left: 0;
   bottom: 0;
+  display: flex;
+  flex-direction: column;
   width: min(88vw, 40rem);
   padding: 2.4rem;
   background: var(--bg);
@@ -746,6 +764,32 @@ textarea.field__input {
   font-size: 1.5rem;
   border-bottom: 0;
   padding: 0.8rem 0;
+}
+
+/* Pinned to the bottom of the drawer, in the space the short menu leaves
+   empty. The social row reuses the footer's boxes, recoloured for the
+   drawer's light background. */
+.mobile-nav__footer {
+  margin-top: auto;
+  padding-top: 2.4rem;
+}
+
+.mobile-nav__social {
+  margin: 0;
+  flex-wrap: wrap;
+}
+
+/* The drawer sits outside the footer, but the footer's colour rules key on
+   the shared .footer__social class and are declared later, so this needs
+   the extra ancestor to out-rank their white-on-navy colouring. */
+.mobile-nav__panel .mobile-nav__social a {
+  color: var(--text);
+  border-color: var(--border);
+  opacity: 1;
+}
+
+.mobile-nav__panel .mobile-nav__social a:hover {
+  border-color: var(--text);
 }
 
 /* --------------------------------------------------------------------------
@@ -802,6 +846,18 @@ textarea.field__input {
   background:
     linear-gradient(to left, rgba(0, 0, 0, 0.62), rgba(0, 0, 0, 0.2) 52%, rgba(0, 0, 0, 0) 76%),
     linear-gradient(to top, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0) 55%);
+}
+
+/* On a phone the content column is the full screen, so a side gradient that
+   fades out at 76% leaves the last words of every line sitting on the bare
+   photo. Full-width, bottom-weighted shade puts every line on a dark
+   ground while the top of the image stays open. */
+@media screen and (max-width: 749px) {
+  .hero--left .hero__scrim,
+  .hero--right .hero__scrim {
+    background:
+      linear-gradient(to top, rgba(0, 0, 0, 0.58), rgba(0, 0, 0, 0.34) 55%, rgba(0, 0, 0, 0.08));
+  }
 }
 
 .hero--center .hero__scrim {
@@ -1422,6 +1478,20 @@ textarea.field__input {
   color: var(--text-muted);
 }
 
+.detail-rows {
+  margin-top: 3.2rem;
+  padding-top: 2.4rem;
+  border-top: 1px solid var(--border);
+}
+
+/* Straight after an accordion the top rule would double the accordion's own
+   bottom border — two parallel lines with nothing between them. */
+.accordion + .detail-rows {
+  margin-top: 0;
+  padding-top: 1rem;
+  border-top: 0;
+}
+
 /* --------------------------------------------------------------------------
    Multicolumn — tasting notes, provenance, values
    -------------------------------------------------------------------------- */
@@ -1517,6 +1587,17 @@ textarea.field__input {
 
 .pattern-divider--white {
   background-color: #fff;
+}
+
+/* At the strip's full height one motif is ~174px wide, so a phone fits
+   barely two — which reads as two stray blocks rather than a pattern.
+   Scaling the motif down fits four or five across a small screen; the
+   strip keeps its configured height and the ground colour fills the
+   space above and below the smaller band. */
+@media screen and (max-width: 749px) {
+  .pattern-divider {
+    background-size: auto 56px;
+  }
 }
 
 /* CSS fallback pattern when no image is chosen: the arch-and-square motif. */
@@ -1887,29 +1968,21 @@ textarea.field__input {
    the gaps between blocks, and the space under each heading — pulls that
    back without touching the content or shrinking any tap target. */
 @media screen and (max-width: 749px) {
-  /* Contact and the policy links are both short lists, so on a phone they
-     share one row instead of taking a full-width stack each. Everything
-     else — the brand lockup, and the licence block with its paragraph of
-     legal text — keeps the full width, which is what that content wants.
-
-     The pair is selected by relationship rather than by position: the text
-     block immediately before the policy list. That is Contact, and it stays
-     Contact if a merchant adds or reorders blocks around it. Where :has()
-     isn't supported the rule simply doesn't match and both blocks fall back
-     to full width, which is the old layout. */
+  /* Every block gets the full width: the brand lockup and the Contact
+     email address are both wider than half a phone screen, and splitting
+     the email mid-word reads as a rendering fault. What keeps the footer
+     short instead is the policy list below, which folds its four short
+     links into two columns rather than a four-row stack. */
   .footer__top {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1fr);
     gap: 3.2rem 2rem;
     padding: 4.8rem 0 4rem;
   }
 
-  .footer__block {
-    grid-column: 1 / -1;
-  }
-
-  .footer__block--text:has(+ .footer__block--policies),
-  .footer__block--policies {
-    grid-column: span 1;
+  .footer__block--policies .footer__list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 2rem;
   }
 
   .footer__block-title {
@@ -2035,10 +2108,9 @@ textarea.field__input {
   }
 
   /* Padding is tuned against the tightened .rte line-height above, so that
-     tapping to call still lands a full 44px target. inline-block shrink-wraps
-     to the text, so an address longer than the half-width column — which
-     info@dunrobindistillery.com is — would otherwise sit on one line and
-     print straight over the Licence column beside it. */
+     tapping to call still lands a full 44px target. Contact spans the full
+     width, so its own email fits on one line; overflow-wrap stays as the
+     backstop for an address long enough to overflow even that. */
   .footer .rte a[href^='tel:'],
   .footer .rte a[href^='mailto:'] {
     display: inline-block;

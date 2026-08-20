@@ -28,7 +28,18 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PREVIEW = os.path.join(ROOT, '.preview')
 CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
 
-VIEWPORTS = [('mobile', 390, 844), ('tablet', 768, 1024), ('desktop', 1440, 900)]
+# The theme's breakpoints are 750px and 990px; the list brackets both, plus
+# the smallest phone still in circulation and a widescreen monitor. Width is
+# what matters — the checks branch on it, not on the label.
+VIEWPORTS = [
+    ('mobile-small', 320, 568),
+    ('mobile', 390, 844),
+    ('phablet', 430, 932),
+    ('tablet', 768, 1024),
+    ('laptop', 1280, 800),
+    ('desktop', 1440, 900),
+    ('wide', 1920, 1080),
+]
 PAGES = ['index.html', 'product.html', 'products.html', 'cart.html']
 
 failures = []
@@ -290,6 +301,19 @@ def test_structure():
     check('pattern divider: renders as a background, not an <img>',
           '<img' not in divider_liquid)
 
+    # Motion is a preference: the reveal animation must have a
+    # reduced-motion escape hatch, or vestibular-sensitive visitors get
+    # animated content with no way to opt out.
+    check('reveal animation respects prefers-reduced-motion',
+          'prefers-reduced-motion' in css)
+
+    # The menu toggle ships with aria-expanded so global.js has the
+    # attribute to keep truthful.
+    header_liquid = open(rel('sections/header.liquid')).read()
+    check('menu toggle declares aria-expanded', 'aria-expanded' in header_liquid)
+    check('global.js maintains aria-expanded',
+          'aria-expanded' in open(rel('assets/global.js')).read())
+
     # The castle banner on the home page carries the seal by default, per the
     # README — a merchant edit could flip this without anyone noticing.
     index_tpl = json.load(open(rel('templates/index.json')))
@@ -399,6 +423,13 @@ def test_theme_check():
 
 PROBE = r"""
 <script>
+// Collects anything thrown after this script runs — which is every
+// interaction the probe performs below. Load-time errors in global.js are
+// caught separately: a broken global.js fails the behaviour checks anyway.
+var __probeErrors = [];
+window.addEventListener('error', function (e) {
+  if (__probeErrors.length < 5) __probeErrors.push(String(e.message).slice(0, 120));
+});
 window.addEventListener('load', function () {
   setTimeout(function () {
     var vw = window.innerWidth;
@@ -465,13 +496,20 @@ window.addEventListener('load', function () {
       out.navCentre = +(nr.left + nr.width / 2).toFixed(1);
     }
 
-    // Mobile drawer opens and closes.
+    // Mobile drawer opens and closes, and the toggle announces its state.
     var mob = document.getElementById('MobileNav');
     if (mob && toggle) {
       toggle.click();
       out.drawerOpens = mob.classList.contains('is-open');
+      out.toggleExpandedWhileOpen = toggle.getAttribute('aria-expanded');
       var closeBtn = mob.querySelector('[data-mobile-nav-close]');
       if (closeBtn) { closeBtn.click(); out.drawerCloses = !mob.classList.contains('is-open'); }
+      out.toggleExpandedWhenClosed = toggle.getAttribute('aria-expanded');
+      // Escape must close it too — keyboard users have no visible close
+      // affordance while the panel covers the button that opened it.
+      toggle.click();
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+      out.drawerEscapeCloses = !mob.classList.contains('is-open');
     }
 
     // Cart drawer opens from the header icon and closes again.
@@ -486,6 +524,47 @@ window.addEventListener('load', function () {
         out.cartDrawerCloses = !cartDrawerEl.classList.contains('is-open');
       }
     }
+
+    // Cart drawer: Escape is the keyboard path out.
+    if (cartOpener && cartDrawerEl) {
+      cartOpener.click();
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+      out.cartEscapeCloses = !cartDrawerEl.classList.contains('is-open');
+    }
+
+    // Product quantity stepper: plus and minus adjust the input and the
+    // value can never be stepped below one bottle.
+    var qtyInput = document.querySelector('[data-product-quantity]');
+    if (qtyInput) {
+      var plusBtn = document.querySelector('[data-product-quantity-delta="1"]');
+      var minusBtn = document.querySelector('[data-product-quantity-delta="-1"]');
+      if (plusBtn && minusBtn) {
+        qtyInput.value = 1;
+        plusBtn.click();
+        out.qtyStepsUp = qtyInput.value === '2';
+        minusBtn.click();
+        out.qtyStepsDown = qtyInput.value === '1';
+        minusBtn.click();
+        out.qtyRespectsMin = qtyInput.value === '1';
+      }
+    }
+
+    // Every icon-only control needs an accessible name. aria-hidden controls
+    // are exempt: they are deliberate duplicates (the cart thumbnail next to
+    // the titled product link) removed from the accessibility tree.
+    out.unlabelledIconControls = [];
+    document.querySelectorAll('a, button').forEach(function (el) {
+      if (el.textContent.trim()) return;
+      if (!el.querySelector('svg, img')) return;
+      if (el.closest('[aria-hidden="true"]')) return;
+      var img = el.querySelector('img');
+      var named = el.getAttribute('aria-label') || el.getAttribute('title')
+        || (img && img.getAttribute('alt'));
+      if (!named && out.unlabelledIconControls.length < 6) {
+        out.unlabelledIconControls.push(
+          (el.tagName + '.' + (el.className || '')).slice(0, 60));
+      }
+    });
 
     // Product gallery: clicking a thumbnail swaps the active slide.
     var gallery = document.querySelector('product-gallery');
@@ -619,10 +698,28 @@ window.addEventListener('load', function () {
       }
     }
 
-    var pre = document.createElement('pre');
-    pre.id = 'probe';
-    pre.textContent = JSON.stringify(out);
-    document.body.appendChild(pre);
+    // Second stage: scroll to the bottom and confirm every reveal-animated
+    // element in view actually became visible. A regression here is the
+    // "blank section" bug — content stuck at opacity 0 waiting for an
+    // IntersectionObserver that never fired.
+    window.scrollTo(0, document.documentElement.scrollHeight);
+    setTimeout(function () {
+      out.revealsStuck = [];
+      document.querySelectorAll('.reveal:not(.is-visible)').forEach(function (el) {
+        var r = el.getBoundingClientRect();
+        var inView = r.top < window.innerHeight && r.bottom > 0
+          && r.width > 0 && r.height > 0;
+        if (inView && out.revealsStuck.length < 5) {
+          out.revealsStuck.push((el.tagName + '.' + (el.className || '')).slice(0, 60));
+        }
+      });
+      out.jsErrors = __probeErrors;
+
+      var pre = document.createElement('pre');
+      pre.id = 'probe';
+      pre.textContent = JSON.stringify(out);
+      document.body.appendChild(pre);
+    }, 700);
   }, 400);
 });
 </script>
@@ -644,12 +741,14 @@ def probe(page, width, height):
     """
     src = os.path.join(PREVIEW, page)
     child_html = open(src).read().replace('</body>', PROBE + '</body>')
-    child = os.path.join(PREVIEW, '__probe_child.html')
-    frame = os.path.join(PREVIEW, '__probe_frame.html')
+    # Unique names per probe: the matrix runs several probes concurrently.
+    stem = f'__probe_{page.replace(".", "_")}_{width}'
+    child = os.path.join(PREVIEW, stem + '_child.html')
+    frame = os.path.join(PREVIEW, stem + '_frame.html')
     open(child, 'w').write(child_html)
     open(frame, 'w').write(f"""<!doctype html><html><head><meta charset="utf-8">
 <style>html,body{{margin:0;padding:0}}iframe{{border:0;display:block}}</style></head><body>
-<iframe id="f" src="__probe_child.html" width="{width}" height="{height}" scrolling="no"></iframe>
+<iframe id="f" src="{stem}_child.html" width="{width}" height="{height}" scrolling="no"></iframe>
 <script>
 function grab(tries) {{
   try {{
@@ -692,19 +791,62 @@ window.addEventListener('load', function () {{ setTimeout(function () {{ grab(30
                 os.remove(f)
 
 
+def test_preview_links():
+    """Every local href/src in the built preview must point at a real file,
+    and every #fragment at a real element id. A typo here is a dead button."""
+    for page in PAGES:
+        path = os.path.join(PREVIEW, page)
+        if not os.path.exists(path):
+            continue
+        html = open(path).read()
+        ids = set(re.findall(r'id="([^"]+)"', html))
+        broken = []
+        for url in re.findall(r'(?:href|src)="([^"]+)"', html):
+            if url.startswith(('http:', 'https:', 'mailto:', 'tel:', 'data:')):
+                continue
+            if url == '#':  # deliberate stub in the mock (search, account)
+                continue
+            target, _, frag = url.partition('#')
+            if target and not os.path.exists(os.path.join(PREVIEW, target)):
+                broken.append(url)
+            elif frag:
+                frag_html = html if not target or target == page else (
+                    open(os.path.join(PREVIEW, target)).read()
+                    if os.path.exists(os.path.join(PREVIEW, target)) else '')
+                if f'id="{frag}"' not in frag_html and frag not in ids:
+                    broken.append(url)
+        check(f'{page}: all local links and assets resolve', not broken,
+              str(broken[:4]))
+
+
 def test_render():
     if not os.path.exists(CHROME):
         check('headless Chrome available', True, 'skipped, Chrome not installed')
         return
     if not build_preview():
         return
+    test_preview_links()
 
+    # Each probe is its own Chrome process, so the matrix parallelises
+    # cleanly; assertions still run in a stable order afterwards.
+    jobs = [(page, label, w, h)
+            for page in PAGES if os.path.exists(os.path.join(PREVIEW, page))
+            for label, w, h in VIEWPORTS]
     for page in PAGES:
         if not os.path.exists(os.path.join(PREVIEW, page)):
             check(f'preview page exists: {page}', False)
-            continue
-        for label, w, h in VIEWPORTS:
-            d = probe(page, w, h)
+
+    import concurrent.futures
+    results = {}
+    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
+        futures = {pool.submit(probe, page, w, h): (page, label, w, h)
+                   for page, label, w, h in jobs}
+        for fut in concurrent.futures.as_completed(futures):
+            results[futures[fut]] = fut.result()
+
+    for page, label, w, h in jobs:
+        if True:
+            d = results[(page, label, w, h)]
             tag = f'{page} @{label}'
             if d is None:
                 check(tag, False, 'probe returned nothing')
@@ -727,6 +869,26 @@ def test_render():
             check(f'{tag}: images declare width/height',
                   d['imagesMissingDims'] == 0,
                   f'{d["imagesMissingDims"]} images without dimensions (layout shift)')
+
+            check(f'{tag}: no JS errors during interactions',
+                  not d.get('jsErrors'), str(d.get('jsErrors', [])[:3]))
+
+            check(f'{tag}: icon-only controls have accessible names',
+                  not d.get('unlabelledIconControls'),
+                  str(d.get('unlabelledIconControls', [])[:3]))
+
+            check(f'{tag}: revealed content is not stuck invisible',
+                  not d.get('revealsStuck'), str(d.get('revealsStuck', [])[:3]))
+
+            if 'cartEscapeCloses' in d:
+                check(f'{tag}: Escape closes the cart drawer',
+                      d['cartEscapeCloses'] is True)
+
+            if 'qtyStepsUp' in d:
+                check(f'{tag}: quantity steps up', d['qtyStepsUp'] is True)
+                check(f'{tag}: quantity steps down', d['qtyStepsDown'] is True)
+                check(f'{tag}: quantity never drops below one',
+                      d['qtyRespectsMin'] is True)
 
             if 'footerNotWhite' in d:
                 check(f'{tag}: footer text is white', not d['footerNotWhite'],
@@ -776,7 +938,7 @@ def test_render():
                   'Libre Baskerville' in d['bodyFont'] and 'Libre Baskerville' in d['headingFont'],
                   f'body={d["bodyFont"]}, heading={d["headingFont"]}')
 
-            if label == 'mobile':
+            if w < 750:
                 if 'railScrolls' in d:
                     check(f'{tag}: dispatches scroll as a carousel', d['railScrolls'] is True,
                           'rail is not horizontally scrollable on mobile')
@@ -796,17 +958,30 @@ def test_render():
                         check(f'{tag}: banner keeps its aspect ratio',
                               d.get('bannerAspectDrift', 9) < 0.05,
                               f'drift {d.get("bannerAspectDrift")}')
-                check(f'{tag}: desktop nav hidden', d['navDisplay'] == 'none', d['navDisplay'])
-                check(f'{tag}: menu toggle visible', d['toggleDisplay'] != 'none')
-                check(f'{tag}: drawer opens', d.get('drawerOpens') is True)
-                check(f'{tag}: drawer closes', d.get('drawerCloses') is True)
-            if label == 'desktop':
+            if w >= 750:
                 if 'railStacks' in d:
                     check(f'{tag}: dispatches are a grid, not a rail',
                           d['railStacks'] is True, 'carousel styles leaked to desktop')
                 if 'bannerFit' in d:
                     check(f'{tag}: banner fills the band', d['bannerFit'] == 'cover',
                           f'object-fit is {d["bannerFit"]}')
+
+            # The header switches at its own, wider breakpoint: the drawer
+            # serves everything under 990px, including tablets.
+            if w < 990:
+                check(f'{tag}: desktop nav hidden', d['navDisplay'] == 'none', d['navDisplay'])
+                check(f'{tag}: menu toggle visible', d['toggleDisplay'] != 'none')
+                check(f'{tag}: drawer opens', d.get('drawerOpens') is True)
+                check(f'{tag}: drawer closes', d.get('drawerCloses') is True)
+                check(f'{tag}: Escape closes the drawer',
+                      d.get('drawerEscapeCloses') is True)
+                check(f'{tag}: menu toggle announces open state',
+                      d.get('toggleExpandedWhileOpen') == 'true',
+                      f'aria-expanded={d.get("toggleExpandedWhileOpen")}')
+                check(f'{tag}: menu toggle announces closed state',
+                      d.get('toggleExpandedWhenClosed') == 'false',
+                      f'aria-expanded={d.get("toggleExpandedWhenClosed")}')
+            else:
                 check(f'{tag}: menu toggle hidden', d['toggleDisplay'] == 'none')
                 if 'navCentre' in d:
                     check(f'{tag}: nav centred in header',
@@ -829,12 +1004,32 @@ def test_render():
 
 # ---------------------------------------------------------------------------
 
+def test_browsers():
+    """Same pages, three engines (Blink, Gecko, WebKit), compared.
+    Optional: skipped with a hint when Playwright isn't installed."""
+    node = shutil.which('node')
+    if not node or not os.path.isdir(rel('node_modules', 'playwright')):
+        check('cross-browser checks', True,
+              'skipped — enable with: npm install && npx playwright install firefox webkit')
+        return
+    r = subprocess.run([node, rel('tests', 'browsers.mjs')],
+                       capture_output=True, text=True, timeout=900, cwd=ROOT)
+    if not r.stdout.strip():
+        check('cross-browser suite produced results', False, r.stderr[-300:])
+        return
+    for c in json.loads(r.stdout)['checks']:
+        # Agreement checks that pass are collapsed into one line each to keep
+        # the pass count meaningful without drowning the report.
+        check('x-browser: ' + c['name'], c['ok'], c.get('detail', ''))
+
+
 def main():
     fast = '--fast' in sys.argv
     test_structure()
     if not fast:
         test_theme_check()
         test_render()
+        test_browsers()
 
     print()
     if failures:
