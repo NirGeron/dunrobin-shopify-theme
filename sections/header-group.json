@@ -10,15 +10,22 @@
           "settings": {
             "text": "Handcrafted in Golspie, in the Scottish Highlands"
           }
+        },
+        "announcement-2": {
+          "type": "announcement",
+          "settings": {
+            "text": "Adult signature required on delivery"
+          }
         }
       },
       "block_order": [
-        "announcement-1"
+        "announcement-1",
+        "announcement-2"
       ],
       "settings": {
         "background": "#1C348F",
         "text_color": "#FFFFFF",
-        "autorotate": false,
+        "autorotate": true,
         "speed": 6
       }
     },

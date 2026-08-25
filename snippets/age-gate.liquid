@@ -37,7 +37,7 @@
         height="{{ 600 | divided_by: gate_logo.aspect_ratio | round }}"
       >
     {%- else -%}
-      <img class="age-gate__logo" src="{{ 'logo.png' | asset_url }}" alt="{{ shop.name | escape }}" width="600" height="182">
+      <img class="age-gate__logo age-gate__logo--mark" src="{{ 'brand-mark.png' | asset_url }}" alt="{{ shop.name | escape }}" width="512" height="515">
     {%- endif -%}
 
     <h2 class="age-gate__heading h3" id="AgeGateHeading">{{ settings.age_gate_heading }}</h2>

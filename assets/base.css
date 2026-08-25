@@ -305,6 +305,24 @@ button.shopify-payment-button__button--unbranded {
   color: #fff;
 }
 
+/* The dark schemes recolour every link white, which turns a light button —
+   an <a> with a white fill — white-on-white. Buttons set their own
+   contrast pair, so they opt out of the scheme's link colour. */
+.scheme--brand a.button,
+.scheme--accent a.button {
+  color: var(--button-text);
+}
+
+.scheme--brand a.button--light,
+.scheme--accent a.button--light {
+  color: var(--brand);
+}
+
+.scheme--brand a.button--light:hover,
+.scheme--accent a.button--light:hover {
+  color: #fff;
+}
+
 .button--outline-light {
   background-color: transparent;
   border-color: rgba(255, 255, 255, 0.6);
@@ -2218,6 +2236,12 @@ textarea.field__input {
   width: min(26rem, 70%);
   height: auto;
   margin: 0 auto 3.2rem;
+}
+
+/* The built-in fallback is the square monogram, which needs far less width
+   than a wordmark to read; a merchant-uploaded logo keeps the wide rule. */
+.age-gate__logo--mark {
+  width: min(9.6rem, 30%);
 }
 
 .age-gate__heading {
