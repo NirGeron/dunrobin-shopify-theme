@@ -222,6 +222,66 @@
         "padding_top": 112,
         "padding_bottom": 112
       }
+    },
+    "serve": {
+      "type": "image-with-text",
+      "blocks": {
+        "eyebrow": {
+          "type": "eyebrow",
+          "settings": {
+            "text": "The Serve"
+          }
+        },
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "text": "The Dunrobin & Tonic",
+            "size": "h2"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Premium Mediterranean tonic, plenty of ice, and a sprig of fresh rosemary. Poured slowly, for the long Highland dusk.</p>"
+          }
+        },
+        "button": {
+          "type": "button",
+          "settings": {
+            "label": "Shop the gin",
+            "link": "shopify://collections/all",
+            "style": "primary"
+          }
+        }
+      },
+      "block_order": [
+        "eyebrow",
+        "heading",
+        "text",
+        "button"
+      ],
+      "settings": {
+        "image_ratio": "portrait",
+        "layout": "text_first",
+        "wide_media": false,
+        "color_scheme": "accent",
+        "padding_top": 96,
+        "padding_bottom": 96,
+        "builtin_image": "cocktail"
+      }
+    },
+    "signup": {
+      "type": "newsletter",
+      "settings": {
+        "eyebrow": "The Dispatch",
+        "heading": "Be first to the next batch",
+        "text": "<p>Batch releases, tastings at the castle and the occasional recipe. No more than once a month.</p>",
+        "button_label": "Subscribe",
+        "disclaimer": "<p>You must be of legal drinking age to subscribe. Unsubscribe at any time.</p>",
+        "color_scheme": "brand",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
     }
   },
   "order": [
@@ -231,6 +291,8 @@
     "stills",
     "1786549912a9f82cd7",
     "team",
-    "expression"
+    "expression",
+    "serve",
+    "signup"
   ]
 }
