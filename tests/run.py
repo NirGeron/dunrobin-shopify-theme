@@ -20,6 +20,7 @@ import json
 import os
 import re
 import shutil
+import struct
 import subprocess
 import sys
 import tempfile
@@ -398,6 +399,85 @@ def test_structure():
             if m:
                 check(f'whatsapp: sits below the {name}', wa_z < int(m.group(1)),
                       f'whatsapp {wa_z} vs {name} {m.group(1)}')
+
+    # Google Search Console. Ownership is proved by a meta tag in the <head>
+    # of the home page, so it has to come from the layouts rather than a
+    # section — and from password.liquid too, which is all Google sees while
+    # the store is locked. The comments in these snippets name the same tags
+    # they render, so the checks look at the code with comments removed.
+    def no_comments(text):
+        return re.sub(r'\{%-?\s*comment\s*-?%\}.*?\{%-?\s*endcomment\s*-?%\}', '',
+                      text, flags=re.S)
+
+    gsc_src = no_comments(open(rel('snippets/search-console.liquid')).read())
+    sd_src = no_comments(open(rel('snippets/structured-data.liquid')).read())
+    password_src = open(rel('layout/password.liquid')).read()
+    schema_ids = [s['id']
+                  for g in json.load(open(rel('config/settings_schema.json')))
+                  for s in g.get('settings', []) if s.get('id')]
+    check('search console: verification setting exists in the schema',
+          'google_site_verification' in schema_ids)
+    check('search console: verification tag rendered from the theme layout',
+          "render 'search-console'" in layout_src)
+    check('search console: the live site verification tag is in theme.liquid',
+          '<meta name="google-site-verification" content="zsHhrKhdl-rDowwYGmDEXpLj6lzVbNZhAfaUwuNgKrk" />'
+          in layout_src, 'removing it unverifies the property in Search Console')
+    check('search console: verification tag rendered from the password layout',
+          "render 'search-console'" in password_src)
+    check('search console: tag is only output when a token is set',
+          'settings.google_site_verification' in gsc_src and 'gsc_token != blank' in gsc_src and
+          'name="google-site-verification"' in gsc_src)
+    check('search console: token is escaped into the attribute',
+          bool(re.search(r'content="\{\{\s*gsc_token[^}]*\|\s*escape\s*\}\}"', gsc_src)))
+    check('structured data: rendered from the theme layout',
+          "render 'structured-data'" in layout_src)
+    # A quote or ampersand in a shop, product or article title would end the
+    # string early and Google drops the whole block — every interpolated value
+    # inside a JSON-LD script must go through | json.
+    unjsoned = [m for m in re.findall(r'\{\{(?!.*\|\s*json\s*\}\})[^}]*\}\}', sd_src)
+                if 'forloop.index' not in m]
+    check('structured data: every interpolated value goes through the json filter',
+          not unjsoned, f'unescaped: {unjsoned}')
+    for kind in ('Organization', 'WebSite', 'BreadcrumbList', 'Article'):
+        check(f'structured data: emits {kind}', f'"@type": "{kind}"' in sd_src)
+    check('structured data: product markup still comes from the product section',
+          'product | structured_data' in open(rel('sections/main-product.liquid')).read())
+
+    # Organization needs a logo to be eligible for the logo in results, and a
+    # store that has not uploaded one in Theme settings is the normal state, so
+    # the logo must not depend on a setting: saved brand mark, then main logo,
+    # then the monogram shipped in assets/.
+    check('structured data: logo prefers the saved brand mark, then the main logo',
+          'settings.brand_mark | default: settings.logo' in sd_src)
+    check("structured data: logo falls back to the shipped brand-mark.png",
+          "'brand-mark.png' | asset_url" in sd_src)
+    check('structured data: Organization emits its logo unconditionally',
+          bool(re.search(r'"url":\s*\{\{\s*shop\.url\s*\|\s*json\s*\}\}\s*,"logo":\s*\{\{\s*sd_logo_url\s*\|\s*json\s*\}\}',
+                         sd_src)), 'the logo line must not sit inside an {% if %}')
+
+    # Favicon: an uploaded one wins; otherwise the layouts fall back to the
+    # shipped icon, so the page never goes out without <link rel="icon">.
+    # Google wants a square favicon whose side is a multiple of 48px.
+    def png_size(path):
+        with open(rel(path), 'rb') as f:
+            head = f.read(24)
+        return struct.unpack('>II', head[16:24]) if head[:8] == b'\x89PNG\r\n\x1a\n' else None
+
+    favicon_size = png_size('assets/favicon-192.png')
+    check('favicon: assets/favicon-192.png is a square PNG, side a multiple of 48px',
+          favicon_size is not None and favicon_size[0] == favicon_size[1] and favicon_size[0] % 48 == 0,
+          f'got {favicon_size}')
+    for name, src in (('theme.liquid', layout_src), ('password.liquid', password_src)):
+        block = re.search(r'\{%-?\s*if settings\.favicon != blank\s*-?%\}(.*?)\{%-?\s*endif\s*-?%\}',
+                          src, flags=re.S)
+        branches = re.split(r'\{%-?\s*else\s*-?%\}', block.group(1)) if block else ['']
+        uploaded, fallback = (branches + [''])[:2]
+        check(f'favicon: {name} serves an uploaded favicon at 48px',
+              'settings.favicon | image_url: width: 48, height: 48' in uploaded)
+        check(f'favicon: {name} falls back to assets/favicon-192.png when none is uploaded',
+              'rel="icon"' in fallback and "'favicon-192.png' | asset_url" in fallback)
+    check('favicon: theme.liquid falls back to assets/favicon.png for the Apple touch icon',
+          bool(re.search(r'rel="apple-touch-icon" href="\{\{ \'favicon\.png\' \| asset_url \}\}"', layout_src)))
 
     # Required theme files.
     for required in ('layout/theme.liquid', 'config/settings_schema.json',
