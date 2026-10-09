@@ -4,8 +4,17 @@
     and bottom. The box is given the image's own ratio divided by how much of
     its height survives the trim, so object-fit: cover crops exactly that much
     and nothing is lost off the sides.
+
+    The top and bottom are trimmed separately because the subject is not
+    centred: the castle's spire tips sit close to the top of the picture while
+    the formal garden below it can go. object-position hands the crop back in
+    the same proportion, so the slice comes off where it was asked to.
+
+    On a phone the bottom trim is halved. The box is only as tall as the screen
+    is wide, so a full-strength trim would leave a thin strip with the seal
+    covering most of it.
   endcomment
-  assign banner_ratio = ''
+  assign banner_style = ''
 
   if section.settings.height == 'fit'
     if section.settings.image != blank
@@ -14,15 +23,36 @@
       assign source_ratio = 1.4532
     endif
 
-    assign trim = section.settings.vertical_trim | times: 2
-    assign visible = 100.0 | minus: trim
+    assign trim_top = section.settings.trim_top | times: 1.0
+    assign trim_bottom = section.settings.trim_bottom | times: 1.0
+    assign trim_bottom_phone = trim_bottom | divided_by: 2.0
+
+    assign visible = 100.0 | minus: trim_top | minus: trim_bottom
     assign banner_ratio = source_ratio | times: 100.0 | divided_by: visible
+    assign trimmed = trim_top | plus: trim_bottom
+    assign focus_y = 50.0
+    if trimmed > 0
+      assign focus_y = trim_top | times: 100.0 | divided_by: trimmed
+    endif
+
+    assign visible_phone = 100.0 | minus: trim_top | minus: trim_bottom_phone
+    assign banner_ratio_phone = source_ratio | times: 100.0 | divided_by: visible_phone
+    assign trimmed_phone = trim_top | plus: trim_bottom_phone
+    assign focus_y_phone = 50.0
+    if trimmed_phone > 0
+      assign focus_y_phone = trim_top | times: 100.0 | divided_by: trimmed_phone
+    endif
+
+    assign banner_style = '--banner-ratio:' | append: banner_ratio
+    assign banner_style = banner_style | append: ';--banner-focus-y:' | append: focus_y | append: '%'
+    assign banner_style = banner_style | append: ';--banner-ratio-phone:' | append: banner_ratio_phone
+    assign banner_style = banner_style | append: ';--banner-focus-y-phone:' | append: focus_y_phone | append: '%'
   endif
 -%}
 
 <div
   class="image-banner image-banner--{{ section.settings.height }} {% if section.settings.fit_mobile %}image-banner--fit-mobile{% endif %}"
-  {% if banner_ratio != '' %}style="--banner-ratio: {{ banner_ratio }}"{% endif %}
+  {% if banner_style != '' %}style="{{ banner_style }}"{% endif %}
 >
   {%- if section.settings.image != blank -%}
     <img
@@ -92,14 +122,25 @@
     },
     {
       "type": "range",
-      "id": "vertical_trim",
-      "label": "Trim off the top and bottom",
+      "id": "trim_top",
+      "label": "Trim off the top",
       "min": 0,
       "max": 25,
       "step": 1,
       "unit": "%",
-      "default": 10,
-      "info": "Only used by the \"Whole image\" height. Taken off each edge."
+      "default": 5,
+      "info": "Only used by the \"Whole image\" height. Keep it small if there is a spire or roofline near the top."
+    },
+    {
+      "type": "range",
+      "id": "trim_bottom",
+      "label": "Trim off the bottom",
+      "min": 0,
+      "max": 45,
+      "step": 1,
+      "unit": "%",
+      "default": 36,
+      "info": "Only used by the \"Whole image\" height. The larger the trim, the shorter the banner. Phones use half of it."
     },
     {
       "type": "checkbox",

@@ -59,6 +59,17 @@ def rel(*p):
     return os.path.join(ROOT, *p)
 
 
+def load_json(path):
+    """
+    json.load that tolerates the /* IMPORTANT ... auto-generated */ banner
+    Shopify stamps on templates and settings_data.json when the theme editor
+    saves them. Shopify itself reads these files as JSON-with-comments.
+    """
+    raw = open(path).read()
+    raw = re.sub(r'\A\s*/\*.*?\*/', '', raw, count=1, flags=re.S)
+    return json.loads(raw)
+
+
 # ---------------------------------------------------------------------------
 # Structure
 # ---------------------------------------------------------------------------
@@ -80,7 +91,7 @@ def test_structure():
             if f.endswith('.json'):
                 p = os.path.join(dirpath, f)
                 try:
-                    json.load(open(p))
+                    load_json(p)
                     check(f'json parses: {os.path.relpath(p, ROOT)}', True)
                 except Exception as e:
                     check(f'json parses: {os.path.relpath(p, ROOT)}', False, str(e))
@@ -114,7 +125,7 @@ def test_structure():
 
     for p in targets:
         label = os.path.relpath(p, ROOT)
-        d = json.load(open(p))
+        d = load_json(p)
         for sid, sec in d.get('sections', {}).items():
             sch = schemas.get(sec['type'])
             if sch is None:
@@ -147,7 +158,7 @@ def test_structure():
     # settings_data keys must exist in settings_schema.
     schema_ids = {s['id'] for g in json.load(open(rel('config/settings_schema.json')))
                   for s in g.get('settings', []) if 'id' in s}
-    data = json.load(open(rel('config/settings_data.json')))
+    data = load_json(rel('config/settings_data.json'))
     for k in data['current']:
         check(f'settings_data key "{k}" declared', k in schema_ids)
 
@@ -317,10 +328,24 @@ def test_structure():
 
     # The castle banner on the home page carries the seal by default, per the
     # README — a merchant edit could flip this without anyone noticing.
-    index_tpl = json.load(open(rel('templates/index.json')))
+    index_tpl = load_json(rel('templates/index.json'))
     castle_banners = [s for s in index_tpl['sections'].values()
                        if s['type'] == 'image-banner' and s.get('settings', {}).get('show_seal')]
     check('home page: the castle banner shows the seal', bool(castle_banners))
+
+    # The default banner picture is the castle. Its spire tips sit about 9% of
+    # the way down the file and the base of the bastion about 59%, so a trim
+    # past those would cut the castle itself rather than sky or garden.
+    for sid, sec in index_tpl['sections'].items():
+        if sec['type'] != 'image-banner':
+            continue
+        st = sec.get('settings', {})
+        if st.get('height') != 'fit' or st.get('image'):
+            continue
+        check(f'home page:{sid} banner top trim leaves the spire tips in frame',
+              st.get('trim_top', 5) <= 7, f'trim_top is {st.get("trim_top")}%, spires start at ~9%')
+        check(f'home page:{sid} banner bottom trim leaves the castle base in frame',
+              st.get('trim_bottom', 36) <= 40, f'trim_bottom is {st.get("trim_bottom")}%, base ends at ~59%')
 
     # The cart drawer must be reachable from the header icon and dismissible
     # by more than one control (overlay click and an explicit close button).
@@ -680,6 +705,7 @@ window.addEventListener('load', function () {
         var brct = bannerEl.getBoundingClientRect();
         out.sealVisible = sr.width > 0 && sr.height > 0;
         out.sealCentred = Math.abs((sr.left + sr.width / 2) - (brct.left + brct.width / 2));
+        out.sealShare = sr.height / brct.height;
       }
     }
 
@@ -725,7 +751,14 @@ window.addEventListener('load', function () {
           // nothing is lost off the sides and the overflow is the intended
           // slice off the top and bottom. Measure how much that slice is.
           var scale = br.width / img.naturalWidth;
-          out.bannerCropFraction = 1 - (br.height / (img.naturalHeight * scale));
+          var renderedH = img.naturalHeight * scale;
+          out.bannerCropFraction = 1 - (br.height / renderedH);
+          // object-position hands the overflow back top vs bottom in the
+          // proportion the section asked for; recover both slices.
+          var posY = parseFloat(getComputedStyle(img).objectPosition.split(' ')[1]) / 100;
+          var overflow = renderedH - br.height;
+          out.bannerTopCrop = (overflow * posY) / renderedH;
+          out.bannerBottomCrop = (overflow * (1 - posY)) / renderedH;
         } else {
           // Uncropped means the rendered box keeps the file's aspect ratio.
           out.bannerAspectDrift = Math.abs((br.width / br.height) - natural);
@@ -787,8 +820,12 @@ window.addEventListener('load', function () {
       out.revealsStuck = [];
       document.querySelectorAll('.reveal:not(.is-visible)').forEach(function (el) {
         var r = el.getBoundingClientRect();
-        var inView = r.top < window.innerHeight && r.bottom > 0
-          && r.width > 0 && r.height > 0;
+        // "In view" means enough of it shows to trip the reveal observer,
+        // which fires at 5% visible (initReveal's threshold). A card sitting
+        // a few pixels above the fold is not stuck, it just hasn't arrived.
+        var shown = Math.min(r.bottom, window.innerHeight) - Math.max(r.top, 0);
+        var inView = r.width > 0 && r.height > 0 && shown > 0
+          && shown / r.height >= 0.05;
         if (inView && out.revealsStuck.length < 5) {
           out.revealsStuck.push((el.tagName + '.' + (el.className || '')).slice(0, 60));
         }
@@ -907,6 +944,14 @@ def test_render():
         return
     test_preview_links()
 
+    # What the home page's "whole image" banner is configured to trim, so the
+    # render checks can hold the measured crop to it.
+    banner_trim = {'top': 5, 'bottom': 36}
+    for sec in load_json(rel('templates', 'index.json'))['sections'].values():
+        st = sec.get('settings', {})
+        if sec['type'] == 'image-banner' and st.get('height') == 'fit':
+            banner_trim = {'top': st.get('trim_top', 5), 'bottom': st.get('trim_bottom', 36)}
+
     # Each probe is its own Chrome process, so the matrix parallelises
     # cleanly; assertions still run in a stable order afterwards.
     jobs = [(page, label, w, h)
@@ -1004,6 +1049,11 @@ def test_render():
                 check(f'{tag}: castle banner seal is visible', d['sealVisible'])
                 check(f'{tag}: castle banner seal centred over the image',
                       d['sealCentred'] < 2, f'{d["sealCentred"]:.1f}px off centre')
+                if d.get('bannerTrimmed'):
+                    # The banner is a short band, so the seal is held to a
+                    # share of its height instead of covering the castle.
+                    check(f'{tag}: castle banner seal stays a modest share of the height',
+                          d['sealShare'] <= 0.36, f'{d["sealShare"]:.2f} of the banner height')
 
             if 'gateFrequency' in d:
                 check(f'{tag}: age gate asks per session', d['gateFrequency'] == 'session',
@@ -1030,15 +1080,30 @@ def test_render():
                         check(f'{tag}: banner fills the width', d['bannerFit'] == 'cover',
                               f'object-fit is {d["bannerFit"]}')
                         crop = d.get('bannerCropFraction', 9)
-                        check(f'{tag}: banner trims 10% off the top and bottom',
-                              abs(crop - 0.2) < 0.02, f'crops {crop:.3f} of the height')
+                        # Phones take half the bottom trim, so the strip stays
+                        # tall enough to read the castle in.
+                        want = (banner_trim['top'] + banner_trim['bottom'] / 2) / 100
+                        check(f'{tag}: banner trims the top and half the bottom',
+                              abs(crop - want) < 0.02, f'crops {crop:.3f} of the height, want {want:.3f}')
                     else:
                         check(f'{tag}: banner image not cropped', d['bannerFit'] == 'contain',
                               f'object-fit is {d["bannerFit"]}')
                         check(f'{tag}: banner keeps its aspect ratio',
                               d.get('bannerAspectDrift', 9) < 0.05,
                               f'drift {d.get("bannerAspectDrift")}')
+            if d.get('bannerTrimmed') and 'bannerTopCrop' in d:
+                # The castle must never be cut: the spire tips start ~9% down
+                # the picture and the bastion's base ends ~59% down it.
+                check(f'{tag}: banner keeps the castle spires in frame',
+                      d['bannerTopCrop'] <= 0.07, f'top {d["bannerTopCrop"]:.3f} cropped, spires at ~0.09')
+                check(f'{tag}: banner keeps the castle base in frame',
+                      d['bannerBottomCrop'] <= 0.40, f'bottom {d["bannerBottomCrop"]:.3f} cropped, base at ~0.59')
             if w >= 750:
+                if 'bannerTrimmed' in d and d['bannerTrimmed']:
+                    want = (banner_trim['top'] + banner_trim['bottom']) / 100
+                    check(f'{tag}: banner trims the top and bottom as configured',
+                          abs(d['bannerCropFraction'] - want) < 0.02,
+                          f'crops {d["bannerCropFraction"]:.3f} of the height, want {want:.3f}')
                 if 'railStacks' in d:
                     check(f'{tag}: dispatches are a grid, not a rail',
                           d['railStacks'] is True, 'carousel styles leaked to desktop')
