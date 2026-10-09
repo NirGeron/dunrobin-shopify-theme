@@ -839,6 +839,19 @@ textarea.field__input {
   object-fit: cover;
 }
 
+/* The stock photograph is the castle, and its spire tips sit near the top of
+   the frame, so the default centred cover crop slices them off. Anchor the
+   crop high (and a touch right, where the castle sits), and on wider screens
+   keep the band at least as tall as the castle is at that scale — 36vw is the
+   castle's height plus headroom for a 1600px-wide frame. Narrow screens
+   already crop by height alone, so the floor only applies from 750px up. */
+.hero--castle .hero__media img { object-position: 55% 10%; }
+
+@media screen and (min-width: 750px) {
+  .hero--castle.hero--medium { min-height: max(62rem, 36vw); }
+  .hero--castle.hero--large { min-height: max(78rem, 36vw); }
+}
+
 .hero__overlay {
   position: absolute;
   inset: 0;
