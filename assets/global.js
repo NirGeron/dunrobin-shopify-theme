@@ -574,6 +574,124 @@
     });
   }
 
+  /* ---------------------------------------------------------------------
+     Sticky Add to bag (phone) — mirrors the real button, shown only while
+     the real one is off screen
+     --------------------------------------------------------------------- */
+  var stickyAtcTeardown = null;
+
+  function initStickyAtc() {
+    if (stickyAtcTeardown) {
+      stickyAtcTeardown();
+      stickyAtcTeardown = null;
+    }
+
+    var bar = document.querySelector('[data-sticky-atc]');
+    var main = document.querySelector('[data-product-form] [data-add-to-cart]');
+    if (!bar || !main || !('IntersectionObserver' in window)) return;
+
+    var button = bar.querySelector('[data-sticky-atc-button]');
+    var label = bar.querySelector('[data-sticky-atc-label]');
+    var price = bar.querySelector('[data-sticky-atc-price]');
+    var mainLabel = main.querySelector('[data-add-to-cart-text]');
+    var mainPrice = document.getElementById('ProductPrice');
+
+    function sync() {
+      if (mainLabel && label) label.textContent = mainLabel.textContent.trim();
+      if (button) button.disabled = main.disabled;
+      if (mainPrice && price) price.innerHTML = mainPrice.innerHTML;
+    }
+
+    // Variant changes and the add-to-cart request rewrite those three nodes.
+    var mirror = new MutationObserver(sync);
+    mirror.observe(main, { attributes: true, attributeFilter: ['disabled'] });
+    if (mainLabel) mirror.observe(mainLabel, { childList: true, characterData: true, subtree: true });
+    if (mainPrice) mirror.observe(mainPrice, { childList: true, subtree: true });
+    sync();
+
+    // init runs again when any section reloads in the editor; bind once.
+    if (button && !button.dataset.stickyBound) {
+      button.dataset.stickyBound = 'true';
+      button.addEventListener('click', function () {
+        if (main.disabled || main.getAttribute('aria-disabled') === 'true') return;
+        main.click();
+      });
+    }
+
+    // The sticky header covers the top of the window, so a button tucked under
+    // it counts as off screen. The footer is excluded so the bar never sits on
+    // top of the links down there.
+    var state = { main: true, footer: false };
+    var footer = document.querySelector('.footer');
+
+    var watcher = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.target === main) state.main = entry.isIntersecting;
+          else state.footer = entry.isIntersecting;
+        });
+
+        var show = !state.main && !state.footer;
+        bar.classList.toggle('is-visible', show);
+        document.body.classList.toggle('has-sticky-atc', show);
+      },
+      { rootMargin: '-72px 0px 0px 0px' }
+    );
+    watcher.observe(main);
+    if (footer) watcher.observe(footer);
+
+    stickyAtcTeardown = function () {
+      mirror.disconnect();
+      watcher.disconnect();
+      document.body.classList.remove('has-sticky-atc');
+    };
+  }
+
+  /* ---------------------------------------------------------------------
+     WhatsApp button — steps aside while scrolling down on a phone
+     --------------------------------------------------------------------- */
+  function initWhatsAppTuck() {
+    var button = document.querySelector('.whatsapp-float');
+    if (!button || !window.matchMedia) return;
+
+    var phone = window.matchMedia('(max-width: 749px)');
+    var anchor = window.scrollY;
+    var queued = false;
+    var settle;
+
+    function update() {
+      queued = false;
+      var y = window.scrollY;
+
+      if (!phone.matches || y < 160) {
+        button.classList.remove('is-tucked');
+        anchor = y;
+      } else if (y - anchor > 24) {
+        button.classList.add('is-tucked');
+        anchor = y;
+      } else if (anchor - y > 24) {
+        button.classList.remove('is-tucked');
+        anchor = y;
+      }
+
+      // Not a permanent hide: it comes back once the page stops moving.
+      clearTimeout(settle);
+      settle = setTimeout(function () {
+        button.classList.remove('is-tucked');
+      }, 900);
+    }
+
+    window.addEventListener(
+      'scroll',
+      function () {
+        if (queued) return;
+        queued = true;
+        window.requestAnimationFrame(update);
+      },
+      { passive: true }
+    );
+  }
+
   function init() {
     initReveal();
     initGallery();
@@ -585,6 +703,8 @@
     initAgeConfirm();
     initAutoSubmit();
     initShare();
+    initStickyAtc();
+    initWhatsAppTuck();
   }
 
   if (document.readyState === 'loading') {
@@ -597,5 +717,6 @@
   document.addEventListener('shopify:section:load', function () {
     initReveal();
     initVariantPicker();
+    initStickyAtc();
   });
 })();
