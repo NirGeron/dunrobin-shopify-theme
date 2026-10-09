@@ -20,6 +20,7 @@ import json
 import os
 import re
 import shutil
+import struct
 import subprocess
 import sys
 import tempfile
@@ -441,6 +442,42 @@ def test_structure():
         check(f'structured data: emits {kind}', f'"@type": "{kind}"' in sd_src)
     check('structured data: product markup still comes from the product section',
           'product | structured_data' in open(rel('sections/main-product.liquid')).read())
+
+    # Organization needs a logo to be eligible for the logo in results, and a
+    # store that has not uploaded one in Theme settings is the normal state, so
+    # the logo must not depend on a setting: saved brand mark, then main logo,
+    # then the monogram shipped in assets/.
+    check('structured data: logo prefers the saved brand mark, then the main logo',
+          'settings.brand_mark | default: settings.logo' in sd_src)
+    check("structured data: logo falls back to the shipped brand-mark.png",
+          "'brand-mark.png' | asset_url" in sd_src)
+    check('structured data: Organization emits its logo unconditionally',
+          bool(re.search(r'"url":\s*\{\{\s*shop\.url\s*\|\s*json\s*\}\}\s*,"logo":\s*\{\{\s*sd_logo_url\s*\|\s*json\s*\}\}',
+                         sd_src)), 'the logo line must not sit inside an {% if %}')
+
+    # Favicon: an uploaded one wins; otherwise the layouts fall back to the
+    # shipped icon, so the page never goes out without <link rel="icon">.
+    # Google wants a square favicon whose side is a multiple of 48px.
+    def png_size(path):
+        with open(rel(path), 'rb') as f:
+            head = f.read(24)
+        return struct.unpack('>II', head[16:24]) if head[:8] == b'\x89PNG\r\n\x1a\n' else None
+
+    favicon_size = png_size('assets/favicon-192.png')
+    check('favicon: assets/favicon-192.png is a square PNG, side a multiple of 48px',
+          favicon_size is not None and favicon_size[0] == favicon_size[1] and favicon_size[0] % 48 == 0,
+          f'got {favicon_size}')
+    for name, src in (('theme.liquid', layout_src), ('password.liquid', password_src)):
+        block = re.search(r'\{%-?\s*if settings\.favicon != blank\s*-?%\}(.*?)\{%-?\s*endif\s*-?%\}',
+                          src, flags=re.S)
+        branches = re.split(r'\{%-?\s*else\s*-?%\}', block.group(1)) if block else ['']
+        uploaded, fallback = (branches + [''])[:2]
+        check(f'favicon: {name} serves an uploaded favicon at 48px',
+              'settings.favicon | image_url: width: 48, height: 48' in uploaded)
+        check(f'favicon: {name} falls back to assets/favicon-192.png when none is uploaded',
+              'rel="icon"' in fallback and "'favicon-192.png' | asset_url" in fallback)
+    check('favicon: theme.liquid falls back to assets/favicon.png for the Apple touch icon',
+          bool(re.search(r'rel="apple-touch-icon" href="\{\{ \'favicon\.png\' \| asset_url \}\}"', layout_src)))
 
     # Required theme files.
     for required in ('layout/theme.liquid', 'config/settings_schema.json',

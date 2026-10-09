@@ -5,7 +5,8 @@
   and the site name shown in results all read from this markup, so it is
   emitted from the layout rather than left to individual sections.
 
-    Home page   Organization + WebSite (feeds the site name and logo)
+    Home page   Organization + WebSite (feeds the site name and logo; the
+                logo falls back to assets/brand-mark.png when none is set)
     Product     BreadcrumbList. The Product markup itself is output by
                 sections/main-product.liquid via the structured_data filter.
     Collection  BreadcrumbList
@@ -17,9 +18,14 @@
 {%- endcomment -%}
 
 {%- liquid
-  assign sd_logo_source = settings.brand_mark
-  if sd_logo_source == blank
-    assign sd_logo_source = settings.logo
+  # Brand mark first (square, which suits a logo), then the main logo, then the
+  # monogram shipped in assets/ — the same kind of fallback the header uses, so
+  # a store that has not uploaded anything in Theme settings still gets one.
+  assign sd_logo_image = settings.brand_mark | default: settings.logo
+  if sd_logo_image != blank
+    assign sd_logo_url = sd_logo_image | image_url: width: 600 | prepend: 'https:'
+  else
+    assign sd_logo_url = 'brand-mark.png' | asset_url | prepend: 'https:'
   endif
 
   # Breadcrumb trail as two parallel lists, because Liquid cannot build an
@@ -67,9 +73,7 @@
           "@id": {{ shop.url | append: '/#organization' | json }},
           "name": {{ shop.name | json }},
           "url": {{ shop.url | json }}
-          {%- if sd_logo_source != blank -%}
-            ,"logo": {{ sd_logo_source | image_url: width: 600 | prepend: 'https:' | json }}
-          {%- endif -%}
+          ,"logo": {{ sd_logo_url | json }}
           {%- if shop.description != blank -%}
             ,"description": {{ shop.description | json }}
           {%- endif -%}
