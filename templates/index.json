@@ -41,13 +41,13 @@
         "buttons"
       ],
       "settings": {
-        "height": "large",
+        "height": "medium",
         "content_position": "left",
         "duotone": false,
         "duotone_opacity": 40,
         "scrim": true,
         "padding_top": 80,
-        "padding_bottom": 80
+        "padding_bottom": 8
       }
     },
     "dispatches": {
