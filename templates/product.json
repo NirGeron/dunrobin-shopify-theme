@@ -80,25 +80,9 @@
         "padding_top": 64,
         "padding_bottom": 96
       }
-    },
-    "related": {
-      "type": "featured-collection",
-      "settings": {
-        "eyebrow": "",
-        "heading": "You may also like",
-        "heading_alignment": "center",
-        "products_to_show": 4,
-        "columns": 4,
-        "image_ratio": "portrait",
-        "show_view_all": false,
-        "color_scheme": "alt",
-        "padding_top": 96,
-        "padding_bottom": 96
-      }
     }
   },
   "order": [
-    "main",
-    "related"
+    "main"
   ]
 }
