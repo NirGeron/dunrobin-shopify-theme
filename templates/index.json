@@ -30,7 +30,8 @@
           "settings": {
             "button_label": "Shop the collection",
             "button_link": "shopify://collections/all",
-            "button_label_2": ""
+            "button_label_2": "",
+            "button_link_2": ""
           }
         }
       },
@@ -59,6 +60,7 @@
         "columns": 3,
         "mobile_carousel": true,
         "stagger": true,
+        "feature_single": true,
         "image_ratio": "portrait",
         "show_filters": false,
         "filters_to_show": 3,
@@ -111,7 +113,7 @@
       "type": "apps",
       "blocks": {
         "google_reviews_repocean_repocean_reviews_carousel_GFyb6z": {
-          "type": "shopify://apps/google-reviews-repocean/blocks/repocean-reviews-carousel/019aa132-98b1-7055-b64e-581f915ade43",
+          "type": "shopify://apps/repocean-google-reviews/blocks/repocean-reviews-carousel/019aa132-98b1-7055-b64e-581f915ade43",
           "settings": {
             "section_title": "",
             "section_title_tag": "h2",
@@ -197,8 +199,8 @@
         "layout": "image_first",
         "wide_media": false,
         "color_scheme": "default",
-        "padding_top": 96,
-        "padding_bottom": 96
+        "padding_top": 0,
+        "padding_bottom": 24
       }
     },
     "expression": {
