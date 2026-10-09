@@ -388,6 +388,21 @@
     ]
   },
   {
+    "name": "Google Search Console",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "In Search Console choose Add property, then URL prefix, then the HTML tag verification method. Paste the tag, or just the content value from it, below. Save, then click Verify in Search Console."
+      },
+      {
+        "type": "text",
+        "id": "google_site_verification",
+        "label": "Verification tag",
+        "info": "Leave empty if you verify by DNS instead."
+      }
+    ]
+  },
+  {
     "name": "Search engine sharing",
     "settings": [
       {

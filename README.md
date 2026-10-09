@@ -81,6 +81,49 @@ link and goes straight there.
 
 The gate is suppressed inside the theme editor so it does not block previewing.
 
+## Google Search Console
+
+Search Console itself is Google's tool and lives at search.google.com/search-console.
+The theme does its half: it carries the ownership tag and publishes the structured
+data that the Search Console reports read.
+
+**Verify the site** (once)
+
+1. In Search Console choose **Add property → URL prefix** and enter the store's
+   primary domain, e.g. `https://dunrobin.example`.
+2. Pick the **HTML tag** verification method and copy the tag Google shows.
+3. In **Theme settings → Google Search Console**, paste it into *Verification tag*
+   (the whole tag or just the `content` value both work) and save.
+4. Back in Search Console, click **Verify**.
+
+This store's own tag is written directly under `<head>` in `layout/theme.liquid`
+(a test fails if it is removed — deleting it unverifies the property), so leave the
+setting empty unless you are verifying a different property or token. Whatever is
+in the setting is rendered on every page, including the password page, so it is
+found whether or not the store is locked. Use the primary domain, not `*.myshopify.com`.
+To cover subdomains too, add a **Domain** property and verify it with the DNS TXT
+record at the domain registrar instead — that needs no theme change.
+
+**Submit the sitemap** (once, after verifying)
+
+Shopify generates it automatically. In Search Console → **Sitemaps**, submit
+`sitemap.xml`. Don't add a `robots.txt` override unless it's really needed;
+Shopify's default already points crawlers at the sitemap and keeps cart,
+checkout and search out of the index.
+
+**Structured data the theme outputs** (`snippets/structured-data.liquid`)
+
+| Page | Markup | Search Console report |
+| --- | --- | --- |
+| Home | Organization, WebSite | Site name and logo in results |
+| Product | Product (from the product section), BreadcrumbList | Merchant listings, Product snippets, Breadcrumbs |
+| Collection | BreadcrumbList | Breadcrumbs |
+| Article | Article, BreadcrumbList | Breadcrumbs |
+
+Organization uses the *Brand mark* from Brand assets as its logo (falling back to
+the main logo) and the social links from Theme settings as `sameAs`. Check the live
+pages with Google's Rich Results Test once the theme is published.
+
 ## Legal
 
 Footer carries the UK Chief Medical Officers' drinking guidance and the Highland

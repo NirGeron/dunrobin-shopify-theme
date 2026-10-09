@@ -399,6 +399,49 @@ def test_structure():
                 check(f'whatsapp: sits below the {name}', wa_z < int(m.group(1)),
                       f'whatsapp {wa_z} vs {name} {m.group(1)}')
 
+    # Google Search Console. Ownership is proved by a meta tag in the <head>
+    # of the home page, so it has to come from the layouts rather than a
+    # section — and from password.liquid too, which is all Google sees while
+    # the store is locked. The comments in these snippets name the same tags
+    # they render, so the checks look at the code with comments removed.
+    def no_comments(text):
+        return re.sub(r'\{%-?\s*comment\s*-?%\}.*?\{%-?\s*endcomment\s*-?%\}', '',
+                      text, flags=re.S)
+
+    gsc_src = no_comments(open(rel('snippets/search-console.liquid')).read())
+    sd_src = no_comments(open(rel('snippets/structured-data.liquid')).read())
+    password_src = open(rel('layout/password.liquid')).read()
+    schema_ids = [s['id']
+                  for g in json.load(open(rel('config/settings_schema.json')))
+                  for s in g.get('settings', []) if s.get('id')]
+    check('search console: verification setting exists in the schema',
+          'google_site_verification' in schema_ids)
+    check('search console: verification tag rendered from the theme layout',
+          "render 'search-console'" in layout_src)
+    check('search console: the live site verification tag is in theme.liquid',
+          '<meta name="google-site-verification" content="zsHhrKhdl-rDowwYGmDEXpLj6lzVbNZhAfaUwuNgKrk" />'
+          in layout_src, 'removing it unverifies the property in Search Console')
+    check('search console: verification tag rendered from the password layout',
+          "render 'search-console'" in password_src)
+    check('search console: tag is only output when a token is set',
+          'settings.google_site_verification' in gsc_src and 'gsc_token != blank' in gsc_src and
+          'name="google-site-verification"' in gsc_src)
+    check('search console: token is escaped into the attribute',
+          bool(re.search(r'content="\{\{\s*gsc_token[^}]*\|\s*escape\s*\}\}"', gsc_src)))
+    check('structured data: rendered from the theme layout',
+          "render 'structured-data'" in layout_src)
+    # A quote or ampersand in a shop, product or article title would end the
+    # string early and Google drops the whole block — every interpolated value
+    # inside a JSON-LD script must go through | json.
+    unjsoned = [m for m in re.findall(r'\{\{(?!.*\|\s*json\s*\}\})[^}]*\}\}', sd_src)
+                if 'forloop.index' not in m]
+    check('structured data: every interpolated value goes through the json filter',
+          not unjsoned, f'unescaped: {unjsoned}')
+    for kind in ('Organization', 'WebSite', 'BreadcrumbList', 'Article'):
+        check(f'structured data: emits {kind}', f'"@type": "{kind}"' in sd_src)
+    check('structured data: product markup still comes from the product section',
+          'product | structured_data' in open(rel('sections/main-product.liquid')).read())
+
     # Required theme files.
     for required in ('layout/theme.liquid', 'config/settings_schema.json',
                      'config/settings_data.json', 'locales/en.default.json',

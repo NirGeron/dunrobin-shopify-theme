@@ -1,0 +1,25 @@
+{%- comment -%}
+  Google Search Console ownership verification.
+
+  Search Console asks the site to prove ownership by serving a meta tag in
+  the <head> of the home page. The merchant pastes the token under
+  Theme settings → Google Search Console and it is rendered here on every
+  page, in both layouts, so it is also found while the store is password
+  protected.
+
+  Google hands out the whole <meta name="google-site-verification" ...> tag,
+  and pasting that is the natural thing to do, so a pasted tag is reduced to
+  its content value rather than rendered as a tag inside a tag.
+{%- endcomment -%}
+
+{%- liquid
+  assign gsc_token = settings.google_site_verification | strip
+
+  if gsc_token contains 'content='
+    assign gsc_token = gsc_token | split: 'content="' | last | split: '"' | first
+  endif
+-%}
+
+{%- if gsc_token != blank -%}
+  <meta name="google-site-verification" content="{{ gsc_token | strip | escape }}">
+{%- endif -%}
