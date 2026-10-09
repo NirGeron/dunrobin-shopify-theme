@@ -365,6 +365,18 @@ def test_structure():
     check('hero banner: later headings fall back to <h2>',
           hero_src.count("assign heading_tag = 'h2'") >= 2)
 
+    # A featured-collection with no collection chosen renders four "Example
+    # product" placeholder cards on the live storefront. Fine as a theme-editor
+    # preview, wrong in a shipped template.
+    for tpl in sorted(os.listdir(rel('templates'))):
+        if not tpl.endswith('.json'):
+            continue
+        tpl_sections = load_json(rel('templates', tpl)).get('sections', {})
+        bare = [sid for sid, s in tpl_sections.items()
+                if s['type'] == 'featured-collection'
+                and not s.get('settings', {}).get('collection')]
+        check(f'templates/{tpl}: no featured-collection without a collection',
+              not bare, f'renders placeholder cards: {", ".join(bare)}')
 
     # A default in settings_schema.json does NOT reach a theme that already
     # has a settings_data.json — Shopify reads the saved file, and a key that
