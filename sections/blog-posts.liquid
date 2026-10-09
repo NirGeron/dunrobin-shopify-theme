@@ -2,6 +2,18 @@
   assign target_blog = section.settings.blog
   assign posts = target_blog.articles
   assign count = section.settings.posts_to_show
+
+  comment
+    A lone post in a three-column grid is a third-width card with two empty
+    thirds beside it, and a section nearly twice as tall as it needs to be.
+    Shown sideways instead, the picture keeps its full shape and the text
+    sits beside it.
+  endcomment
+  assign shown = posts.size | at_most: count
+  assign feature_single = false
+  if section.settings.feature_single and shown == 1
+    assign feature_single = true
+  endif
 -%}
 
 <div
@@ -45,7 +57,7 @@
       {%- endif -%}
     </div>
 
-    <div class="dispatch-grid dispatch-grid--{{ section.settings.columns }} {% if section.settings.stagger %}dispatch-grid--staggered{% endif %} {% if section.settings.mobile_carousel %}dispatch-grid--carousel{% endif %}">
+    <div class="dispatch-grid dispatch-grid--{{ section.settings.columns }} {% if section.settings.stagger %}dispatch-grid--staggered{% endif %} {% if section.settings.mobile_carousel %}dispatch-grid--carousel{% endif %} {% if feature_single %}dispatch-grid--feature{% endif %}">
       {%- if posts.size > 0 -%}
         {%- for article in posts limit: count -%}
           <article class="dispatch-card reveal">
@@ -160,6 +172,13 @@
       "label": "Stagger alternate cards",
       "default": true,
       "info": "Drops every second card slightly, for an editorial feel."
+    },
+    {
+      "type": "checkbox",
+      "id": "feature_single",
+      "label": "Show a lone post sideways",
+      "default": true,
+      "info": "With just one post, the picture and text sit side by side on desktop instead of leaving two empty columns."
     },
     {
       "type": "select",

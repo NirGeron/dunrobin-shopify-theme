@@ -2353,11 +2353,29 @@ textarea.field__input {
 .image-banner--auto { height: auto; }
 
 /* Whole image across the full width, with a slice taken off top and bottom.
-   The ratio already accounts for the trim, so this holds at every width. */
+   The ratio already accounts for the trim, so this holds at every width.
+   The slice is anchored with object-position so it comes off the top and the
+   bottom in the proportions the section asked for, rather than evenly.
+   Phones get their own, gentler ratio: the box is only as tall as the screen
+   is wide, so the desktop trim would leave a thin strip there. */
 .image-banner--fit {
   height: auto;
   min-height: 0;
-  aspect-ratio: var(--banner-ratio, 16 / 9);
+  aspect-ratio: var(--banner-ratio-phone, var(--banner-ratio, 16 / 9));
+}
+
+.image-banner--fit > img {
+  object-position: 50% var(--banner-focus-y-phone, 50%);
+}
+
+@media screen and (min-width: 750px) {
+  .image-banner--fit {
+    aspect-ratio: var(--banner-ratio, 16 / 9);
+  }
+
+  .image-banner--fit > img {
+    object-position: 50% var(--banner-focus-y, 50%);
+  }
 }
 
 .image-banner__caption {
@@ -2386,6 +2404,10 @@ textarea.field__input {
   height: auto;
   max-width: 42rem;
   min-width: 12rem;
+  /* The banner is shorter than it is wide, so the seal is also held to a share
+     of its height; contain scales the seal down inside the box, still centred,
+     and leaves the castle behind it readable. */
+  max-height: 34%;
   object-fit: contain;
 }
 
@@ -2511,11 +2533,14 @@ textarea.field__input {
 
 .featured-product--centered .featured-product__media {
   position: relative;
-  margin-bottom: 4rem;
+  margin-bottom: 3.2rem;
 }
 
+/* The bottle is the point of the section, but not at the cost of pushing the
+   price and button off the screen: it is held to 40rem, and to just over half
+   the window on a short laptop screen. */
 .featured-product--centered .featured-product__media img {
-  max-height: 52rem;
+  max-height: min(40rem, 56vh);
   width: auto;
   margin: 0 auto;
   object-fit: contain;
@@ -2535,7 +2560,7 @@ textarea.field__input {
   display: flex;
   justify-content: center;
   gap: 4.8rem;
-  margin: 3.2rem 0;
+  margin: 2.4rem 0;
   flex-wrap: wrap;
 }
 
@@ -2749,7 +2774,7 @@ textarea.field__input {
   align-items: baseline;
   justify-content: space-between;
   gap: 2rem 3.2rem;
-  margin-bottom: 5.6rem;
+  margin-bottom: 4rem;
 }
 
 .dispatch-header__heading {
@@ -2810,6 +2835,57 @@ textarea.field__input {
   display: flex;
   flex-direction: column;
   height: 100%;
+}
+
+/* A single post, shown sideways: the picture keeps its full 4:5 shape at a
+   fixed width and the text sits beside it, centred on it. Phones keep the
+   ordinary stacked card (or the rail), so this only applies from 750px. The
+   two 1fr rows above and below the text take up whatever height the picture
+   has over the text, which is what centres the copy against it. */
+@media screen and (min-width: 750px) {
+  .dispatch-grid--feature {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .dispatch-grid--feature .dispatch-card {
+    display: grid;
+    grid-template-columns: minmax(0, 34rem) minmax(0, 1fr);
+    grid-template-rows: 1fr repeat(4, auto) 1fr;
+    column-gap: clamp(3.2rem, 6vw, 6.4rem);
+    height: auto;
+  }
+
+  .dispatch-grid--feature .dispatch-card__media {
+    grid-column: 1;
+    grid-row: 1 / -1;
+    margin-bottom: 0;
+  }
+
+  .dispatch-grid--feature .dispatch-card__meta,
+  .dispatch-grid--feature .dispatch-card__title,
+  .dispatch-grid--feature .dispatch-card__excerpt,
+  .dispatch-grid--feature .dispatch-card__more {
+    grid-column: 2;
+    max-width: 56rem;
+  }
+
+  /* Beside the picture the date reads from the left, under the heading's
+     edge, rather than being pushed to the far side of a wide column. */
+  .dispatch-grid--feature .dispatch-card__meta {
+    grid-row: 2;
+    justify-content: flex-start;
+    gap: 2.4rem;
+  }
+  .dispatch-grid--feature .dispatch-card__meta > span:empty { display: none; }
+  .dispatch-grid--feature .dispatch-card__title {
+    grid-row: 3;
+    font-size: calc(3.2rem * var(--heading-scale));
+  }
+  .dispatch-grid--feature .dispatch-card__excerpt {
+    grid-row: 4;
+    font-size: 1.5rem;
+  }
+  .dispatch-grid--feature .dispatch-card__more { grid-row: 5; margin-top: 0; }
 }
 
 .dispatch-card__media {
