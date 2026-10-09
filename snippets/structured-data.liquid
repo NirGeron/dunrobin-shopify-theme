@@ -1,0 +1,139 @@
+{%- comment -%}
+  JSON-LD structured data for Search Console.
+
+  Search Console's Enhancements reports (Breadcrumbs, Products, Articles)
+  and the site name shown in results all read from this markup, so it is
+  emitted from the layout rather than left to individual sections.
+
+    Home page   Organization + WebSite (feeds the site name and logo)
+    Product     BreadcrumbList. The Product markup itself is output by
+                sections/main-product.liquid via the structured_data filter.
+    Collection  BreadcrumbList
+    Article     Article + BreadcrumbList
+
+  Every value goes through the json filter so a quote or ampersand in a
+  product or shop name cannot break the script block — a broken block is
+  silently dropped by Google and shows up in Search Console as an error.
+{%- endcomment -%}
+
+{%- liquid
+  assign sd_logo_source = settings.brand_mark
+  if sd_logo_source == blank
+    assign sd_logo_source = settings.logo
+  endif
+
+  # Breadcrumb trail as two parallel lists, because Liquid cannot build an
+  # array any other way. "~~" will not occur in a title or a URL.
+  assign sd_crumb_names = ''
+  assign sd_crumb_urls = ''
+
+  if template.name == 'product'
+    assign sd_crumb_names = shop.name
+    assign sd_crumb_urls = shop.url
+    if collection != blank
+      assign sd_crumb_names = sd_crumb_names | append: '~~' | append: collection.title
+      assign sd_crumb_urls = sd_crumb_urls | append: '~~' | append: shop.url | append: collection.url
+    endif
+    assign sd_crumb_names = sd_crumb_names | append: '~~' | append: product.title
+    assign sd_crumb_urls = sd_crumb_urls | append: '~~' | append: canonical_url
+  elsif template.name == 'collection'
+    assign sd_crumb_names = shop.name | append: '~~' | append: collection.title
+    assign sd_crumb_urls = shop.url | append: '~~' | append: canonical_url
+  elsif template.name == 'article'
+    assign sd_crumb_names = shop.name | append: '~~' | append: blog.title | append: '~~' | append: article.title
+    assign sd_crumb_urls = shop.url | append: '~~' | append: shop.url | append: blog.url | append: '~~' | append: canonical_url
+  endif
+
+  assign sd_crumb_name_list = sd_crumb_names | split: '~~'
+  assign sd_crumb_url_list = sd_crumb_urls | split: '~~'
+
+  # Social profiles for Organization.sameAs, blank entries dropped.
+  assign sd_social = settings.social_instagram_link
+  assign sd_social = sd_social | append: '~~' | append: settings.social_facebook_link
+  assign sd_social = sd_social | append: '~~' | append: settings.social_twitter_link
+  assign sd_social = sd_social | append: '~~' | append: settings.social_youtube_link
+  assign sd_social = sd_social | append: '~~' | append: settings.social_tiktok_link
+  assign sd_social_list = sd_social | split: '~~'
+  assign sd_social_count = 0
+-%}
+
+{%- if template.name == 'index' -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": {{ shop.url | append: '/#organization' | json }},
+          "name": {{ shop.name | json }},
+          "url": {{ shop.url | json }}
+          {%- if sd_logo_source != blank -%}
+            ,"logo": {{ sd_logo_source | image_url: width: 600 | prepend: 'https:' | json }}
+          {%- endif -%}
+          {%- if shop.description != blank -%}
+            ,"description": {{ shop.description | json }}
+          {%- endif -%}
+          {%- assign sd_has_social = sd_social | remove: '~~' | strip -%}
+          {%- if sd_has_social != blank -%}
+            ,"sameAs": [
+              {%- for social_link in sd_social_list -%}
+                {%- assign social_url = social_link | strip -%}
+                {%- if social_url != blank -%}
+                  {%- if sd_social_count > 0 -%},{%- endif -%}
+                  {{ social_url | json }}
+                  {%- assign sd_social_count = sd_social_count | plus: 1 -%}
+                {%- endif -%}
+              {%- endfor -%}
+            ]
+          {%- endif -%}
+        },
+        {
+          "@type": "WebSite",
+          "@id": {{ shop.url | append: '/#website' | json }},
+          "name": {{ shop.name | json }},
+          "url": {{ shop.url | json }},
+          "publisher": { "@id": {{ shop.url | append: '/#organization' | json }} }
+        }
+      ]
+    }
+  </script>
+{%- endif -%}
+
+{%- if sd_crumb_name_list.size > 1 -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {%- for crumb_name in sd_crumb_name_list -%}
+          {
+            "@type": "ListItem",
+            "position": {{ forloop.index }},
+            "name": {{ crumb_name | json }},
+            "item": {{ sd_crumb_url_list[forloop.index0] | json }}
+          }{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ]
+    }
+  </script>
+{%- endif -%}
+
+{%- if template.name == 'article' -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "mainEntityOfPage": { "@type": "WebPage", "@id": {{ canonical_url | json }} },
+      "headline": {{ article.title | truncate: 110, '' | json }},
+      "datePublished": {{ article.published_at | date: '%Y-%m-%dT%H:%M:%S%:z' | json }},
+      "dateModified": {{ article.updated_at | default: article.published_at | date: '%Y-%m-%dT%H:%M:%S%:z' | json }},
+      {%- if article.image -%}
+        "image": [{{ article.image | image_url: width: 1200 | prepend: 'https:' | json }}],
+      {%- endif -%}
+      {%- if article.author != blank -%}
+        "author": { "@type": "Person", "name": {{ article.author | json }} },
+      {%- endif -%}
+      "publisher": { "@type": "Organization", "name": {{ shop.name | json }}, "url": {{ shop.url | json }} }
+    }
+  </script>
+{%- endif -%}
