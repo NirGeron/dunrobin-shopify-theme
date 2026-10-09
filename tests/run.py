@@ -59,6 +59,13 @@ def rel(*p):
     return os.path.join(ROOT, *p)
 
 
+def load_json(path):
+    """Shopify rewrites templates/index.json and config/settings_data.json with
+    a leading /* auto-generated */ warning block, which strict json.load rejects."""
+    src = open(path).read()
+    return json.loads(re.sub(r'\A\s*/\*.*?\*/', '', src, count=1, flags=re.S))
+
+
 # ---------------------------------------------------------------------------
 # Structure
 # ---------------------------------------------------------------------------
@@ -80,8 +87,8 @@ def test_structure():
             if f.endswith('.json'):
                 p = os.path.join(dirpath, f)
                 try:
-                    json.load(open(p))
-                    check(f'json parses: {os.path.relpath(p, ROOT)}', True)
+                    load_json(p)
+                    check(f'json parses:{os.path.relpath(p, ROOT)}', True)
                 except Exception as e:
                     check(f'json parses: {os.path.relpath(p, ROOT)}', False, str(e))
 
@@ -114,7 +121,7 @@ def test_structure():
 
     for p in targets:
         label = os.path.relpath(p, ROOT)
-        d = json.load(open(p))
+        d = load_json(p)
         for sid, sec in d.get('sections', {}).items():
             sch = schemas.get(sec['type'])
             if sch is None:
@@ -147,7 +154,7 @@ def test_structure():
     # settings_data keys must exist in settings_schema.
     schema_ids = {s['id'] for g in json.load(open(rel('config/settings_schema.json')))
                   for s in g.get('settings', []) if 'id' in s}
-    data = json.load(open(rel('config/settings_data.json')))
+    data = load_json(rel('config/settings_data.json'))
     for k in data['current']:
         check(f'settings_data key "{k}" declared', k in schema_ids)
 
@@ -317,7 +324,7 @@ def test_structure():
 
     # The castle banner on the home page carries the seal by default, per the
     # README — a merchant edit could flip this without anyone noticing.
-    index_tpl = json.load(open(rel('templates/index.json')))
+    index_tpl = load_json(rel('templates/index.json'))
     castle_banners = [s for s in index_tpl['sections'].values()
                        if s['type'] == 'image-banner' and s.get('settings', {}).get('show_seal')]
     check('home page: the castle banner shows the seal', bool(castle_banners))
@@ -346,6 +353,7 @@ def test_structure():
     check('google reviews: no template still references the section',
           not any(s['type'] == 'google-reviews'
                   for s in index_tpl['sections'].values()))
+
 
     # A default in settings_schema.json does NOT reach a theme that already
     # has a settings_data.json — Shopify reads the saved file, and a key that
