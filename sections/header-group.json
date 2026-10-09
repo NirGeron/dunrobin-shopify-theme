@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "type": "header",
   "name": "Header",
@@ -8,13 +17,15 @@
         "announcement-1": {
           "type": "announcement",
           "settings": {
-            "text": "Handcrafted in Golspie, in the Scottish Highlands"
+            "text": "Handcrafted in Golspie, in the Scottish Highlands",
+            "link": ""
           }
         },
         "announcement-2": {
           "type": "announcement",
           "settings": {
-            "text": "Adult signature required on delivery"
+            "text": "Adult signature required on delivery",
+            "link": ""
           }
         }
       },
@@ -23,8 +34,8 @@
         "announcement-2"
       ],
       "settings": {
-        "background": "#1C348F",
-        "text_color": "#FFFFFF",
+        "background": "#1c348f",
+        "text_color": "#ffffff",
         "autorotate": true,
         "speed": 6
       }
@@ -36,7 +47,7 @@
         "menu": "main-menu",
         "layout": "left",
         "sticky": true,
-        "show_search": true,
+        "show_search": false,
         "show_account": true
       }
     }
