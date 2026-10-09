@@ -40,6 +40,16 @@
   <div class="hero__content">
     <div class="page-width">
       <div class="hero__inner">
+        {%- comment -%}
+          The home page has no other <h1>, so the first hero heading is it. Size
+          comes from the .h0/.h1/.h2 class, so the tag doesn't change the look.
+          Any further heading stays an <h2> so the page never gets two.
+        {%- endcomment -%}
+        {%- assign heading_tag = 'h2' -%}
+        {%- if template.name == 'index' and section.index == 1 -%}
+          {%- assign heading_tag = 'h1' -%}
+        {%- endif -%}
+
         {%- for block in section.blocks -%}
           {%- case block.type -%}
             {%- when 'logo' -%}
@@ -56,9 +66,10 @@
               <p class="eyebrow eyebrow--light" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
 
             {%- when 'heading' -%}
-              <h2 class="hero__heading {{ block.settings.size }}" {{ block.shopify_attributes }}>
+              <{{ heading_tag }} class="hero__heading {{ block.settings.size }}" {{ block.shopify_attributes }}>
                 {{ block.settings.text }}
-              </h2>
+              </{{ heading_tag }}>
+              {%- assign heading_tag = 'h2' -%}
 
             {%- when 'text' -%}
               <div class="hero__text rte" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>

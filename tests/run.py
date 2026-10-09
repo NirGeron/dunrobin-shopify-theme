@@ -354,6 +354,17 @@ def test_structure():
           not any(s['type'] == 'google-reviews'
                   for s in index_tpl['sections'].values()))
 
+    # The home page needs exactly one <h1>, and only the first hero heading may
+    # be it: later headings, and the hero on any other template, stay <h2>. The
+    # visual size comes from the .h0/.h1/.h2 class, not the tag.
+    hero_src = open(rel('sections/hero-banner.liquid')).read()
+    check('hero banner: first heading renders as the home page <h1>',
+          "template.name == 'index'" in hero_src
+          and "assign heading_tag = 'h1'" in hero_src
+          and '<{{ heading_tag }} class="hero__heading' in hero_src)
+    check('hero banner: later headings fall back to <h2>',
+          hero_src.count("assign heading_tag = 'h2'") >= 2)
+
 
     # A default in settings_schema.json does NOT reach a theme that already
     # has a settings_data.json — Shopify reads the saved file, and a key that
