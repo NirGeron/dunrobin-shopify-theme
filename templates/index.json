@@ -101,7 +101,7 @@
       "type": "image-banner",
       "settings": {
         "height": "fit",
-        "trim_top": 6,
+        "trim_top": 8,
         "trim_bottom": 39,
         "fit_mobile": true,
         "caption": "",
