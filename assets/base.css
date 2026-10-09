@@ -381,7 +381,7 @@ button.shopify-payment-button__button--unbranded {
 }
 
 .field__label {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: var(--label-tracking);
@@ -482,6 +482,21 @@ textarea.field__input {
 }
 
 .announcement-bar a { color: inherit; }
+
+/* The default tracking is wide enough to wrap a one-line message onto three
+   phone lines. Tighter tracking and leading, with the break balanced, keeps
+   the bar to two even lines instead of two uneven ones plus an orphan. */
+@media screen and (max-width: 749px) {
+  .announcement-bar {
+    letter-spacing: 0.1em;
+    line-height: 1.4;
+  }
+
+  .announcement-bar__inner {
+    padding: 0.9rem 1.6rem;
+    text-wrap: balance;
+  }
+}
 
 .header-wrapper {
   position: relative;
@@ -668,14 +683,17 @@ textarea.field__input {
 
 /* On the narrowest phones the equal side tracks let the icon row's
    min-content crush the logo to a ~50px sliver. Flexible logo track,
-   natural icon track, tighter boxes: the lockup keeps a legible size and
-   every icon stays comfortably above the 24px tap minimum. */
+   natural icon track: the lockup keeps a legible size. */
 @media screen and (max-width: 399px) {
   .header {
     gap: 1rem;
     grid-template-columns: minmax(0, 1fr) auto auto;
   }
+}
 
+/* 44px is the touch guideline. The icons only give ground below 360px, where
+   four of them would otherwise squeeze the logo to a sliver. */
+@media screen and (max-width: 359px) {
   .header__icon {
     width: 3.6rem;
     height: 3.6rem;
@@ -870,26 +888,34 @@ textarea.field__input {
 
 .hero--left .hero__scrim {
   background:
-    linear-gradient(to right, rgba(0, 0, 0, 0.62), rgba(0, 0, 0, 0.2) 52%, rgba(0, 0, 0, 0) 76%),
+    linear-gradient(to right, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.4) 52%, rgba(0, 0, 0, 0.06) 82%),
     linear-gradient(to top, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0) 55%);
 }
 
 .hero--right .hero__scrim {
   background:
-    linear-gradient(to left, rgba(0, 0, 0, 0.62), rgba(0, 0, 0, 0.2) 52%, rgba(0, 0, 0, 0) 76%),
+    linear-gradient(to left, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.4) 52%, rgba(0, 0, 0, 0.06) 82%),
     linear-gradient(to top, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0) 55%);
 }
 
 /* On a phone the content column is the full screen, so a side gradient that
    fades out at 76% leaves the last words of every line sitting on the bare
-   photo. Full-width, bottom-weighted shade puts every line on a dark
-   ground while the top of the image stays open. */
+   photo. Full-width shade puts every line on a dark ground; the top stops at
+   .3 rather than .08 because the heading sits up there, not at the bottom. */
 @media screen and (max-width: 749px) {
   .hero--left .hero__scrim,
   .hero--right .hero__scrim {
     background:
-      linear-gradient(to top, rgba(0, 0, 0, 0.58), rgba(0, 0, 0, 0.34) 55%, rgba(0, 0, 0, 0.08));
+      linear-gradient(to top, rgba(0, 0, 0, 0.62), rgba(0, 0, 0, 0.44) 55%, rgba(0, 0, 0, 0.32));
   }
+}
+
+/* A soft halo behind the copy catches the bright patches of the photo that
+   even a strong scrim leaves (castle stonework, sky). Barely visible on a
+   dark ground, so it doesn't read as an effect. */
+.hero__heading,
+.hero__text {
+  text-shadow: 0 1px 18px rgba(0, 0, 0, 0.45);
 }
 
 .hero--center .hero__scrim {
@@ -903,10 +929,6 @@ textarea.field__input {
   z-index: 2;
   width: 100%;
   padding: 8rem 0;
-}
-
-.hero__content .page-width {
-  padding-inline: clamp(2rem, 6vw, 9.6rem);
 }
 
 .hero__inner {
@@ -1090,7 +1112,7 @@ textarea.field__input {
 .card__badge--sold-out { background: var(--text-muted); }
 
 .card__vendor {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
   letter-spacing: var(--label-tracking);
   color: var(--text-muted);
@@ -1315,6 +1337,94 @@ textarea.field__input {
   margin: 2.4rem 0;
 }
 
+/* The wrapper's only child is the <form>, so its gap never reached the Add to
+   bag and dynamic-checkout buttons, which sat flush. The form needs its own. */
+.product-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+/* Branded PayPal / Shop Pay buttons are rendered by Shopify in iframes, so the
+   theme can only steer them through Shopify's documented variables (25-55px
+   tall). Taller and square-cornered to sit with the Add to bag button. */
+.product-form .shopify-payment-button {
+  margin: 0;
+  --shopify-accelerated-checkout-button-block-size: 54px;
+  --shopify-accelerated-checkout-button-border-radius: var(--button-radius);
+  --shopify-accelerated-checkout-row-gap: 12px;
+}
+
+/* The unbranded "Buy it now" is plain HTML, so it can match outright. */
+.product-form .shopify-payment-button__button--unbranded {
+  min-height: 5.4rem;
+  border-radius: var(--button-radius);
+  font-size: 1.2rem;
+  letter-spacing: var(--label-tracking);
+  text-transform: uppercase;
+}
+
+/* Sticky Add to bag — phone only. The gallery is ~70% of the first screen, so
+   the real button starts below the fold; this keeps the action in reach until
+   the real one is on screen (see initStickyAtc). Under the WhatsApp button
+   (50) and above the header (40). */
+.sticky-atc {
+  display: none;
+}
+
+@media screen and (max-width: 749px) {
+  :root { --sticky-atc-height: 7.6rem; }
+
+  .sticky-atc {
+    position: fixed;
+    inset: auto 0 0;
+    z-index: 45;
+    display: flex;
+    align-items: center;
+    gap: 1.6rem;
+    min-height: calc(var(--sticky-atc-height) + env(safe-area-inset-bottom, 0px));
+    padding: 1rem 1.6rem calc(1rem + env(safe-area-inset-bottom, 0px));
+    background-color: var(--bg);
+    border-top: 1px solid var(--border);
+    box-shadow: 0 -0.4rem 1.6rem rgba(0, 0, 0, 0.08);
+    transform: translateY(100%);
+    visibility: hidden;
+    transition: transform 0.25s ease, visibility 0s linear 0.25s;
+  }
+
+  .sticky-atc.is-visible {
+    transform: none;
+    visibility: visible;
+    transition: transform 0.25s ease;
+  }
+
+  .sticky-atc__info {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .sticky-atc__title {
+    display: block;
+    overflow: hidden;
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    line-height: 1.3;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .sticky-atc__price {
+    display: block;
+    font-size: 1.4rem;
+    color: var(--text-muted);
+  }
+
+  .sticky-atc__button {
+    flex: 0 0 auto;
+    padding-inline: 2.4rem;
+  }
+}
+
 .product-form__quantity {
   display: flex;
   align-items: center;
@@ -1356,7 +1466,7 @@ textarea.field__input {
 }
 
 .variant-picker__legend {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
   letter-spacing: var(--label-tracking);
   color: var(--text-muted);
@@ -1427,7 +1537,7 @@ textarea.field__input {
 .spec-bar__label {
   display: block;
   margin-bottom: 0.6rem;
-  font-size: 1rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
   letter-spacing: var(--label-tracking);
   color: var(--text-muted);
@@ -1447,10 +1557,6 @@ textarea.field__input {
 @media screen and (max-width: 749px) {
   .spec-bar__item {
     padding: 1.6rem 0.8rem;
-  }
-
-  .spec-bar__label {
-    font-size: 1.1rem;
   }
 
   .spec-bar__value {
@@ -2188,6 +2294,33 @@ textarea.field__input {
   box-shadow: 0 0.4rem 1.6rem rgba(0, 0, 0, 0.34);
 }
 
+/* Smaller on a phone, where it otherwise covers a thumb's width of body text,
+   and out of the way while the visitor is scrolling down the page. It comes
+   back as soon as they scroll up or stop (see initWhatsAppTuck). */
+@media screen and (max-width: 749px) {
+  .whatsapp-float {
+    width: 4.8rem;
+    height: 4.8rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, bottom 0.25s ease, opacity 0.2s ease;
+  }
+
+  .whatsapp-float svg {
+    width: 2.8rem;
+    height: 2.8rem;
+  }
+
+  .whatsapp-float.is-tucked {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(1.2rem);
+  }
+
+  /* Lift clear of the sticky Add to bag bar rather than sitting on it. */
+  .has-sticky-atc .whatsapp-float {
+    bottom: calc(var(--sticky-atc-height) + 1.2rem + env(safe-area-inset-bottom, 0px));
+  }
+}
+
 @media screen and (min-width: 750px) {
   .whatsapp-float {
     right: 2.4rem;
@@ -2291,7 +2424,7 @@ textarea.field__input {
 
 .article-card__meta {
   margin: 1.2rem 0 0.8rem;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
   letter-spacing: var(--label-tracking);
   color: var(--text-muted);
@@ -2517,7 +2650,7 @@ textarea.field__input {
 }
 
 .bento__footnote-label {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: var(--label-tracking);
@@ -2543,6 +2676,12 @@ textarea.field__input {
   max-width: 74rem;
   margin: 0 auto;
   text-align: center;
+}
+
+/* "Full width" in a 74rem column is a 740px bar; keep it a button. */
+.featured-product--centered .button--full {
+  width: auto;
+  min-width: min(100%, 32rem);
 }
 
 .featured-product--centered .featured-product__media {
@@ -2581,7 +2720,7 @@ textarea.field__input {
 .featured-product__stat-label {
   display: block;
   margin-bottom: 0.6rem;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
   letter-spacing: var(--label-tracking);
   color: var(--text-muted);
@@ -2688,7 +2827,7 @@ textarea.field__input {
 
 .age-confirm__legend {
   margin-bottom: 1.6rem;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: var(--label-tracking);
@@ -2746,7 +2885,7 @@ textarea.field__input {
 
 .cart-summary__meta {
   margin: 0.4rem 0 0.8rem;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
   letter-spacing: var(--label-tracking);
   color: var(--text-muted);
@@ -2762,7 +2901,7 @@ textarea.field__input {
   display: flex;
   justify-content: space-between;
   gap: 1.6rem;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
   letter-spacing: var(--label-tracking);
 }
@@ -2810,7 +2949,7 @@ textarea.field__input {
   min-height: 2.4rem;
   padding: 0.4rem 0 0.5rem;
   border-bottom: 1px solid transparent;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: var(--label-tracking);
@@ -2890,7 +3029,6 @@ textarea.field__input {
     justify-content: flex-start;
     gap: 2.4rem;
   }
-  .dispatch-grid--feature .dispatch-card__meta > span:empty { display: none; }
   .dispatch-grid--feature .dispatch-card__title {
     grid-row: 3;
     font-size: calc(3.2rem * var(--heading-scale));
@@ -2928,8 +3066,11 @@ textarea.field__input {
   margin-bottom: 1.2rem;
 }
 
+/* Without a tag the empty placeholder used to push the date to the far edge. */
+.dispatch-card__meta > span:empty { display: none; }
+
 .dispatch-card__tag {
-  font-size: 1.05rem;
+  font-size: 1.2rem;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: var(--label-tracking);
@@ -2969,7 +3110,7 @@ textarea.field__input {
   margin-top: auto;
   padding-top: 2rem;
   border-top: 1px solid var(--border);
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: var(--label-tracking);
@@ -3093,6 +3234,12 @@ textarea.field__input {
   .dispatch-grid--carousel > * {
     scroll-snap-align: start;
     margin-top: 0;
+  }
+
+  /* One post has nothing to peek at, so the 78vw card just leaves a dead strip
+     on the right. Browsers without :has() keep the 78vw card. */
+  .dispatch-grid--carousel:has(> :only-child) {
+    grid-auto-columns: 100%;
   }
 
   /* Narrative images show whole on a phone rather than being cropped to a band. */

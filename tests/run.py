@@ -449,6 +449,40 @@ def test_structure():
                 check(f'whatsapp: sits below the {name}', wa_z < int(m.group(1)),
                       f'whatsapp {wa_z} vs {name} {m.group(1)}')
 
+    # Product page. The quantity stepper is its own block, outside the <form>,
+    # so it only joins the add-to-cart request through form="<id>". The two ids
+    # once drifted apart and every order quietly went through as quantity 1.
+    prod_src = open(rel('sections/main-product.liquid')).read()
+    prod_code = re.sub(r'\{%-?\s*comment\s*-?%\}.*?\{%-?\s*endcomment\s*-?%\}', '',
+                       prod_src, flags=re.S)
+    check('product: quantity input names the same form id the form is given',
+          'form="ProductForm-{{ section.id }}"' in prod_code and
+          bool(re.search(r"assign\s+product_form_id\s*=\s*'ProductForm-'\s*\|\s*append:\s*section\.id",
+                         prod_code)) and
+          'id: product_form_id' in prod_code)
+
+    # The sticky Add to bag bar mirrors the real button and clicks it, so it is
+    # only worth having if the markup, the script and a stacking slot all exist.
+    js = open(rel('assets/global.js')).read()
+    check('product: sticky add-to-bag bar is in the section and wired up',
+          'data-sticky-atc' in prod_code and 'data-sticky-atc-button' in prod_code and
+          'function initStickyAtc' in js and
+          len(re.findall(r'initStickyAtc\(\)', js)) >= 3)
+    sticky_z = re.search(r'\.sticky-atc\s*\{[^}]*z-index:\s*(\d+)', css)
+    hdr_z = re.search(r'\.header-wrapper\s*\{[^}]*z-index:\s*(\d+)', css)
+    check('product: sticky bar stacks above the header and under the whatsapp button',
+          bool(sticky_z and hdr_z and wa_z) and
+          int(hdr_z.group(1)) < int(sticky_z.group(1)) < wa_z,
+          f'header {hdr_z and hdr_z.group(1)}, sticky {sticky_z and sticky_z.group(1)}, whatsapp {wa_z}')
+
+    # 44px is the touch guideline. The header icons may only shrink on the very
+    # narrowest phones, where four of them would crush the logo.
+    small_icons = [int(m) for m in re.findall(
+        r'@media[^{]*max-width:\s*(\d+)px\)\s*\{\s*\.header__icon\s*\{[^}]*?width:\s*3\.6rem', css)]
+    check('header: icons keep 44px tap targets above 359px',
+          bool(small_icons) and max(small_icons) <= 359,
+          f'3.6rem icons applied up to {max(small_icons) if small_icons else "n/a"}px')
+
     # Google Search Console. Ownership is proved by a meta tag in the <head>
     # of the home page, so it has to come from the layouts rather than a
     # section — and from password.liquid too, which is all Google sees while
