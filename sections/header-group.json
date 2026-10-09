@@ -46,9 +46,9 @@
         "logo_height": 44,
         "menu": "main-menu",
         "layout": "left",
-        "sticky": true,
+        "sticky": false,
         "show_search": false,
-        "show_account": true
+        "show_account": false
       }
     }
   },
