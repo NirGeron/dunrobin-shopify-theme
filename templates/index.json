@@ -93,8 +93,8 @@
       "settings": {
         "color_scheme": "default",
         "alignment": "center",
-        "padding_top": 96,
-        "padding_bottom": 96
+        "padding_top": 40,
+        "padding_bottom": 40
       }
     },
     "stills": {
