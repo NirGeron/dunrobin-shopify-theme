@@ -59,6 +59,13 @@ def rel(*p):
     return os.path.join(ROOT, *p)
 
 
+def load_json(path):
+    """Shopify rewrites templates/index.json and config/settings_data.json with
+    a leading /* auto-generated */ warning block, which strict json.load rejects."""
+    src = open(path).read()
+    return json.loads(re.sub(r'\A\s*/\*.*?\*/', '', src, count=1, flags=re.S))
+
+
 # ---------------------------------------------------------------------------
 # Structure
 # ---------------------------------------------------------------------------
@@ -80,8 +87,8 @@ def test_structure():
             if f.endswith('.json'):
                 p = os.path.join(dirpath, f)
                 try:
-                    json.load(open(p))
-                    check(f'json parses: {os.path.relpath(p, ROOT)}', True)
+                    load_json(p)
+                    check(f'json parses:{os.path.relpath(p, ROOT)}', True)
                 except Exception as e:
                     check(f'json parses: {os.path.relpath(p, ROOT)}', False, str(e))
 
@@ -114,7 +121,7 @@ def test_structure():
 
     for p in targets:
         label = os.path.relpath(p, ROOT)
-        d = json.load(open(p))
+        d = load_json(p)
         for sid, sec in d.get('sections', {}).items():
             sch = schemas.get(sec['type'])
             if sch is None:
@@ -147,7 +154,7 @@ def test_structure():
     # settings_data keys must exist in settings_schema.
     schema_ids = {s['id'] for g in json.load(open(rel('config/settings_schema.json')))
                   for s in g.get('settings', []) if 'id' in s}
-    data = json.load(open(rel('config/settings_data.json')))
+    data = load_json(rel('config/settings_data.json'))
     for k in data['current']:
         check(f'settings_data key "{k}" declared', k in schema_ids)
 
@@ -317,7 +324,7 @@ def test_structure():
 
     # The castle banner on the home page carries the seal by default, per the
     # README — a merchant edit could flip this without anyone noticing.
-    index_tpl = json.load(open(rel('templates/index.json')))
+    index_tpl = load_json(rel('templates/index.json'))
     castle_banners = [s for s in index_tpl['sections'].values()
                        if s['type'] == 'image-banner' and s.get('settings', {}).get('show_seal')]
     check('home page: the castle banner shows the seal', bool(castle_banners))
@@ -346,6 +353,30 @@ def test_structure():
     check('google reviews: no template still references the section',
           not any(s['type'] == 'google-reviews'
                   for s in index_tpl['sections'].values()))
+
+    # The home page needs exactly one <h1>, and only the first hero heading may
+    # be it: later headings, and the hero on any other template, stay <h2>. The
+    # visual size comes from the .h0/.h1/.h2 class, not the tag.
+    hero_src = open(rel('sections/hero-banner.liquid')).read()
+    check('hero banner: first heading renders as the home page <h1>',
+          "template.name == 'index'" in hero_src
+          and "assign heading_tag = 'h1'" in hero_src
+          and '<{{ heading_tag }} class="hero__heading' in hero_src)
+    check('hero banner: later headings fall back to <h2>',
+          hero_src.count("assign heading_tag = 'h2'") >= 2)
+
+    # A featured-collection with no collection chosen renders four "Example
+    # product" placeholder cards on the live storefront. Fine as a theme-editor
+    # preview, wrong in a shipped template.
+    for tpl in sorted(os.listdir(rel('templates'))):
+        if not tpl.endswith('.json'):
+            continue
+        tpl_sections = load_json(rel('templates', tpl)).get('sections', {})
+        bare = [sid for sid, s in tpl_sections.items()
+                if s['type'] == 'featured-collection'
+                and not s.get('settings', {}).get('collection')]
+        check(f'templates/{tpl}: no featured-collection without a collection',
+              not bare, f'renders placeholder cards: {", ".join(bare)}')
 
     # A default in settings_schema.json does NOT reach a theme that already
     # has a settings_data.json — Shopify reads the saved file, and a key that
