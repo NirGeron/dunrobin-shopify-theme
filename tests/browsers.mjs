@@ -67,15 +67,32 @@ async function measure(page) {
   });
 }
 
+// Blink comes from the installed Google Chrome, so this exercises the browser
+// people actually run; Gecko and WebKit are Playwright builds.
+const launch = (engineName) => engineName === 'chromium'
+  ? ENGINES.chromium.launch({ channel: 'chrome' }).catch(() => ENGINES.chromium.launch())
+  : ENGINES[engineName].launch();
+
+async function openSession(engineName) {
+  const browser = await launch(engineName);
+  const page = await (await browser.newContext()).newPage();
+  return { browser, page };
+}
+
+// The Chrome that Playwright drives is sometimes closed from outside, at a
+// random page, by the OS or a managed-device policy. That is a fault in the
+// machine, not in the theme, so a browser that disappears is relaunched and
+// only the page it died on is measured again. Anything else still fails the
+// run, and an engine that dies MAX_ATTEMPTS times on one page is reported as
+// a failure rather than skipped, so a real crash on a page cannot hide here.
+const BROWSER_GONE = /has been closed|Target closed|Page crashed|browser has disconnected/i;
+const MAX_ATTEMPTS = 3;
+
 const results = {}; // engine -> "page@label" -> metrics
-for (const [engineName, engine] of Object.entries(ENGINES)) {
-  let browser;
+for (const engineName of Object.keys(ENGINES)) {
+  let session;
   try {
-    // Blink comes from the installed Google Chrome, so this exercises the
-    // browser people actually run; Gecko and WebKit are Playwright builds.
-    browser = engineName === 'chromium'
-      ? await engine.launch({ channel: 'chrome' }).catch(() => engine.launch())
-      : await engine.launch();
+    session = await openSession(engineName);
   } catch (e) {
     // Not installed, or blocked by the machine's security policy (managed
     // Macs commonly kill Playwright's unsigned Firefox nightly on launch).
@@ -88,17 +105,47 @@ for (const [engineName, engine] of Object.entries(ENGINES)) {
     continue;
   }
   results[engineName] = {};
-  const context = await browser.newContext();
-  const page = await context.newPage();
+  let gaveUpOn = null;
+  measuring:
   for (const [label, w, h] of VIEWPORTS) {
-    await page.setViewportSize({ width: w, height: h });
     for (const file of PAGES) {
-      await page.goto('file://' + path.join(PREVIEW, file));
-      await page.waitForTimeout(500);
-      results[engineName][`${file}@${label}`] = await measure(page);
+      const key = `${file}@${label}`;
+      for (let attempt = 1; ; attempt++) {
+        let relaunching = false;
+        try {
+          if (!session) {
+            relaunching = true;
+            session = await openSession(engineName);
+            relaunching = false;
+          }
+          await session.page.setViewportSize({ width: w, height: h });
+          await session.page.goto('file://' + path.join(PREVIEW, file));
+          await session.page.waitForTimeout(500);
+          results[engineName][key] = await measure(session.page);
+          break;
+        } catch (e) {
+          if (!relaunching && !BROWSER_GONE.test(String(e.message))) throw e;
+          await session?.browser.close().catch(() => {});
+          session = null;
+          // run.py reads these lines so a flaky machine shows up in its report.
+          console.error(`retry: ${engineName} closed on ${key} (attempt ${attempt} of ${MAX_ATTEMPTS})`);
+          if (attempt === MAX_ATTEMPTS) {
+            gaveUpOn = key;
+            break measuring;
+          }
+        }
+      }
     }
   }
-  await browser.close();
+  if (session) await session.browser.close().catch(() => {});
+  if (gaveUpOn) {
+    // Partial results would turn into spurious "no result" failures in the
+    // comparison below, so this engine drops out of it.
+    delete results[engineName];
+    ok(`${engineName}: browser stays open`, false,
+       `closed ${MAX_ATTEMPTS} times in a row on ${gaveUpOn}`);
+    continue;
+  }
   ok(`${engineName}: engine launches`, true);
 }
 
