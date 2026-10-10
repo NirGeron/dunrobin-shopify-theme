@@ -278,10 +278,21 @@ button.shopify-payment-button__button--unbranded {
   transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
 }
 
+/* Hover swaps the fill: a blue button turns white, a white one (below) turns
+   blue. Never transparent, so the button stays solid over images. */
 .button:hover,
 .shopify-challenge__button:hover {
-  background-color: var(--brand-dark);
-  border-color: var(--brand-dark);
+  background-color: #fff;
+  border-color: var(--brand);
+  color: var(--brand);
+}
+
+/* A sold-out / disabled button must not flip to white and look clickable. */
+.button[disabled]:hover,
+.button[aria-disabled='true']:hover {
+  background-color: var(--brand);
+  border-color: var(--brand);
+  color: var(--button-text);
 }
 
 .button--secondary {
@@ -301,8 +312,16 @@ button.shopify-payment-button__button--unbranded {
 }
 
 .button--light:hover {
-  background-color: transparent;
+  background-color: var(--brand);
+  border-color: var(--brand);
   color: #fff;
+}
+
+/* On the blue scheme the section is already --brand, so blue would vanish
+   into it; the darker navy keeps the hover solid and visible. */
+.scheme--brand .button--light:hover {
+  background-color: var(--brand-dark);
+  border-color: var(--brand-dark);
 }
 
 /* The dark schemes recolour every link white, which turns a light button —
