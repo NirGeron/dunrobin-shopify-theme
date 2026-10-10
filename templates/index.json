@@ -28,7 +28,7 @@
         "buttons": {
           "type": "buttons",
           "settings": {
-            "button_label": "Shop the collection",
+            "button_label": "Shop now",
             "button_link": "shopify://collections/all",
             "button_label_2": "",
             "button_link_2": ""
@@ -212,7 +212,7 @@
         "description": "<p>Scottish juniper, rhubarb, heather, Scots pine resin, bramble leaf, blaeberry, crab apple and toasted oats.</p>",
         "layout": "centered",
         "show_centered_button": true,
-        "centered_button_label": "Shop the collection",
+        "centered_button_label": "Shop now",
         "image_ratio": "portrait",
         "show_specs": true,
         "spec_label_1": "ABV",

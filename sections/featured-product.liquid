@@ -68,11 +68,11 @@
               href="{{ featured.url }}"
               class="button button--full {% if section.settings.color_scheme == 'brand' %}button--light{% endif %}"
             >
-              {{ section.settings.centered_button_label | default: 'Shop the collection' }}
+              {{ section.settings.centered_button_label | default: 'Shop now' }}
             </a>
           {%- else -%}
             <a href="{{ routes.all_products_collection_url }}" class="button button--full">
-              {{ section.settings.centered_button_label | default: 'Shop the collection' }}
+              {{ section.settings.centered_button_label | default: 'Shop now' }}
             </a>
           {%- endif -%}
         {%- endif -%}
@@ -217,7 +217,7 @@
       "type": "text",
       "id": "centered_button_label",
       "label": "Button label (centred layout)",
-      "default": "Shop the collection"
+      "default": "Shop now"
     },
     {
       "type": "select",
