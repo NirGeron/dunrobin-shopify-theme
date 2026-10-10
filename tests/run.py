@@ -43,6 +43,12 @@ VIEWPORTS = [
 ]
 PAGES = ['index.html', 'product.html', 'products.html', 'cart.html']
 
+# The most the home banner may trim off the top of the castle picture, in
+# percent of its height. Measured on assets/castle-duotone.jpg: the spire tips
+# first show at about 9.5% down, so anything up to 8% takes sky and nothing
+# else. Widen it only after re-measuring.
+SPIRE_TOP_MAX = 8
+
 failures = []
 passes = 0
 
@@ -139,6 +145,13 @@ def test_structure():
 
             btypes = {b['type'] for b in sch.get('blocks', [])}
             for bid, blk in sec.get('blocks', {}).items():
+                if blk['type'].startswith('shopify://apps/'):
+                    # An app block is defined by the app, not by this theme, so
+                    # there is no schema to compare its settings against. The
+                    # section only has to accept app blocks at all.
+                    check(f'{label}:{sid} block "{blk["type"]}"', '@app' in btypes,
+                          f'{sec["type"]} does not declare an @app block')
+                    continue
                 if blk['type'] not in btypes:
                     check(f'{label}:{sid} block "{blk["type"]}"', False)
                     continue
@@ -159,7 +172,13 @@ def test_structure():
     schema_ids = {s['id'] for g in json.load(open(rel('config/settings_schema.json')))
                   for s in g.get('settings', []) if 'id' in s}
     data = load_json(rel('config/settings_data.json'))
+    # Shopify writes two keys here itself: `blocks` holds the app embeds turned
+    # on in the theme editor, and `content_for_index` is its legacy section
+    # order list. Neither is a theme setting, so neither is in settings_schema.
+    shopify_owned = {'blocks', 'content_for_index'}
     for k in data['current']:
+        if k in shopify_owned:
+            continue
         check(f'settings_data key "{k}" declared', k in schema_ids)
 
     # font_picker defaults must be handles Shopify recognises.
@@ -333,7 +352,7 @@ def test_structure():
                        if s['type'] == 'image-banner' and s.get('settings', {}).get('show_seal')]
     check('home page: the castle banner shows the seal', bool(castle_banners))
 
-    # The default banner picture is the castle. Its spire tips sit about 9% of
+    # The default banner picture is the castle. Its spire tips sit about 9.5% of
     # the way down the file and the base of the bastion about 59%, so a trim
     # past those would cut the castle itself rather than sky or garden.
     for sid, sec in index_tpl['sections'].items():
@@ -343,7 +362,8 @@ def test_structure():
         if st.get('height') != 'fit' or st.get('image'):
             continue
         check(f'home page:{sid} banner top trim leaves the spire tips in frame',
-              st.get('trim_top', 5) <= 7, f'trim_top is {st.get("trim_top")}%, spires start at ~9%')
+              st.get('trim_top', 5) <= SPIRE_TOP_MAX,
+              f'trim_top is {st.get("trim_top")}%, spires start at ~9.5%')
         check(f'home page:{sid} banner bottom trim leaves the castle base in frame',
               st.get('trim_bottom', 36) <= 40, f'trim_bottom is {st.get("trim_bottom")}%, base ends at ~59%')
 
@@ -1150,10 +1170,12 @@ def test_render():
                               d.get('bannerAspectDrift', 9) < 0.05,
                               f'drift {d.get("bannerAspectDrift")}')
             if d.get('bannerTrimmed') and 'bannerTopCrop' in d:
-                # The castle must never be cut: the spire tips start ~9% down
-                # the picture and the bastion's base ends ~59% down it.
+                # The castle must never be cut: the spire tips start ~9.5% down
+                # the picture and the bastion's base ends ~59% down it. The
+                # half point of slack covers the measurement's rounding.
                 check(f'{tag}: banner keeps the castle spires in frame',
-                      d['bannerTopCrop'] <= 0.07, f'top {d["bannerTopCrop"]:.3f} cropped, spires at ~0.09')
+                      d['bannerTopCrop'] <= (SPIRE_TOP_MAX + 0.5) / 100,
+                      f'top {d["bannerTopCrop"]:.3f} cropped, spires at ~0.095')
                 check(f'{tag}: banner keeps the castle base in frame',
                       d['bannerBottomCrop'] <= 0.40, f'bottom {d["bannerBottomCrop"]:.3f} cropped, base at ~0.59')
             if w >= 750:
