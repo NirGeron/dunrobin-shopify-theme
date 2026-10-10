@@ -53,7 +53,8 @@
           "type": "accordion",
           "settings": {
             "heading": "Botanicals",
-            "content": "<p>Scottish juniper, rhubarb, heather, Scots pine resin, bramble leaf, blaeberry, crab apple and toasted oats.</p>",
+            "content": "<p>Juniper, Lemon, coriander, Clove, Blackcurrant, Angelica Root, Rose Scented Pelargonium Leaf</p>",
+            "page": "",
             "open": false
           }
         },
