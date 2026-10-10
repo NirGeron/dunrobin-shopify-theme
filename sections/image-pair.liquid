@@ -1,0 +1,171 @@
+{%- liquid
+  comment
+    Two pictures side by side, edge to edge: a close-up on each half, every
+    half with its own background. The built-in pictures are photographed on
+    plain backgrounds (white for the bottle, pale grey for the seal), so the
+    panel colours default to the same two tones and the pictures melt into
+    them with no visible frame.
+
+    The bottle's neck is cut off by the bottom edge of its photograph, so by
+    default it sits on the bottom of its panel and runs off the page. The seal
+    is centred.
+
+    The caption turns white on a dark panel and stays dark on a light one.
+  endcomment
+  assign brightness_left = section.settings.background_left | color_brightness
+  assign brightness_right = section.settings.background_right | color_brightness
+-%}
+
+<div
+  class="image-pair"
+  style="--pair-height:{{ section.settings.panel_height }}px;--pair-image:{{ section.settings.image_width }}px"
+>
+  <figure
+    class="image-pair__panel image-pair__panel--{{ section.settings.align_left }} reveal"
+    style="background-color:{{ section.settings.background_left }}"
+  >
+    <div class="image-pair__media">
+      {%- if section.settings.image_left != blank -%}
+        <img
+          src="{{ section.settings.image_left | image_url: width: 1000 }}"
+          srcset="
+            {{ section.settings.image_left | image_url: width: 500 }} 500w,
+            {{ section.settings.image_left | image_url: width: 1000 }} 1000w,
+            {{ section.settings.image_left | image_url: width: 1600 }} 1600w
+          "
+          sizes="(min-width: 750px) {{ section.settings.image_width }}px, 78vw"
+          alt="{{ section.settings.image_left.alt | escape }}"
+          width="{{ section.settings.image_left.width }}"
+          height="{{ section.settings.image_left.height }}"
+          loading="lazy"
+        >
+      {%- else -%}
+        <img
+          src="{{ 'mood-bottle-neck.jpg' | asset_url }}"
+          alt="The neck of a Dunrobin Gin bottle, sealed with green wax"
+          width="505"
+          height="590"
+          loading="lazy"
+        >
+      {%- endif -%}
+    </div>
+    {%- if section.settings.caption_left != blank -%}
+      <figcaption class="image-pair__caption {% if brightness_left < 128 %}image-pair__caption--light{% endif %}">
+        {{ section.settings.caption_left }}
+      </figcaption>
+    {%- endif -%}
+  </figure>
+
+  <figure
+    class="image-pair__panel image-pair__panel--{{ section.settings.align_right }} reveal"
+    style="background-color:{{ section.settings.background_right }};transition-delay:120ms"
+  >
+    <div class="image-pair__media">
+      {%- if section.settings.image_right != blank -%}
+        <img
+          src="{{ section.settings.image_right | image_url: width: 1000 }}"
+          srcset="
+            {{ section.settings.image_right | image_url: width: 500 }} 500w,
+            {{ section.settings.image_right | image_url: width: 1000 }} 1000w,
+            {{ section.settings.image_right | image_url: width: 1600 }} 1600w
+          "
+          sizes="(min-width: 750px) {{ section.settings.image_width }}px, 78vw"
+          alt="{{ section.settings.image_right.alt | escape }}"
+          width="{{ section.settings.image_right.width }}"
+          height="{{ section.settings.image_right.height }}"
+          loading="lazy"
+        >
+      {%- else -%}
+        <img
+          src="{{ 'mood-wax-seal.jpg' | asset_url }}"
+          alt="A green wax seal stamped with the Sans Peur wildcat"
+          width="460"
+          height="410"
+          loading="lazy"
+        >
+      {%- endif -%}
+    </div>
+    {%- if section.settings.caption_right != blank -%}
+      <figcaption class="image-pair__caption {% if brightness_right < 128 %}image-pair__caption--light{% endif %}">
+        {{ section.settings.caption_right }}
+      </figcaption>
+    {%- endif -%}
+  </figure>
+</div>
+
+{% schema %}
+{
+  "name": "Image pair",
+  "tag": "section",
+  "class": "shopify-section--full-bleed",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Two close-ups side by side, edge to edge. Stacked on a phone. Until you upload pictures it shows the bottle neck and the wax seal."
+    },
+    { "type": "header", "content": "Left" },
+    { "type": "image_picker", "id": "image_left", "label": "Image" },
+    { "type": "text", "id": "caption_left", "label": "Caption", "default": "Sealed in green wax" },
+    {
+      "type": "color",
+      "id": "background_left",
+      "label": "Background",
+      "default": "#FFFFFF",
+      "info": "Match the colour behind the photograph so its edges disappear."
+    },
+    {
+      "type": "select",
+      "id": "align_left",
+      "label": "Picture sits",
+      "options": [
+        { "value": "bottom", "label": "On the bottom edge" },
+        { "value": "centre", "label": "In the middle" }
+      ],
+      "default": "bottom"
+    },
+    { "type": "header", "content": "Right" },
+    { "type": "image_picker", "id": "image_right", "label": "Image" },
+    { "type": "text", "id": "caption_right", "label": "Caption", "default": "Sans Peur" },
+    {
+      "type": "color",
+      "id": "background_right",
+      "label": "Background",
+      "default": "#E6E6E8"
+    },
+    {
+      "type": "select",
+      "id": "align_right",
+      "label": "Picture sits",
+      "options": [
+        { "value": "bottom", "label": "On the bottom edge" },
+        { "value": "centre", "label": "In the middle" }
+      ],
+      "default": "centre"
+    },
+    { "type": "header", "content": "Size" },
+    {
+      "type": "range",
+      "id": "panel_height",
+      "label": "Panel height",
+      "min": 480,
+      "max": 960,
+      "step": 20,
+      "unit": "px",
+      "default": 520,
+      "info": "A phone shows each panel at 60% of this."
+    },
+    {
+      "type": "range",
+      "id": "image_width",
+      "label": "Widest a picture may be",
+      "min": 320,
+      "max": 960,
+      "step": 20,
+      "unit": "px",
+      "default": 340,
+      "info": "Keep this near the photograph's own width so it stays sharp."
+    }
+  ],
+  "presets": [{ "name": "Image pair" }]
+}
+{% endschema %}

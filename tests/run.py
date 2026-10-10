@@ -346,12 +346,13 @@ def test_structure():
     check('global.js maintains aria-expanded',
           'aria-expanded' in open(rel('assets/global.js')).read())
 
-    # The castle banner on the home page carries the seal by default, per the
-    # README — a merchant edit could flip this without anyone noticing.
+    # A castle banner on the home page carries the seal by default, per the
+    # README — a merchant edit could flip this without anyone noticing. The home
+    # page may run without a banner (the image pair can stand in for it).
     index_tpl = load_json(rel('templates/index.json'))
-    castle_banners = [s for s in index_tpl['sections'].values()
-                       if s['type'] == 'image-banner' and s.get('settings', {}).get('show_seal')]
-    check('home page: the castle banner shows the seal', bool(castle_banners))
+    castle_banners = [s for s in index_tpl['sections'].values() if s['type'] == 'image-banner']
+    check('home page: every castle banner shows the seal',
+          all(s.get('settings', {}).get('show_seal') for s in castle_banners))
 
     # The default banner picture is the castle. Its spire tips sit about 9.5% of
     # the way down the file and the base of the bastion about 59%, so a trim
