@@ -135,6 +135,14 @@
       "post": "Post comment",
       "success": "Thank you. Your comment has been posted."
     },
+    "general": {
+      "title": "Blog",
+      "posts_count": {
+        "one": "{{ count }} post",
+        "other": "{{ count }} posts"
+      },
+      "no_posts": "No posts yet"
+    },
     "filters": {
       "all": "All"
     },

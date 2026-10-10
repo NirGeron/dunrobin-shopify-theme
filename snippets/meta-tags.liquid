@@ -14,6 +14,10 @@
     assign og_description = collection.description | strip_html | truncatewords: 50
     assign og_image = collection.featured_image
     assign og_type = 'website'
+  elsif template.name == 'blog'
+    assign og_title = 'blogs.general.title' | t
+    assign og_description = page_description
+    assign og_type = 'website'
   else
     assign og_title = page_title
     assign og_description = page_description

@@ -1,8 +1,9 @@
 {%- liquid
   assign ratio = ratio | default: 'landscape'
+  assign alignment = settings.card_text_alignment
 -%}
 
-<div class="card">
+<div class="card {% if alignment == 'center' %}card--center{% endif %}">
   <a href="{{ article.url }}" class="card__media media media--{{ ratio }}" tabindex="-1" aria-hidden="true">
     {%- if article.image -%}
       <img

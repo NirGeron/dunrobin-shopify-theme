@@ -1,30 +1,98 @@
 {%- paginate blog.articles by section.settings.posts_per_page -%}
-  <div class="page-width section-padding" style="--padding-top:64px;--padding-bottom:96px">
-    <div class="collection-hero">
-      {%- if section.settings.eyebrow != blank -%}
-        <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+  {%- comment -%}
+    The heading comes from this section, not from blog.title. Shopify names the
+    default blog "News", and that name should not show on a page of blog posts.
+  {%- endcomment -%}
+  {%- liquid
+    assign heading = section.settings.heading
+    if heading == blank
+      assign heading = 'blogs.general.title' | t
+    endif
+  -%}
+
+  {%- if section.settings.show_banner -%}
+    {%- assign banner = section.settings.banner_image -%}
+    <div class="collection-banner">
+      {%- if banner != blank -%}
+        <img
+          src="{{ banner | image_url: width: 2400 }}"
+          srcset="{{ banner | image_url: width: 1200 }} 1200w, {{ banner | image_url: width: 2400 }} 2400w"
+          sizes="100vw"
+          alt="{{ banner.alt | escape }}"
+          width="{{ banner.width }}"
+          height="{{ banner.height }}"
+          fetchpriority="high"
+        >
+      {%- else -%}
+        <img src="{{ 'pattern-navy.jpg' | asset_url }}" alt="" width="1800" height="588" fetchpriority="high">
       {%- endif -%}
-      <h1 class="h1">{{ blog.title }}</h1>
+      <div class="collection-banner__overlay"></div>
+      <div class="collection-banner__content page-width">
+        <h1 class="h1">{{ heading }}</h1>
+      </div>
     </div>
+  {%- endif -%}
 
-    <ul class="product-grid product-grid--{{ section.settings.columns }}" role="list">
-      {%- for article in blog.articles -%}
-        <li>{% render 'card-article', article: article, ratio: section.settings.image_ratio %}</li>
-      {%- endfor -%}
-    </ul>
+  <div class="page-width section-padding" style="--padding-top:64px;--padding-bottom:96px">
+    {%- unless section.settings.show_banner -%}
+      <div class="collection-hero">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+        <h1 class="h1">{{ heading }}</h1>
+      </div>
+    {%- endunless -%}
 
-    {%- if paginate.pages > 1 -%}
-      <nav class="pagination" role="navigation" aria-label="{{ 'general.pagination.label' | t }}">
-        {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}">&larr;</a>{%- endif -%}
-        {%- for part in paginate.parts -%}
-          {%- if part.is_link -%}
-            <a href="{{ part.url }}">{{ part.title }}</a>
-          {%- else -%}
-            <span {% if part.title == paginate.current_page %}aria-current="page"{% endif %}>{{ part.title }}</span>
-          {%- endif -%}
+    {%- if paginate.items > 0 -%}
+      <div class="collection-toolbar">
+        <span class="collection-toolbar__count">
+          {{ 'blogs.general.posts_count' | t: count: paginate.items }}
+        </span>
+      </div>
+
+      {%- comment -%}
+        A single post in a three-column grid looks stranded, so narrow the grid
+        when there are only a few, the same as the product grid does.
+      {%- endcomment -%}
+      {%- liquid
+        assign grid_columns = section.settings.columns
+        if paginate.items < grid_columns
+          assign grid_columns = paginate.items
+        endif
+      -%}
+      <ul
+        class="product-grid product-grid--{{ grid_columns }} {% if paginate.items < section.settings.columns %}product-grid--centered{% endif %}"
+        role="list"
+      >
+        {%- for article in blog.articles -%}
+          <li>{% render 'card-article', article: article, ratio: section.settings.image_ratio %}</li>
         {%- endfor -%}
-        {%- if paginate.next -%}<a href="{{ paginate.next.url }}">&rarr;</a>{%- endif -%}
-      </nav>
+      </ul>
+
+      {%- if paginate.pages > 1 -%}
+        <nav class="pagination" role="navigation" aria-label="{{ 'general.pagination.label' | t }}">
+          {%- if paginate.previous -%}
+            <a href="{{ paginate.previous.url }}" aria-label="{{ 'general.pagination.previous' | t }}">&larr;</a>
+          {%- endif -%}
+          {%- for part in paginate.parts -%}
+            {%- if part.is_link -%}
+              <a href="{{ part.url }}">{{ part.title }}</a>
+            {%- else -%}
+              <span {% if part.title == paginate.current_page %}aria-current="page"{% endif %}>{{ part.title }}</span>
+            {%- endif -%}
+          {%- endfor -%}
+          {%- if paginate.next -%}
+            <a href="{{ paginate.next.url }}" aria-label="{{ 'general.pagination.next' | t }}">&rarr;</a>
+          {%- endif -%}
+        </nav>
+      {%- endif -%}
+    {%- else -%}
+      <div class="cart-empty">
+        <p class="h4">{{ 'blogs.general.no_posts' | t }}</p>
+        <a class="button" href="{{ routes.all_products_collection_url }}">
+          {{ 'general.continue_shopping' | t }}
+        </a>
+      </div>
     {%- endif -%}
   </div>
 {%- endpaginate -%}
@@ -34,7 +102,28 @@
   "name": "Blog posts",
   "tag": "section",
   "settings": [
-    { "type": "text", "id": "eyebrow", "label": "Eyebrow label", "default": "Journal" },
+    { "type": "header", "content": "Heading" },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "info": "Shown instead of the blog's own name. Leave empty for “Blog”."
+    },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow label", "info": "Only shown when the banner is off." },
+    { "type": "header", "content": "Banner" },
+    {
+      "type": "checkbox",
+      "id": "show_banner",
+      "label": "Show a banner behind the heading",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "banner_image",
+      "label": "Banner image",
+      "info": "Defaults to the brand pattern."
+    },
+    { "type": "header", "content": "Grid" },
     { "type": "range", "id": "columns", "min": 2, "max": 4, "step": 1, "label": "Columns on desktop", "default": 3 },
     { "type": "range", "id": "posts_per_page", "min": 3, "max": 24, "step": 3, "label": "Posts per page", "default": 9 },
     {
@@ -44,6 +133,7 @@
       "options": [
         { "value": "adapt", "label": "Adapt to image" },
         { "value": "square", "label": "Square" },
+        { "value": "portrait", "label": "Portrait (4:5)" },
         { "value": "landscape", "label": "Landscape (3:2)" }
       ],
       "default": "landscape"

@@ -41,7 +41,7 @@ VIEWPORTS = [
     ('desktop', 1440, 900),
     ('wide', 1920, 1080),
 ]
-PAGES = ['index.html', 'product.html', 'products.html', 'cart.html']
+PAGES = ['index.html', 'product.html', 'products.html', 'blog.html', 'blog-many.html', 'cart.html']
 
 # The most the home banner may trim off the top of the castle picture, in
 # percent of its height. Measured on assets/castle-duotone.jpg: the spire tips
