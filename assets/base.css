@@ -2441,9 +2441,132 @@ textarea.field__input {
   text-align: center;
 }
 
+/* Post titles run long, so they sit a step below the page-title size and
+   break into even lines rather than leaving one word stranded. */
+.article__header .h1 {
+  font-size: calc(3.4rem * var(--heading-scale));
+  text-wrap: balance;
+}
+
+@media screen and (min-width: 750px) {
+  .article__header .h1 { font-size: calc(4.6rem * var(--heading-scale)); }
+}
+
 .article__body {
   max-width: 68rem;
   margin: 0 auto;
+}
+
+.article__share {
+  margin-top: 5.6rem;
+  padding-top: 2.4rem;
+  border-top: 1px solid var(--border);
+}
+
+/* The post text. Most of it is pasted in from Word or Outlook, which brings
+   its own inline colours, float and sizes along; the rules below win over
+   those so every post reads the same whatever it was written in. */
+.article__body.rte {
+  line-height: 1.85;
+}
+
+@media screen and (min-width: 750px) {
+  .article__body.rte { font-size: 1.7rem; }
+}
+
+.article__body.rte h2 {
+  margin: 5.6rem 0 1.8rem;
+  font-size: calc(2.6rem * var(--heading-scale));
+}
+
+@media screen and (min-width: 750px) {
+  .article__body.rte h2 { font-size: calc(3.2rem * var(--heading-scale)); }
+}
+
+/* A short brand rule opens each section. */
+.article__body.rte h2::before {
+  content: '';
+  display: block;
+  width: 4rem;
+  height: 2px;
+  margin-bottom: 2rem;
+  background: var(--brand);
+}
+
+.article__body.rte a {
+  color: var(--brand) !important;
+  text-decoration: underline;
+}
+
+.article__body.rte span[style*='color'] {
+  color: inherit !important;
+}
+
+/* The opening paragraph, which authors usually set in bold, is read as a
+   standfirst instead. */
+.article__lead {
+  margin-bottom: 4.8rem;
+  font-size: calc(1.9rem * var(--body-scale));
+  line-height: 1.7;
+}
+
+@media screen and (min-width: 750px) {
+  .article__lead { font-size: calc(2.2rem * var(--body-scale)); }
+}
+
+.article__lead b,
+.article__lead strong {
+  font-weight: inherit;
+}
+
+/* Pictures. Inline float, margin and display are overridden, and the pasted
+   width and height are left to the aspect ratio. */
+.article__body.rte img {
+  display: block;
+  float: none !important;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  margin: 4rem auto !important;
+}
+
+/* The script gathers each run of consecutive pictures into one block. A lone
+   picture is held to the screen height so a tall photo does not run on for
+   pages; several sit side by side at one shape. */
+.article__images {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 1), 1fr);
+  gap: 1.6rem;
+  margin: 4rem 0;
+}
+
+.article__body.rte .article__images img {
+  margin: 0 !important;
+}
+
+.article__body.rte .article__images[data-count='1'] img {
+  max-height: 72vh;
+  margin: 0 auto !important;
+}
+
+.article__images:not([data-count='1']) img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+
+/* A landscape picture would lose its sides in a portrait crop, so a group
+   that holds one stacks at full width in landscape instead. */
+.article__images[data-shape='landscape'] {
+  grid-template-columns: 1fr;
+}
+
+.article__images[data-shape='landscape'] img {
+  aspect-ratio: 3 / 2;
+}
+
+@media screen and (max-width: 749px) {
+  .article__images { gap: 1rem; margin: 3.2rem 0; }
 }
 
 /* --------------------------------------------------------------------------
