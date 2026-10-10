@@ -16,11 +16,22 @@
       <link rel="apple-touch-icon" href="{{ 'favicon.png' | asset_url }}">
     {%- endif -%}
 
+    {%- comment -%}
+      A blog's page_title is the blog's name in Shopify, which for the default
+      blog is "News". This page lists blog posts, so it takes its title from the
+      locale file instead.
+    {%- endcomment -%}
+    {%- liquid
+      assign document_title = page_title
+      if template.name == 'blog'
+        assign document_title = 'blogs.general.title' | t
+      endif
+    -%}
     <title>
-      {{ page_title }}
+      {{ document_title }}
       {%- if current_tags %} &ndash; {{ 'general.meta.tags' | t: tags: current_tags | join: ', ' }}{% endif -%}
       {%- if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif -%}
-      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+      {%- unless document_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
     </title>
 
     {%- if page_description -%}

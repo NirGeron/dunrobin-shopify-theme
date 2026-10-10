@@ -17,7 +17,7 @@ import { execFileSync } from 'child_process';
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const PREVIEW = path.join(ROOT, '.preview');
-const PAGES = ['index.html', 'product.html', 'products.html', 'cart.html'];
+const PAGES = ['index.html', 'product.html', 'products.html', 'blog.html', 'blog-many.html', 'cart.html'];
 const VIEWPORTS = [['phone', 390, 844], ['tablet', 768, 1024], ['laptop', 1280, 800]];
 const ENGINES = { chromium, firefox, webkit };
 
