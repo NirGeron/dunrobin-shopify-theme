@@ -903,9 +903,13 @@ window.addEventListener('load', function () {
         // "In view" means enough of it shows to trip the reveal observer,
         // which fires at 5% visible (initReveal's threshold). A card sitting
         // a few pixels above the fold is not stuck, it just hasn't arrived.
-        var shown = Math.min(r.bottom, window.innerHeight) - Math.max(r.top, 0);
-        var inView = r.width > 0 && r.height > 0 && shown > 0
-          && shown / r.height >= 0.05;
+        // The observer measures the intersected area, so a card in a swipe
+        // rail that pokes out of the right edge and peeks over the fold counts
+        // by both axes, not by height alone.
+        var shownY = Math.min(r.bottom, window.innerHeight) - Math.max(r.top, 0);
+        var shownX = Math.min(r.right, window.innerWidth) - Math.max(r.left, 0);
+        var inView = r.width > 0 && r.height > 0 && shownY > 0 && shownX > 0
+          && (shownX * shownY) / (r.width * r.height) >= 0.05;
         if (inView && out.revealsStuck.length < 5) {
           out.revealsStuck.push((el.tagName + '.' + (el.className || '')).slice(0, 60));
         }
