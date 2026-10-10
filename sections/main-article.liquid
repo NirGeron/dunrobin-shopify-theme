@@ -31,7 +31,7 @@
         <div class="article__body rte" {{ block.shopify_attributes }}>{{ article.content }}</div>
 
       {%- when 'share' -%}
-        <div class="article__body" style="margin-top:4rem" {{ block.shopify_attributes }}>
+        <div class="article__body article__share" {{ block.shopify_attributes }}>
           <a class="link-arrow" href="{{ shop.url }}{{ article.url }}" data-share-link>{{ 'general.share' | t }}</a>
         </div>
     {%- endcase -%}

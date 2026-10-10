@@ -551,6 +551,89 @@
   }
 
   /* ---------------------------------------------------------------------
+     Article body — tidy text pasted in from Word or Outlook. It arrives with
+     an empty paragraph after every real one for spacing, stray <meta> and
+     picture-less <img> tags, and each photo in its own wrapper at its own
+     size. The empties go, and runs of consecutive photos become one group.
+     --------------------------------------------------------------------- */
+  function initArticleBody() {
+    var blank = /[\s ]+/g;
+
+    function isBlank(el) {
+      return !el.textContent.replace(blank, '') && !el.querySelector('img, iframe, video, hr, table');
+    }
+
+    // The link or picture a block holds, when a picture is all it holds.
+    function pictureIn(el) {
+      var tag = el.tagName;
+      if (tag === 'IMG') return el;
+      if (tag !== 'P' && tag !== 'DIV' && tag !== 'FIGURE') return null;
+      var imgs = el.querySelectorAll('img');
+      if (imgs.length !== 1 || el.textContent.replace(blank, '')) return null;
+      var link = imgs[0].closest('a');
+      return link && el.contains(link) ? link : imgs[0];
+    }
+
+    function shape(group) {
+      var imgs = Array.prototype.slice.call(group.querySelectorAll('img'));
+      function set() {
+        if (!imgs.every(function (img) { return img.naturalWidth; })) return;
+        var portrait = imgs.every(function (img) { return img.naturalHeight >= img.naturalWidth; });
+        group.setAttribute('data-shape', portrait ? 'portrait' : 'landscape');
+      }
+      imgs.forEach(function (img) {
+        if (!img.complete) img.addEventListener('load', set, { once: true });
+      });
+      set();
+    }
+
+    document.querySelectorAll('.article__body.rte:not([data-tidy])').forEach(function (body) {
+      body.setAttribute('data-tidy', '');
+
+      body.querySelectorAll('meta, img:not([src]), img[src=""]').forEach(function (el) { el.remove(); });
+      body.querySelectorAll('p, div, h1, h2, h3, h4, h5, h6').forEach(function (el) {
+        if (isBlank(el)) el.remove();
+      });
+
+      var run = [];
+      function flush() {
+        if (!run.length) return;
+        var group = document.createElement('div');
+        group.className = 'article__images';
+        group.setAttribute('data-count', run.length);
+        group.style.setProperty('--cols', run.length === 4 ? 2 : Math.min(run.length, 3));
+        run[0].block.parentNode.insertBefore(group, run[0].block);
+        run.forEach(function (item) {
+          group.appendChild(item.picture);
+          if (item.block !== item.picture) item.block.remove();
+        });
+        run = [];
+        shape(group);
+      }
+
+      Array.prototype.slice.call(body.children).forEach(function (el) {
+        var picture = pictureIn(el);
+        if (picture) {
+          run.push({ block: el, picture: picture });
+        } else {
+          flush();
+        }
+      });
+      flush();
+
+      // A first paragraph set wholly in bold is the standfirst.
+      var first = body.querySelector(':scope > p, :scope > h2, :scope > h3');
+      if (first && first.tagName === 'P') {
+        var all = first.textContent.replace(blank, '');
+        var bold = Array.prototype.map.call(first.querySelectorAll('b, strong'), function (b) {
+          return b.textContent;
+        }).join('').replace(blank, '');
+        if (all && all === bold) first.classList.add('article__lead');
+      }
+    });
+  }
+
+  /* ---------------------------------------------------------------------
      Product gallery — thumbnails swap the large preview
      --------------------------------------------------------------------- */
   function initGallery() {
@@ -703,6 +786,7 @@
     initAgeConfirm();
     initAutoSubmit();
     initShare();
+    initArticleBody();
     initStickyAtc();
     initWhatsAppTuck();
   }
@@ -716,6 +800,7 @@
   // The theme editor re-renders sections in place.
   document.addEventListener('shopify:section:load', function () {
     initReveal();
+    initArticleBody();
     initVariantPicker();
     initStickyAtc();
   });
