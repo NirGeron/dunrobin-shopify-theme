@@ -51,6 +51,7 @@ SPIRE_TOP_MAX = 8
 
 failures = []
 passes = 0
+notes = []  # things worth seeing in the report that are not failures
 
 
 def check(name, condition, detail=''):
@@ -1239,6 +1240,12 @@ def test_browsers():
         return
     r = subprocess.run([node, rel('tests', 'browsers.mjs')],
                        capture_output=True, text=True, timeout=900, cwd=ROOT)
+    # browsers.mjs relaunches a browser that is closed from outside mid-run and
+    # logs one "retry:" line each time. Passing that way is fine, but say so.
+    restarts = [ln for ln in r.stderr.splitlines() if ln.startswith('retry:')]
+    if restarts:
+        notes.append(f'cross-browser: a browser closed unexpectedly and was '
+                     f'relaunched {len(restarts)} time(s)')
     if not r.stdout.strip():
         check('cross-browser suite produced results', False, r.stderr[-300:])
         return
@@ -1257,8 +1264,10 @@ def main():
         test_browsers()
 
     print()
+    for n in notes:
+        print('note: ' + n)
     if failures:
-        print(f'FAILED — {len(failures)} of {len(failures) + passes} checks')
+        print(f'FAILED —{len(failures)} of {len(failures) + passes} checks')
         for f in failures:
             print('  ✗ ' + f)
         return 1
