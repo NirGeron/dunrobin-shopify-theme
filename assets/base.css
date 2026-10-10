@@ -3386,6 +3386,16 @@ textarea.field__input {
   .gallery__column { gap: 2.4rem; }
 }
 
+/* The pictures are held to a width of their own, centred, so they are not
+   stretched past their size and the section stays compact. A phone bleeds the
+   strip to the screen edge instead (see below). */
+@media screen and (min-width: 750px) {
+  .gallery__grid {
+    max-width: var(--gallery-width, 90rem);
+    margin-inline: auto;
+  }
+}
+
 /* Every second column sits lower, so the tops of the pictures step across the
    page the way a hand-laid print spread does. */
 .gallery__column:nth-child(even) { margin-top: 4.8rem; }
@@ -3450,24 +3460,16 @@ textarea.field__input {
   margin-top: 6.4rem;
 }
 
-/* On a phone the columns dissolve and the pictures run as one strip, every
-   frame the same height so it reads as a roll of film. It bleeds to the screen
-   edge like the dispatches rail; `order` (set per picture) puts the pictures
-   back in the sequence they were placed in. */
+/* On a phone the three columns dissolve and the pictures flow into two columns
+   of their own, each at its own proportions, like a moodboard pinned to a wall.
+   Nothing scrolls sideways, so every picture is simply there as the page goes
+   by, and the browser balances the two columns. */
 @media screen and (max-width: 749px) {
   .gallery__grid {
-    align-items: flex-end;
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-    scroll-snap-type: x mandatory;
-    scroll-padding-inline-start: 2rem;
-    margin-inline: -2rem;
-    padding: 0 2rem 1.6rem;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
+    display: block;
+    columns: 2;
+    column-gap: 1rem;
   }
-
-  .gallery__grid::-webkit-scrollbar { display: none; }
 
   .gallery__column {
     display: contents;
@@ -3477,26 +3479,20 @@ textarea.field__input {
   .gallery__column:nth-child(even) { margin-top: 0; }
 
   .gallery__item {
-    flex: none;
-    scroll-snap-align: start;
-  }
-
-  .gallery__frame img {
-    width: auto;
-    max-width: none;
-    height: min(68vw, 34rem);
-  }
-
-  .gallery__frame--placeholder {
-    width: min(54vw, 27rem);
-    aspect-ratio: 4 / 5;
+    break-inside: avoid;
+    margin-bottom: 2rem;
   }
 
   .gallery__caption {
-    max-width: min(54vw, 27rem);
+    gap: 0.6rem;
+    margin-top: 0.8rem;
+    font-size: 1.05rem;
+    letter-spacing: 0.14em;
   }
 
-  .gallery__cta { margin-top: 3.2rem; }
+  .gallery__caption::before { width: 1.2rem; }
+
+  .gallery__cta { margin-top: 2.4rem; }
 }
 
 /* --------------------------------------------------------------------------

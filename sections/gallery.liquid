@@ -6,7 +6,7 @@
     visitor reads across the top of the grid.
 
     On a phone the columns dissolve (display: contents in base.css) and the
-    pictures become one swipeable strip in the original block order.
+    pictures flow into two columns of their own.
 
     The brand photography was supplied small, so every tile shows its picture
     at or below its native size. Upload the full-size originals through the
@@ -18,7 +18,7 @@
 
 <div
   class="gallery scheme--{{ section.settings.color_scheme }} section-padding"
-  style="--padding-top:{{ section.settings.padding_top }}px;--padding-bottom:{{ section.settings.padding_bottom }}px;--gallery-accent:{{ section.settings.accent_color }}"
+  style="--padding-top:{{ section.settings.padding_top }}px;--padding-bottom:{{ section.settings.padding_bottom }}px;--gallery-accent:{{ section.settings.accent_color }};--gallery-width:{{ section.settings.grid_width }}px"
 >
   <div class="page-width">
     {%- if section.settings.eyebrow != blank or section.settings.heading != blank or section.settings.text != blank -%}
@@ -102,7 +102,7 @@
                 -%}
                 <figure
                   class="gallery__item reveal"
-                  style="transition-delay:{{ column | times: 120 }}ms;order:{{ forloop.index0 }}"
+                  style="transition-delay:{{ column | times: 120 }}ms"
                   {{ block.shopify_attributes }}
                 >
                   {%- if picture != blank -%}
@@ -170,7 +170,7 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "A lookbook of photographs in staggered columns. Pictures keep their own proportions. On a phone they become a swipeable strip."
+      "content": "A lookbook of photographs in staggered columns. Pictures keep their own proportions. On a phone they flow into two columns."
     },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow label", "default": "The Dunrobin world" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "Velvet, juniper and long Highland light" },
@@ -183,7 +183,18 @@
       "max": 4,
       "step": 1,
       "default": 3,
-      "info": "Phones always show a single swipeable strip."
+      "info": "Phones always show two columns."
+    },
+    {
+      "type": "range",
+      "id": "grid_width",
+      "label": "Width of the pictures",
+      "min": 600,
+      "max": 1200,
+      "step": 20,
+      "unit": "px",
+      "default": 760,
+      "info": "Narrower pictures make the whole section shorter. Phones always use the full width."
     },
     {
       "type": "select",
@@ -209,8 +220,8 @@
     { "type": "text", "id": "button_label", "label": "Label" },
     { "type": "url", "id": "button_link", "label": "Link" },
     { "type": "header", "content": "Spacing" },
-    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 8, "unit": "px", "label": "Top padding", "default": 112 },
-    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 8, "unit": "px", "label": "Bottom padding", "default": 112 }
+    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 8, "unit": "px", "label": "Top padding", "default": 80 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 8, "unit": "px", "label": "Bottom padding", "default": 80 }
   ],
   "blocks": [
     {
