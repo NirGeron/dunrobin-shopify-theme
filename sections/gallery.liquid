@@ -1,0 +1,263 @@
+{%- liquid
+  comment
+    An editorial lookbook: photographs at their own proportions, never cropped,
+    laid out in staggered columns. Block 1 goes in column 1, block 2 in column
+    2 and so on, wrapping round, so the order in the editor is the order a
+    visitor reads across the top of the grid.
+
+    On a phone the columns dissolve (display: contents in base.css) and the
+    pictures become one swipeable strip in the original block order.
+
+    The brand photography was supplied small, so every tile shows its picture
+    at or below its native size. Upload the full-size originals through the
+    image picker and the same layout holds them.
+  endcomment
+  assign column_count = section.settings.columns
+  assign last_column = column_count | minus: 1
+-%}
+
+<div
+  class="gallery scheme--{{ section.settings.color_scheme }} section-padding"
+  style="--padding-top:{{ section.settings.padding_top }}px;--padding-bottom:{{ section.settings.padding_bottom }}px;--gallery-accent:{{ section.settings.accent_color }}"
+>
+  <div class="page-width">
+    {%- if section.settings.eyebrow != blank or section.settings.heading != blank or section.settings.text != blank -%}
+      <div class="section-header section-header--center reveal">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="h2">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+        {%- if section.settings.text != blank -%}
+          <div class="gallery__intro rte">{{ section.settings.text }}</div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="gallery__grid gallery__grid--{{ column_count }}">
+        {%- for column in (0..last_column) -%}
+          <div class="gallery__column">
+            {%- for block in section.blocks -%}
+              {%- assign slot = forloop.index0 | modulo: column_count -%}
+              {%- if slot == column -%}
+                {%- liquid
+                  assign picture = block.settings.image
+                  assign alt_text = block.settings.alt
+                  assign built_in = ''
+                  assign built_in_alt = ''
+                  assign built_in_w = 0
+                  assign built_in_h = 0
+
+                  if picture == blank
+                    case block.settings.builtin
+                      when 'martini'
+                        assign built_in = 'mood-martini.jpg' | asset_url
+                        assign built_in_w = 585
+                        assign built_in_h = 586
+                        assign built_in_alt = 'A hand raising a martini with a lemon twist against green velvet curtains'
+                      when 'navy_table'
+                        assign built_in = 'mood-navy-table.jpg' | asset_url
+                        assign built_in_w = 401
+                        assign built_in_h = 493
+                        assign built_in_alt = 'A short glass with a dried citrus slice on a navy table edged in brass'
+                      when 'spruce'
+                        assign built_in = 'mood-spruce.jpg' | asset_url
+                        assign built_in_w = 360
+                        assign built_in_h = 491
+                        assign built_in_alt = 'A tall fluted glass with a sprig of pine on a tiled table'
+                      when 'decanters'
+                        assign built_in = 'mood-decanters.jpg' | asset_url
+                        assign built_in_w = 526
+                        assign built_in_h = 491
+                        assign built_in_alt = 'Two decanters, a glass and a copper jigger on a green marble bar cart'
+                      when 'juniper'
+                        assign built_in = 'mood-juniper.jpg' | asset_url
+                        assign built_in_w = 361
+                        assign built_in_h = 454
+                        assign built_in_alt = 'Juniper berries among dark green foliage'
+                      when 'highland'
+                        assign built_in = 'mood-highland.jpg' | asset_url
+                        assign built_in_w = 571
+                        assign built_in_h = 380
+                        assign built_in_alt = 'A green Highland ridge above a blue loch'
+                      when 'blue_velvet'
+                        assign built_in = 'mood-blue-velvet.jpg' | asset_url
+                        assign built_in_w = 420
+                        assign built_in_h = 556
+                        assign built_in_alt = 'A hand holding a whisky glass against a blue velvet armchair'
+                      when 'velvet_serve'
+                        assign built_in = 'mood-velvet-serve.jpg' | asset_url
+                        assign built_in_w = 722
+                        assign built_in_h = 866
+                        assign built_in_alt = 'Two cocktails on a dark green velvet sofa'
+                    endcase
+                    if alt_text == blank
+                      assign alt_text = built_in_alt
+                    endif
+                  elsif alt_text == blank
+                    assign alt_text = picture.alt
+                  endif
+                -%}
+                <figure
+                  class="gallery__item reveal"
+                  style="transition-delay:{{ column | times: 120 }}ms;order:{{ forloop.index0 }}"
+                  {{ block.shopify_attributes }}
+                >
+                  {%- if picture != blank -%}
+                    <div class="gallery__frame">
+                      <img
+                        src="{{ picture | image_url: width: 900 }}"
+                        srcset="
+                          {{ picture | image_url: width: 450 }} 450w,
+                          {{ picture | image_url: width: 700 }} 700w,
+                          {{ picture | image_url: width: 1000 }} 1000w,
+                          {{ picture | image_url: width: 1400 }} 1400w
+                        "
+                        sizes="(min-width: 990px) {{ 1200 | divided_by: column_count }}px, (min-width: 750px) {{ 100 | divided_by: column_count }}vw, 70vw"
+                        alt="{{ alt_text | escape }}"
+                        width="{{ picture.width }}"
+                        height="{{ picture.height }}"
+                        loading="lazy"
+                      >
+                    </div>
+                  {%- elsif built_in != blank -%}
+                    <div class="gallery__frame">
+                      <img
+                        src="{{ built_in }}"
+                        alt="{{ alt_text | escape }}"
+                        width="{{ built_in_w }}"
+                        height="{{ built_in_h }}"
+                        loading="lazy"
+                      >
+                    </div>
+                  {%- else -%}
+                    <div class="gallery__frame gallery__frame--placeholder">
+                      {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                    </div>
+                  {%- endif -%}
+
+                  {%- if block.settings.caption != blank -%}
+                    <figcaption class="gallery__caption">{{ block.settings.caption }}</figcaption>
+                  {%- endif -%}
+                </figure>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.button_label != blank -%}
+      <div class="gallery__cta reveal">
+        <a
+          href="{{ section.settings.button_link | default: '#' }}"
+          class="button {% if section.settings.color_scheme != 'default' and section.settings.color_scheme != 'alt' %}button--light{% endif %}"
+        >
+          {{ section.settings.button_label }}
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Gallery",
+  "tag": "section",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "A lookbook of photographs in staggered columns. Pictures keep their own proportions. On a phone they become a swipeable strip."
+    },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow label", "default": "The Dunrobin world" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Velvet, juniper and long Highland light" },
+    { "type": "richtext", "id": "text", "label": "Introduction" },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Columns",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3,
+      "info": "Phones always show a single swipeable strip."
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Background",
+      "options": [
+        { "value": "night", "label": "Night (near-black green)" },
+        { "value": "accent", "label": "Forest green" },
+        { "value": "brand", "label": "Brand navy" },
+        { "value": "alt", "label": "Off-white" },
+        { "value": "default", "label": "White" }
+      ],
+      "default": "night"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent",
+      "default": "#C9A96A",
+      "info": "The hairlines and the label. On a light background pick a deeper gold, such as #8A6A3B."
+    },
+    { "type": "header", "content": "Button" },
+    { "type": "text", "id": "button_label", "label": "Label" },
+    { "type": "url", "id": "button_link", "label": "Link" },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 160, "step": 8, "unit": "px", "label": "Top padding", "default": 112 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 160, "step": 8, "unit": "px", "label": "Bottom padding", "default": 112 }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Photograph",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        {
+          "type": "select",
+          "id": "builtin",
+          "label": "Photograph to use until you upload one",
+          "options": [
+            { "value": "none", "label": "None" },
+            { "value": "martini", "label": "Martini, green curtain" },
+            { "value": "navy_table", "label": "Citrus on a navy table" },
+            { "value": "spruce", "label": "Pine in a tall glass" },
+            { "value": "decanters", "label": "Decanters on a bar cart" },
+            { "value": "juniper", "label": "Juniper" },
+            { "value": "highland", "label": "Highland ridge" },
+            { "value": "blue_velvet", "label": "Whisky, blue velvet" },
+            { "value": "velvet_serve", "label": "Cocktails on green velvet" }
+          ],
+          "default": "none"
+        },
+        {
+          "type": "text",
+          "id": "alt",
+          "label": "Image description",
+          "info": "Read aloud by screen readers. Leave empty to use the built-in description."
+        },
+        { "type": "text", "id": "caption", "label": "Caption" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Gallery",
+      "blocks": [
+        { "type": "image", "settings": { "builtin": "martini", "caption": "Raise one" } },
+        { "type": "image", "settings": { "builtin": "navy_table", "caption": "Citrus and light" } },
+        { "type": "image", "settings": { "builtin": "spruce", "caption": "Pine and ice" } },
+        { "type": "image", "settings": { "builtin": "decanters", "caption": "After dark" } },
+        { "type": "image", "settings": { "builtin": "juniper", "caption": "Juniper" } },
+        { "type": "image", "settings": { "builtin": "blue_velvet", "caption": "Slow pour" } },
+        { "type": "image", "settings": { "builtin": "highland", "caption": "The Highlands" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

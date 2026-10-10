@@ -251,6 +251,17 @@ a {
 .scheme--accent .eyebrow,
 .scheme--accent a { color: rgba(255, 255, 255, 0.8); }
 
+/* Night: the near-black green of the velvet in the brand photography. It is
+   what lets the pictures glow, so it is only offered on the sections that
+   carry them. */
+.scheme--night {
+  background-color: #08140d;
+  color: #fff;
+}
+
+.scheme--night .eyebrow,
+.scheme--night a { color: rgba(255, 255, 255, 0.8); }
+
 /* --------------------------------------------------------------------------
    Buttons
    -------------------------------------------------------------------------- */
@@ -328,17 +339,20 @@ button.shopify-payment-button__button--unbranded {
    an <a> with a white fill — white-on-white. Buttons set their own
    contrast pair, so they opt out of the scheme's link colour. */
 .scheme--brand a.button,
-.scheme--accent a.button {
+.scheme--accent a.button,
+.scheme--night a.button {
   color: var(--button-text);
 }
 
 .scheme--brand a.button--light,
-.scheme--accent a.button--light {
+.scheme--accent a.button--light,
+.scheme--night a.button--light {
   color: var(--brand);
 }
 
 .scheme--brand a.button--light:hover,
-.scheme--accent a.button--light:hover {
+.scheme--accent a.button--light:hover,
+.scheme--night a.button--light:hover {
   color: #fff;
 }
 
@@ -3337,6 +3351,212 @@ textarea.field__input {
   letter-spacing: var(--label-tracking);
   text-transform: uppercase;
   color: var(--text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   Gallery — the editorial lookbook
+   -------------------------------------------------------------------------- */
+
+/* The accent is the section's own gold; the scheme rules above would otherwise
+   paint the label white. */
+.gallery .eyebrow { color: var(--gallery-accent, currentColor); }
+
+.gallery__intro {
+  max-width: 56rem;
+  margin-inline: auto;
+  opacity: 0.8;
+}
+
+.gallery__grid {
+  display: flex;
+  gap: 1.6rem;
+  align-items: flex-start;
+}
+
+.gallery__column {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
+@media screen and (min-width: 990px) {
+  .gallery__grid,
+  .gallery__column { gap: 2.4rem; }
+}
+
+/* Every second column sits lower, so the tops of the pictures step across the
+   page the way a hand-laid print spread does. */
+.gallery__column:nth-child(even) { margin-top: 4.8rem; }
+
+.gallery__item {
+  margin: 0;
+}
+
+.gallery__frame {
+  position: relative;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.gallery__frame img {
+  width: 100%;
+  height: auto;
+  transition: transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gallery__frame--placeholder { aspect-ratio: 4 / 5; }
+
+/* A thin gold keyline stands off the picture's edge, like a mount. */
+.gallery__frame::after {
+  content: '';
+  position: absolute;
+  inset: 1rem;
+  border: 1px solid var(--gallery-accent, currentColor);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+}
+
+@media (hover: hover) {
+  .gallery__item:hover .gallery__frame img { transform: scale(1.04); }
+  .gallery__item:hover .gallery__frame::after { opacity: 0.65; }
+}
+
+.gallery__caption {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.2rem;
+  font-size: 1.2rem;
+  letter-spacing: var(--label-tracking);
+  text-transform: uppercase;
+  line-height: 1.4;
+  opacity: 0.75;
+}
+
+.gallery__caption::before {
+  content: '';
+  flex: none;
+  width: 2.4rem;
+  height: 1px;
+  background-color: var(--gallery-accent, currentColor);
+}
+
+.gallery__cta {
+  display: flex;
+  justify-content: center;
+  margin-top: 6.4rem;
+}
+
+/* On a phone the columns dissolve and the pictures run as one strip, every
+   frame the same height so it reads as a roll of film. It bleeds to the screen
+   edge like the dispatches rail; `order` (set per picture) puts the pictures
+   back in the sequence they were placed in. */
+@media screen and (max-width: 749px) {
+  .gallery__grid {
+    align-items: flex-end;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline-start: 2rem;
+    margin-inline: -2rem;
+    padding: 0 2rem 1.6rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .gallery__grid::-webkit-scrollbar { display: none; }
+
+  .gallery__column {
+    display: contents;
+    margin-top: 0;
+  }
+
+  .gallery__column:nth-child(even) { margin-top: 0; }
+
+  .gallery__item {
+    flex: none;
+    scroll-snap-align: start;
+  }
+
+  .gallery__frame img {
+    width: auto;
+    max-width: none;
+    height: min(68vw, 34rem);
+  }
+
+  .gallery__frame--placeholder {
+    width: min(54vw, 27rem);
+    aspect-ratio: 4 / 5;
+  }
+
+  .gallery__caption {
+    max-width: min(54vw, 27rem);
+  }
+
+  .gallery__cta { margin-top: 3.2rem; }
+}
+
+/* --------------------------------------------------------------------------
+   Image pair — two close-ups, edge to edge
+   -------------------------------------------------------------------------- */
+
+.image-pair {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.image-pair__panel {
+  position: relative;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  /* Room above the picture for the caption, so a tall picture never runs under it. */
+  padding-top: 6rem;
+  min-height: calc(var(--pair-height, 520px) * 0.6);
+}
+
+.image-pair__panel--bottom { align-items: flex-end; }
+
+/* The picture is held to a width near its own, so a small photograph is never
+   blown up to fill a wide panel. */
+.image-pair__media {
+  width: min(78%, var(--pair-image, 340px));
+}
+
+.image-pair__media img {
+  width: 100%;
+  height: auto;
+}
+
+.image-pair__caption {
+  position: absolute;
+  top: 2.4rem;
+  left: 0;
+  right: 0;
+  padding-inline: 2rem;
+  text-align: center;
+  font-size: 1.2rem;
+  letter-spacing: var(--label-tracking);
+  text-transform: uppercase;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
+.image-pair__caption--light { color: rgba(255, 255, 255, 0.8); }
+
+@media screen and (min-width: 750px) {
+  .image-pair { grid-template-columns: 1fr 1fr; }
+
+  .image-pair__panel { min-height: var(--pair-height, 520px); padding-top: 8rem; }
+
+  .image-pair__media { width: min(100%, var(--pair-image, 340px)); }
+
+  .image-pair__caption { top: 4rem; }
 }
 
 /* --------------------------------------------------------------------------

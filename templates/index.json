@@ -97,16 +97,140 @@
         "padding_bottom": 40
       }
     },
-    "stills": {
-      "type": "image-banner",
+    "pair": {
+      "type": "image-pair",
       "settings": {
-        "height": "fit",
-        "trim_top": 8,
-        "trim_bottom": 39,
-        "fit_mobile": true,
-        "caption": "",
-        "show_seal": true,
-        "seal_size": 30
+        "caption_left": "Sealed in green wax",
+        "background_left": "#FFFFFF",
+        "align_left": "bottom",
+        "caption_right": "Sans Peur",
+        "background_right": "#E6E6E8",
+        "align_right": "centre",
+        "panel_height": 520,
+        "image_width": 340
+      }
+    },
+    "lookbook": {
+      "type": "gallery",
+      "blocks": {
+        "martini": {
+          "type": "image",
+          "settings": {
+            "builtin": "martini",
+            "caption": "Raise one"
+          }
+        },
+        "navy_table": {
+          "type": "image",
+          "settings": {
+            "builtin": "navy_table",
+            "caption": "Citrus and light"
+          }
+        },
+        "spruce": {
+          "type": "image",
+          "settings": {
+            "builtin": "spruce",
+            "caption": "Pine and ice"
+          }
+        },
+        "decanters": {
+          "type": "image",
+          "settings": {
+            "builtin": "decanters",
+            "caption": "After dark"
+          }
+        },
+        "velvet_serve": {
+          "type": "image",
+          "settings": {
+            "builtin": "velvet_serve",
+            "caption": "Pour slowly"
+          }
+        },
+        "highland": {
+          "type": "image",
+          "settings": {
+            "builtin": "highland",
+            "caption": "The Highlands"
+          }
+        },
+        "blue_velvet": {
+          "type": "image",
+          "settings": {
+            "builtin": "blue_velvet",
+            "caption": "Slow pour"
+          }
+        }
+      },
+      "block_order": [
+        "martini",
+        "navy_table",
+        "spruce",
+        "decanters",
+        "velvet_serve",
+        "blue_velvet",
+        "highland"
+      ],
+      "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "text": "",
+        "columns": 3,
+        "color_scheme": "night",
+        "accent_color": "#C9A96A",
+        "button_label": "",
+        "button_link": "",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
+    },
+    "serve": {
+      "type": "image-with-text",
+      "disabled": true,
+      "blocks": {
+        "eyebrow": {
+          "type": "eyebrow",
+          "settings": {
+            "text": "The serve"
+          }
+        },
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "text": "Best poured after dark",
+            "size": "h2"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Made from Scottish juniper, heather, Scots pine resin and bramble leaf, Dunrobin holds its own over ice, long with tonic, or stirred cold into a coupe. Pour slowly.</p>"
+          }
+        },
+        "button": {
+          "type": "button",
+          "settings": {
+            "label": "Shop now",
+            "link": "shopify://collections/all",
+            "style": "primary"
+          }
+        }
+      },
+      "block_order": [
+        "eyebrow",
+        "heading",
+        "text",
+        "button"
+      ],
+      "settings": {
+        "builtin_image": "cocktail",
+        "image_ratio": "portrait",
+        "layout": "text_first",
+        "wide_media": false,
+        "color_scheme": "night",
+        "padding_top": 64,
+        "padding_bottom": 112
       }
     },
     "1786549912a9f82cd7": {
@@ -202,38 +326,16 @@
         "padding_top": 0,
         "padding_bottom": 24
       }
-    },
-    "expression": {
-      "type": "featured-product",
-      "settings": {
-        "product": "",
-        "eyebrow": "",
-        "fallback_title": "Dunrobin Gin",
-        "description": "<p>Scottish juniper, rhubarb, heather, Scots pine resin, bramble leaf, blaeberry, crab apple and toasted oats.</p>",
-        "layout": "centered",
-        "show_centered_button": true,
-        "centered_button_label": "Shop now",
-        "image_ratio": "portrait",
-        "show_specs": true,
-        "spec_label_1": "ABV",
-        "spec_value_1": "45%",
-        "spec_label_2": "Volume",
-        "spec_value_2": "70cl",
-        "spec_label_3": "Batch",
-        "spec_value_3": "001",
-        "color_scheme": "default",
-        "padding_top": 72,
-        "padding_bottom": 72
-      }
     }
   },
   "order": [
     "hero",
     "dispatches",
+    "lookbook",
     "intro",
-    "stills",
+    "pair",
+    "serve",
     "1786549912a9f82cd7",
-    "team",
-    "expression"
+    "team"
   ]
 }

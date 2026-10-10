@@ -27,7 +27,7 @@
               {%- when 'bottle' -%}
                 <img src="{{ 'bottle-gin.png' | asset_url }}" alt="" width="918" height="993" loading="lazy">
               {%- when 'cocktail' -%}
-                <img src="{{ 'cocktail.jpg' | asset_url }}" alt="" width="1600" height="900" loading="lazy">
+                <img src="{{ 'mood-velvet-serve.jpg' | asset_url }}" alt="Two cocktails on a dark green velvet sofa" width="722" height="866" loading="lazy">
               {%- when 'pattern' -%}
                 <img src="{{ 'pattern-navy.jpg' | asset_url }}" alt="" width="1800" height="588" loading="lazy">
               {%- else -%}
@@ -81,7 +81,7 @@
                 {%- else -%}
                   <a
                     href="{{ block.settings.link | default: '#' }}"
-                    class="button {% if section.settings.color_scheme == 'brand' or section.settings.color_scheme == 'accent' %}button--light{% elsif block.settings.style == 'secondary' %}button--secondary{% endif %}"
+                    class="button {% if section.settings.color_scheme == 'brand' or section.settings.color_scheme == 'accent' or section.settings.color_scheme == 'night' %}button--light{% elsif block.settings.style == 'secondary' %}button--secondary{% endif %}"
                   >
                     {{ block.settings.label }}
                   </a>
@@ -145,7 +145,8 @@
         { "value": "default", "label": "White" },
         { "value": "alt", "label": "Off-white" },
         { "value": "brand", "label": "Brand navy" },
-        { "value": "accent", "label": "Forest green" }
+        { "value": "accent", "label": "Forest green" },
+        { "value": "night", "label": "Night (near-black green)" }
       ],
       "default": "default"
     },

@@ -35,9 +35,9 @@ templates/    JSON templates — the section order for each page type
 
 ## Sections a merchant can add
 
-Hero banner · Rich text · Image with text · Featured product · Featured collection ·
-Collection list · Multi-column · Quote · Pattern divider · Newsletter ·
-Collapsible content · Video · Contact form · Apps
+Hero banner · Rich text · Image with text · Image pair · Gallery · Featured product ·
+Featured collection · Collection list · Multi-column · Quote · Pattern divider ·
+Newsletter · Collapsible content · Video · Contact form · Apps
 
 Each has its own settings and, where it makes sense, reorderable blocks. The product
 page is block-based too: title, price, spec bar, variant picker, quantity, buy buttons,
@@ -54,6 +54,9 @@ Derived from the brand guideline deck and the supplied logo files.
 - `seal-sans-peur.png`, `seal-sans-peur-navy.png` — the Sans Peur wildcat seal
 - `pattern-navy.jpg`, `pattern-white.jpg` — the arch-and-wave pattern
 - `castle.jpg`, `castle-duotone.jpg`, `landscape-storr.jpg`, `cocktail.jpg`
+- `mood-*.jpg` — the cropped photographs from the brand deck, shown by the Gallery
+  and Image pair sections until the originals are uploaded in the editor. They were
+  supplied small, so swap in the full-size files before relying on them
 - `bottle-gin.png` and the other bottle renders, cut out on transparency
 
 ## Connecting to Shopify
