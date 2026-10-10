@@ -77,6 +77,71 @@
         "padding_bottom": 24
       }
     },
+    "lookbook": {
+      "type": "gallery",
+      "blocks": {
+        "martini": {
+          "type": "image",
+          "settings": {
+            "builtin": "martini",
+            "alt": "",
+            "caption": "Raise one"
+          }
+        },
+        "navy_table": {
+          "type": "image",
+          "settings": {
+            "builtin": "navy_table",
+            "alt": "",
+            "caption": "Citrus and light"
+          }
+        },
+        "spruce": {
+          "type": "image",
+          "settings": {
+            "builtin": "spruce",
+            "alt": "",
+            "caption": "Pine and ice"
+          }
+        },
+        "velvet_serve": {
+          "type": "image",
+          "settings": {
+            "builtin": "velvet_serve",
+            "alt": "",
+            "caption": "Pour slowly"
+          }
+        },
+        "highland": {
+          "type": "image",
+          "settings": {
+            "builtin": "highland",
+            "alt": "",
+            "caption": "The Highlands"
+          }
+        }
+      },
+      "block_order": [
+        "martini",
+        "navy_table",
+        "spruce",
+        "velvet_serve",
+        "highland"
+      ],
+      "settings": {
+        "eyebrow": "",
+        "heading": "",
+        "text": "",
+        "columns": 3,
+        "grid_width": 760,
+        "color_scheme": "night",
+        "accent_color": "#c9a96a",
+        "button_label": "",
+        "button_link": "",
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
     "intro": {
       "type": "rich-text",
       "blocks": {
@@ -101,94 +166,17 @@
       "type": "image-pair",
       "settings": {
         "caption_left": "Sealed in green wax",
-        "background_left": "#FFFFFF",
+        "background_left": "#ffffff",
         "align_left": "bottom",
         "caption_right": "Sans Peur",
-        "background_right": "#E6E6E8",
+        "background_right": "#e6e6e8",
         "align_right": "centre",
         "panel_height": 520,
         "image_width": 340
       }
     },
-    "lookbook": {
-      "type": "gallery",
-      "blocks": {
-        "martini": {
-          "type": "image",
-          "settings": {
-            "builtin": "martini",
-            "caption": "Raise one"
-          }
-        },
-        "navy_table": {
-          "type": "image",
-          "settings": {
-            "builtin": "navy_table",
-            "caption": "Citrus and light"
-          }
-        },
-        "spruce": {
-          "type": "image",
-          "settings": {
-            "builtin": "spruce",
-            "caption": "Pine and ice"
-          }
-        },
-        "decanters": {
-          "type": "image",
-          "settings": {
-            "builtin": "decanters",
-            "caption": "After dark"
-          }
-        },
-        "velvet_serve": {
-          "type": "image",
-          "settings": {
-            "builtin": "velvet_serve",
-            "caption": "Pour slowly"
-          }
-        },
-        "highland": {
-          "type": "image",
-          "settings": {
-            "builtin": "highland",
-            "caption": "The Highlands"
-          }
-        },
-        "blue_velvet": {
-          "type": "image",
-          "settings": {
-            "builtin": "blue_velvet",
-            "caption": "Slow pour"
-          }
-        }
-      },
-      "block_order": [
-        "martini",
-        "navy_table",
-        "spruce",
-        "decanters",
-        "velvet_serve",
-        "blue_velvet",
-        "highland"
-      ],
-      "settings": {
-        "eyebrow": "",
-        "heading": "",
-        "text": "",
-        "columns": 3,
-        "grid_width": 760,
-        "color_scheme": "night",
-        "accent_color": "#C9A96A",
-        "button_label": "",
-        "button_link": "",
-        "padding_top": 40,
-        "padding_bottom": 40
-      }
-    },
     "serve": {
       "type": "image-with-text",
-      "disabled": true,
       "blocks": {
         "eyebrow": {
           "type": "eyebrow",
@@ -224,6 +212,7 @@
         "text",
         "button"
       ],
+      "disabled": true,
       "settings": {
         "builtin_image": "cocktail",
         "image_ratio": "portrait",
