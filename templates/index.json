@@ -12,8 +12,9 @@
     "hero": {
       "type": "hero-banner",
       "settings": {
+        "image": "shopify://shop_images/image_5_d0c27500-dac1-4714-9ded-0de63e3bf487.png",
         "height": "small",
-        "content_position": "left",
+        "content_position": "center",
         "duotone": false,
         "duotone_opacity": 40,
         "scrim": false,
