@@ -24,21 +24,11 @@
           "settings": {
             "text": "<p>On Scotland's North East coast, forest envelops a castle and meets the sea. From aromatic leaves and roots gathered where the two meet, we shaped our gin to evoke the experience of forest and garden.</p>"
           }
-        },
-        "buttons": {
-          "type": "buttons",
-          "settings": {
-            "button_label": "Shop now",
-            "button_link": "shopify://collections/all",
-            "button_label_2": "",
-            "button_link_2": ""
-          }
         }
       },
       "block_order": [
         "heading",
-        "text",
-        "buttons"
+        "text"
       ],
       "settings": {
         "height": "medium",
@@ -178,18 +168,6 @@
     "rich_text_R8cam8": {
       "type": "rich-text",
       "blocks": {
-        "eyebrow_yRNYmb": {
-          "type": "eyebrow",
-          "settings": {
-            "text": "Our creed"
-          }
-        },
-        "text_BtXnMR": {
-          "type": "text",
-          "settings": {
-            "text": ""
-          }
-        },
         "button_NheDaJ": {
           "type": "button",
           "settings": {
@@ -200,16 +178,14 @@
         }
       },
       "block_order": [
-        "eyebrow_yRNYmb",
-        "text_BtXnMR",
         "button_NheDaJ"
       ],
       "name": "Rich text",
       "settings": {
         "color_scheme": "default",
         "alignment": "center",
-        "padding_top": 8,
-        "padding_bottom": 24
+        "padding_top": 0,
+        "padding_bottom": 0
       }
     },
     "serve": {
