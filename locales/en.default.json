@@ -36,6 +36,9 @@
     },
     "whatsapp": {
       "label": "Chat with us on WhatsApp"
+    },
+    "back_to_top": {
+      "label": "Back to top"
     }
   },
   "accessibility": {

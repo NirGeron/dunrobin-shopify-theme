@@ -458,6 +458,14 @@ def test_structure():
     check('whatsapp: icon exists in the icon snippet',
           "when 'whatsapp'" in open(rel('snippets/icon.liquid')).read())
 
+    # The WhatsApp button is static: it never hides or moves while the page
+    # scrolls (it once tucked away on phones, and that was taken out on request).
+    check('whatsapp: nothing in the script hides it while scrolling',
+          'is-tucked' not in open(rel('assets/global.js')).read() and
+          'WhatsAppTuck' not in open(rel('assets/global.js')).read())
+    check('whatsapp: no hidden state in the stylesheet',
+          'is-tucked' not in css)
+
     # It must sit under the panels rather than punching through them.
     wa_z = re.search(r'\.whatsapp-float\s*\{[^}]*z-index:\s*(\d+)', css)
     check('whatsapp: has a z-index', bool(wa_z))
@@ -470,6 +478,53 @@ def test_structure():
             if m:
                 check(f'whatsapp: sits below the {name}', wa_z < int(m.group(1)),
                       f'whatsapp {wa_z} vs {name} {m.group(1)}')
+
+    # Back-to-top button. It stacks above the WhatsApp button with a sibling
+    # selector, so it has to come after it in the layout; and it must never
+    # reach into the WhatsApp button's own rules or script.
+    btt_src = open(rel('snippets/back-to-top.liquid')).read()
+    btt_code = re.sub(r'\{%-?\s*comment\s*-?%\}.*?\{%-?\s*endcomment\s*-?%\}', '',
+                      btt_src, flags=re.S)
+    wa_at = layout_src.find("render 'whatsapp-button'")
+    btt_at = layout_src.find("render 'back-to-top'")
+    check('back to top: rendered from the layout, after the whatsapp button',
+          0 <= wa_at < btt_at, f'whatsapp at {wa_at}, back-to-top at {btt_at}')
+    check('back to top: a real button with an accessible label',
+          '<button' in btt_code and 'type="button"' in btt_code and
+          "'general.back_to_top.label' | t" in btt_code)
+    check('back to top: label exists in the locale file',
+          bool(load_json(rel('locales', 'en.default.json'))['general'].get('back_to_top', {}).get('label')))
+    check('back to top: skipped on the cart page like the whatsapp button',
+          "template.name == 'cart'" in btt_code)
+    check('back to top: icon exists in the icon snippet',
+          "when 'arrow-up'" in open(rel('snippets/icon.liquid')).read() and
+          "name: 'arrow-up'" in btt_code)
+    btt_z = re.search(r'\.back-to-top\s*\{[^}]*z-index:\s*(\d+)', css)
+    check('back to top: has a z-index', bool(btt_z))
+    if btt_z:
+        btt_z = int(btt_z.group(1))
+        for name, sel in (('cart drawer', r'\.cart-drawer\s*\{'),
+                          ('mobile nav', r'\.mobile-nav\s*\{'),
+                          ('age gate', r'\.age-gate\s*\{')):
+            m = re.search(sel + r'[^}]*z-index:\s*(\d+)', css)
+            if m:
+                check(f'back to top: sits below the {name}', btt_z < int(m.group(1)),
+                      f'back to top {btt_z} vs {name} {m.group(1)}')
+    # The only way this feature's CSS may mention the WhatsApp button is as the
+    # sibling in `.whatsapp-float ~ .back-to-top`, which styles the back-to-top
+    # button. Anything else could restyle or move WhatsApp.
+    btt_css = css[css.index('Back to top button'):css.index('Age gate')]
+    wa_targets = re.findall(r'([^{}]*\.whatsapp-float[^{}]*)\{', btt_css)
+    check("back to top: only touches whatsapp as a sibling selector, never its own element",
+          all(re.search(r'\.whatsapp-float\s*~\s*\.back-to-top\s*$', t.strip()) for t in wa_targets),
+          f'selectors: {[t.strip() for t in wa_targets]}')
+    js_all = open(rel('assets/global.js')).read()
+    btt_js = js_all[js_all.index('function initBackToTop'):js_all.index('function init()')]
+    check('back to top: script never reaches into the whatsapp button',
+          'whatsapp' not in btt_js.lower())
+    check('back to top: wired into init and shows past a quarter of the page',
+          len(re.findall(r'initBackToTop\(\)', js_all)) >= 2 and
+          'scrollHeight * 0.25' in btt_js)
 
     # Product page. The quantity stepper is its own block, outside the <form>,
     # so it only joins the add-to-cart request through form="<id>". The two ids
@@ -928,10 +983,49 @@ window.addEventListener('load', function () {
       });
       out.jsErrors = __probeErrors;
 
-      var pre = document.createElement('pre');
-      pre.id = 'probe';
-      pre.textContent = JSON.stringify(out);
-      document.body.appendChild(pre);
+      // Back to top: at the bottom it should show exactly when the page is
+      // long enough for the bottom to be past the top quarter, it must not
+      // sit on the WhatsApp button, and the WhatsApp button must not move
+      // because it exists. That last one is measured in one synchronous pass,
+      // so both reads see the same moment of any animation.
+      var btt = document.querySelector('[data-back-to-top]');
+      var waBtn = document.querySelector('.whatsapp-float');
+      if (waBtn) {
+        var waStyle = getComputedStyle(waBtn);
+        out.whatsAppOpacityAfterScroll = parseFloat(waStyle.opacity);
+        out.whatsAppPointerEvents = waStyle.pointerEvents;
+      }
+      out.backToTop = { present: !!btt };
+      if (btt) {
+        out.backToTop.shownAtBottom = btt.classList.contains('is-visible');
+        out.backToTop.shouldShowAtBottom =
+          window.scrollY > document.documentElement.scrollHeight * 0.25;
+        if (waBtn) {
+          var rectKey = function (el) {
+            var r = el.getBoundingClientRect();
+            return [r.left, r.top, r.width, r.height].join(',');
+          };
+          var bb = btt.getBoundingClientRect();
+          var wb = waBtn.getBoundingClientRect();
+          out.backToTop.overlapsWhatsApp = !(bb.right <= wb.left || bb.left >= wb.right ||
+                                             bb.bottom <= wb.top || bb.top >= wb.bottom);
+          var waWith = rectKey(waBtn);
+          btt.style.display = 'none';
+          var waWithout = rectKey(waBtn);
+          btt.style.display = '';
+          out.backToTop.whatsAppUnmoved = waWith === waWithout;
+        }
+      }
+
+      // Third stage: back at the top the button must be gone again.
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      setTimeout(function () {
+        if (btt) out.backToTop.shownAtTop = btt.classList.contains('is-visible');
+        var pre = document.createElement('pre');
+        pre.id = 'probe';
+        pre.textContent = JSON.stringify(out);
+        document.body.appendChild(pre);
+      }, 400);
     }, 700);
   }, 400);
 });
@@ -1100,6 +1194,29 @@ def test_render():
 
             check(f'{tag}: revealed content is not stuck invisible',
                   not d.get('revealsStuck'), str(d.get('revealsStuck', [])[:3]))
+
+            # Back to top: absent on the cart page, elsewhere it follows the
+            # scroll position and leaves the WhatsApp button exactly where it was.
+            btt = d.get('backToTop', {})
+            if page == 'cart.html':
+                check(f'{tag}: no back-to-top button on the cart page',
+                      btt.get('present') is False)
+            else:
+                check(f'{tag}: back-to-top button is on the page', btt.get('present') is True)
+                check(f'{tag}: back-to-top shows past a quarter of the page and not before',
+                      btt.get('shownAtBottom') == btt.get('shouldShowAtBottom'),
+                      f'shown {btt.get("shownAtBottom")}, expected {btt.get("shouldShowAtBottom")}')
+                check(f'{tag}: back-to-top is hidden again at the top',
+                      btt.get('shownAtTop') is False)
+                check(f'{tag}: whatsapp button is still fully visible right after scrolling',
+                      d.get('whatsAppOpacityAfterScroll') == 1 and
+                      d.get('whatsAppPointerEvents') != 'none',
+                      f'opacity {d.get("whatsAppOpacityAfterScroll")}, '
+                      f'pointer-events {d.get("whatsAppPointerEvents")}')
+                check(f'{tag}: back-to-top does not overlap the whatsapp button',
+                      btt.get('overlapsWhatsApp') is False)
+                check(f'{tag}: whatsapp button does not move because of back-to-top',
+                      btt.get('whatsAppUnmoved') is True)
 
             if 'cartEscapeCloses' in d:
                 check(f'{tag}: Escape closes the cart drawer',

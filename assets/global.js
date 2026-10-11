@@ -731,48 +731,51 @@
   }
 
   /* ---------------------------------------------------------------------
-     WhatsApp button — steps aside while scrolling down on a phone
+     Back to top — shown once the visitor is past the top quarter of the page
      --------------------------------------------------------------------- */
-  function initWhatsAppTuck() {
-    var button = document.querySelector('.whatsapp-float');
-    if (!button || !window.matchMedia) return;
+  function initBackToTop() {
+    var button = document.querySelector('[data-back-to-top]');
+    if (!button) return;
 
-    var phone = window.matchMedia('(max-width: 749px)');
-    var anchor = window.scrollY;
     var queued = false;
-    var settle;
 
     function update() {
       queued = false;
-      var y = window.scrollY;
-
-      if (!phone.matches || y < 160) {
-        button.classList.remove('is-tucked');
-        anchor = y;
-      } else if (y - anchor > 24) {
-        button.classList.add('is-tucked');
-        anchor = y;
-      } else if (anchor - y > 24) {
-        button.classList.remove('is-tucked');
-        anchor = y;
-      }
-
-      // Not a permanent hide: it comes back once the page stops moving.
-      clearTimeout(settle);
-      settle = setTimeout(function () {
-        button.classList.remove('is-tucked');
-      }, 900);
+      // Read the page height each time: late images and revealed sections
+      // change it, and a threshold fixed at load would drift.
+      var past = window.scrollY > document.documentElement.scrollHeight * 0.25;
+      button.classList.toggle('is-visible', past);
     }
 
-    window.addEventListener(
-      'scroll',
-      function () {
-        if (queued) return;
-        queued = true;
-        window.requestAnimationFrame(update);
-      },
-      { passive: true }
-    );
+    function queue() {
+      if (queued) return;
+      queued = true;
+      window.requestAnimationFrame(update);
+    }
+
+    window.addEventListener('scroll', queue, { passive: true });
+    window.addEventListener('resize', queue);
+    // A reload restores the old scroll position without a scroll event.
+    update();
+
+    button.addEventListener('click', function () {
+      // Smooth unless the visitor asked for reduced motion: base.css sets
+      // scroll-behavior on the root and switches it off for them.
+      window.scrollTo({ top: 0 });
+
+      // The button hides as it arrives, which would strand keyboard focus at
+      // the foot of the page. Hand it to <body> so Tab starts from the top.
+      var body = document.body;
+      body.setAttribute('tabindex', '-1');
+      body.focus({ preventScroll: true });
+      body.addEventListener(
+        'blur',
+        function () {
+          body.removeAttribute('tabindex');
+        },
+        { once: true }
+      );
+    });
   }
 
   function init() {
@@ -788,7 +791,7 @@
     initShare();
     initArticleBody();
     initStickyAtc();
-    initWhatsAppTuck();
+    initBackToTop();
   }
 
   if (document.readyState === 'loading') {

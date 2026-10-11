@@ -1,0 +1,23 @@
+{%- comment -%}
+  Floating "back to top" button, bottom right. It stays hidden until the
+  visitor has scrolled past the top quarter of the page (see initBackToTop in
+  global.js), so a page that barely scrolls never shows it.
+
+  Rendered straight after the WhatsApp button on purpose: base.css stacks it
+  above that button with a sibling selector, and falls back to the corner when
+  the WhatsApp button is switched off.
+
+  Not on the cart page, for the same reason as the WhatsApp button: that corner
+  belongs to checkout there.
+{%- endcomment -%}
+
+{%- unless template.name == 'cart' -%}
+  <button
+    type="button"
+    class="back-to-top"
+    data-back-to-top
+    aria-label="{{ 'general.back_to_top.label' | t }}"
+  >
+    {% render 'icon', name: 'arrow-up' %}
+  </button>
+{%- endunless -%}
