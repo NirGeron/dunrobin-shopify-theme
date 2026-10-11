@@ -12,14 +12,13 @@
     "hero": {
       "type": "hero-banner",
       "settings": {
-        "image": "shopify://shop_images/WhatsApp_Image_2026-10-11_at_20.54.05.jpg",
         "height": "small",
-        "content_position": "center",
+        "content_position": "left",
         "duotone": false,
         "duotone_opacity": 40,
         "scrim": false,
         "padding_top": 80,
-        "padding_bottom": 24
+        "padding_bottom": 8
       }
     },
     "dispatches": {
