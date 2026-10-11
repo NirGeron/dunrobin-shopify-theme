@@ -2397,6 +2397,19 @@ textarea.field__input {
   object-fit: cover;
 }
 
+/* The tile is two pattern rows by ten columns and is exported at 2x, so it is
+   sized in CSS pixels and centred; whole cells repeat out to every edge. */
+.age-gate__backdrop--pattern {
+  background-color: #fff;
+  background-repeat: repeat;
+  background-position: center;
+  background-size: 1754px 354px;
+}
+
+@media screen and (max-width: 749px) {
+  .age-gate__backdrop--pattern { background-size: 1100px 222px; }
+}
+
 .age-gate__panel {
   position: relative;
   z-index: 1;

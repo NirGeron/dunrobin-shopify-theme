@@ -12,8 +12,13 @@
   data-frequency="{{ settings.age_gate_frequency | default: 'session' }}"
   hidden
 >
-  <div class="age-gate__backdrop" aria-hidden="true">
-    {%- if gate_bg != blank -%}
+  {%- comment -%}
+    The built-in pattern is a seamless tile that repeats at its natural size,
+    so it stays sharp and fills any screen. Stretching the 3:1 banner strip
+    to cover the viewport blurred it and left its white margin along the bottom.
+  {%- endcomment -%}
+  {%- if gate_bg != blank -%}
+    <div class="age-gate__backdrop" aria-hidden="true">
       <img
         src="{{ gate_bg | image_url: width: 2400 }}"
         srcset="{{ gate_bg | image_url: width: 1200 }} 1200w, {{ gate_bg | image_url: width: 2400 }} 2400w"
@@ -22,10 +27,14 @@
         width="{{ gate_bg.width }}"
         height="{{ gate_bg.height }}"
       >
-    {%- else -%}
-      <img src="{{ 'pattern-white.jpg' | asset_url }}" alt="" width="1800" height="588">
-    {%- endif -%}
-  </div>
+    </div>
+  {%- else -%}
+    <div
+      class="age-gate__backdrop age-gate__backdrop--pattern"
+      style="background-image: url('{{ 'pattern-white-tile.png' | asset_url }}');"
+      aria-hidden="true"
+    ></div>
+  {%- endif -%}
 
   <div class="age-gate__panel" data-age-gate-ask>
     {%- if gate_logo != blank -%}

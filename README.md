@@ -53,6 +53,9 @@ Derived from the brand guideline deck and the supplied logo files.
   (`favicon-192.png` is the 192px square Google wants for its search-result icon)
 - `seal-sans-peur.png`, `seal-sans-peur-navy.png` — the Sans Peur wildcat seal
 - `pattern-navy.jpg`, `pattern-white.jpg` — the arch-and-wave pattern
+- `pattern-white-tile.png` — a seamless two-row, ten-column cut of the white pattern,
+  exported at 2x. The age gate repeats it at 1754×354 CSS px so it stays sharp and
+  fills any screen; the wide banner strips above are for banners, not full-screen use
 - `castle.jpg`, `castle-duotone.jpg`, `landscape-storr.jpg`, `cocktail.jpg`
 - `mood-*.jpg` — the cropped photographs from the brand deck, shown by the Gallery
   and Image pair sections until the originals are uploaded in the editor. They were
