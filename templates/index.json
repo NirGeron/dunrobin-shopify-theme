@@ -51,6 +51,15 @@
     "lookbook": {
       "type": "gallery",
       "blocks": {
+        "image_QMnjme": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/WhatsApp_Image_2026-10-11_at_18.24.23.jpg",
+            "builtin": "none",
+            "alt": "",
+            "caption": ""
+          }
+        },
         "martini": {
           "type": "image",
           "settings": {
@@ -98,6 +107,7 @@
         }
       },
       "block_order": [
+        "image_QMnjme",
         "martini",
         "navy_table",
         "spruce",
