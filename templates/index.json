@@ -90,7 +90,7 @@
         "highland": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/WhatsApp_Image_2026-10-11_at_18.23.44.jpg",
+            "image": "shopify://shop_images/Gemini_Generated_Image_wjkiuawjkiuawjki.jpg",
             "builtin": "highland",
             "alt": "",
             "caption": "The Highlands"
@@ -109,7 +109,7 @@
         "heading": "",
         "text": "",
         "columns": 3,
-        "grid_width": 760,
+        "grid_width": 780,
         "color_scheme": "night",
         "accent_color": "#c9a96a",
         "button_label": "",
