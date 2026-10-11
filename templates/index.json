@@ -26,26 +26,26 @@
       "settings": {
         "blog": "news",
         "eyebrow": "",
-        "heading": "Recent Dispatches",
+        "heading": "",
         "posts_to_show": 3,
         "columns": 3,
         "mobile_carousel": true,
         "stagger": true,
         "feature_single": true,
-        "image_ratio": "portrait",
+        "image_ratio": "adapt",
         "show_filters": false,
         "filters_to_show": 3,
         "accent_color": "#8a6a3b",
         "show_tag": true,
         "show_date": true,
         "show_excerpt": true,
-        "excerpt_words": 30,
+        "excerpt_words": 25,
         "read_more_label": "Read more",
         "show_view_all": false,
         "view_all_label": "View all dispatches",
         "color_scheme": "alt",
-        "padding_top": 32,
-        "padding_bottom": 24
+        "padding_top": 0,
+        "padding_bottom": 16
       }
     },
     "lookbook": {
@@ -54,6 +54,7 @@
         "martini": {
           "type": "image",
           "settings": {
+            "image": "shopify://shop_images/WhatsApp_Image_2026-10-11_at_18.11.16.jpg",
             "builtin": "martini",
             "alt": "",
             "caption": "Raise one"
@@ -62,6 +63,7 @@
         "navy_table": {
           "type": "image",
           "settings": {
+            "image": "shopify://shop_images/WhatsApp_Image_2026-10-11_at_18.09.31.jpg",
             "builtin": "navy_table",
             "alt": "",
             "caption": "Citrus and light"
@@ -70,6 +72,7 @@
         "spruce": {
           "type": "image",
           "settings": {
+            "image": "shopify://shop_images/WhatsApp_Image_2026-10-11_at_18.09.01.jpg",
             "builtin": "spruce",
             "alt": "",
             "caption": "Pine and ice"
@@ -78,6 +81,7 @@
         "velvet_serve": {
           "type": "image",
           "settings": {
+            "image": "shopify://shop_images/WhatsApp_Image_2026-10-11_at_18.10.53.jpg",
             "builtin": "velvet_serve",
             "alt": "",
             "caption": "Pour slowly"
@@ -86,6 +90,7 @@
         "highland": {
           "type": "image",
           "settings": {
+            "image": "shopify://shop_images/WhatsApp_Image_2026-10-11_at_18.23.44.jpg",
             "builtin": "highland",
             "alt": "",
             "caption": "The Highlands"
