@@ -12,6 +12,7 @@
     "hero": {
       "type": "hero-banner",
       "settings": {
+        "image": "shopify://shop_images/WhatsApp_Image_2026-10-11_at_18.24.23.jpg",
         "height": "small",
         "content_position": "left",
         "duotone": false,
