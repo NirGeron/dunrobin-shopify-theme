@@ -560,6 +560,18 @@ def test_structure():
           bool(re.search(r'"url":\s*\{\{\s*shop\.url\s*\|\s*json\s*\}\}\s*,"logo":\s*\{\{\s*sd_logo_url\s*\|\s*json\s*\}\}',
                          sd_src)), 'the logo line must not sit inside an {% if %}')
 
+    # "Dunrobin Distillery" is also an Ontario business, so the Organization
+    # names this one's address and alternate names to keep the two apart.
+    check('structured data: Organization names its alternate brand names',
+          '"alternateName": ["Dunrobin Distillery", "Dunrobin Gin"]' in sd_src)
+    check('structured data: Organization carries the Golspie postal address',
+          '"@type": "PostalAddress"' in sd_src and '"addressLocality": "Golspie"' in sd_src
+          and '"postalCode": "KW10 6SF"' in sd_src and '"addressCountry": "GB"' in sd_src)
+    meta_src = open(rel('snippets/meta-tags.liquid')).read()
+    check('meta tags: og:image is served over https, not http',
+          'property="og:image" content="https:' in meta_src
+          and 'property="og:image" content="http:' not in meta_src)
+
     # Favicon: an uploaded one wins; otherwise the layouts fall back to the
     # shipped icon, so the page never goes out without <link rel="icon">.
     # Google wants a square favicon whose side is a multiple of 48px.

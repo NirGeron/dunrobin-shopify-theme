@@ -6,7 +6,12 @@
   emitted from the layout rather than left to individual sections.
 
     Home page   Organization + WebSite (feeds the site name and logo; the
-                logo falls back to assets/brand-mark.png when none is set)
+                logo falls back to assets/brand-mark.png when none is set).
+                The Organization also names the Golspie address and the
+                alternate names "Dunrobin Distillery" and "Dunrobin Gin", so
+                searches for those can be tied to this Scottish distillery
+                rather than the unrelated Dunrobin Distilleries in Ontario.
+                The address mirrors the footer; update both if it changes.
     Product     BreadcrumbList. The Product markup itself is output by
                 sections/main-product.liquid via the structured_data filter.
     Collection  BreadcrumbList
@@ -74,6 +79,14 @@
           "name": {{ shop.name | json }},
           "url": {{ shop.url | json }}
           ,"logo": {{ sd_logo_url | json }}
+          ,"alternateName": ["Dunrobin Distillery", "Dunrobin Gin"]
+          ,"address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Golspie",
+            "addressRegion": "Highland",
+            "postalCode": "KW10 6SF",
+            "addressCountry": "GB"
+          }
           {%- if shop.description != blank -%}
             ,"description": {{ shop.description | json }}
           {%- endif -%}
