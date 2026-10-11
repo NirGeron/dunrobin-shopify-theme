@@ -912,7 +912,10 @@ textarea.field__input {
 }
 
 /* Angled toward whichever side carries the copy, so white text stays legible
-   over bright, un-duotoned photography. */
+   over bright, un-duotoned photography. The wash is deliberately light and
+   even, only easing from .38 on the copy side to .22 on the other: a heavier
+   shade behind the copy that falls away quickly splits the picture into a dark
+   half and a bright half. The text halo below does the rest of the work. */
 .hero__scrim {
   position: absolute;
   inset: 0;
@@ -920,35 +923,36 @@ textarea.field__input {
 }
 
 .hero--left .hero__scrim {
-  background:
-    linear-gradient(to right, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.4) 52%, rgba(0, 0, 0, 0.06) 82%),
-    linear-gradient(to top, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0) 55%);
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.38), rgba(0, 0, 0, 0.3) 55%, rgba(0, 0, 0, 0.22));
 }
 
 .hero--right .hero__scrim {
-  background:
-    linear-gradient(to left, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.4) 52%, rgba(0, 0, 0, 0.06) 82%),
-    linear-gradient(to top, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0) 55%);
+  background: linear-gradient(to left, rgba(0, 0, 0, 0.38), rgba(0, 0, 0, 0.3) 55%, rgba(0, 0, 0, 0.22));
 }
 
-/* On a phone the content column is the full screen, so a side gradient that
-   fades out at 76% leaves the last words of every line sitting on the bare
-   photo. Full-width shade puts every line on a dark ground; the top stops at
-   .3 rather than .08 because the heading sits up there, not at the bottom. */
+/* On a phone the content column is the full screen, so a side gradient would
+   leave the last words of every line on the bare photo. Shade top to bottom
+   instead, easing off above the heading and below the paragraph where there is
+   no copy to protect. */
 @media screen and (max-width: 749px) {
   .hero--left .hero__scrim,
   .hero--right .hero__scrim {
-    background:
-      linear-gradient(to top, rgba(0, 0, 0, 0.62), rgba(0, 0, 0, 0.44) 55%, rgba(0, 0, 0, 0.32));
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.24),
+      rgba(0, 0, 0, 0.35) 30%,
+      rgba(0, 0, 0, 0.35) 72%,
+      rgba(0, 0, 0, 0.2)
+    );
   }
 }
 
-/* A soft halo behind the copy catches the bright patches of the photo that
-   even a strong scrim leaves (castle stonework, sky). Barely visible on a
-   dark ground, so it doesn't read as an effect. */
+/* A soft halo behind the copy catches the bright patches of the photo that a
+   light wash leaves (castle stonework, sky), so it is wider and stronger than
+   a plain drop shadow. */
 .hero__heading,
 .hero__text {
-  text-shadow: 0 1px 18px rgba(0, 0, 0, 0.45);
+  text-shadow: 0 0 0.8rem rgba(0, 0, 0, 0.5), 0 0 3rem rgba(0, 0, 0, 0.6);
 }
 
 .hero--center .hero__scrim {

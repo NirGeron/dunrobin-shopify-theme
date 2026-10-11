@@ -405,6 +405,21 @@ def test_structure():
     check('hero banner: later headings fall back to <h2>',
           hero_src.count("assign heading_tag = 'h2'") >= 2)
 
+    # The shade over the hero photo is kept light and even on purpose. A heavy
+    # shade behind the copy that falls away quickly splits the picture into a
+    # dark half and a bright half, and a heavy one all over makes the banner
+    # read as dull. The legibility the lighter wash gives up comes from the
+    # text halo, so the two have to stay together.
+    scrim_alphas = []
+    for m in re.finditer(r'\.hero--(?:left|right) \.hero__scrim\s*\{([^}]*)\}', css):
+        scrim_alphas += [float(a) for a in
+                         re.findall(r'rgba\(0,\s*0,\s*0,\s*([\d.]+)\)', m.group(1))]
+    check('hero banner: side and phone shades stay light (no stop above .45)',
+          bool(scrim_alphas) and max(scrim_alphas) <= 0.45,
+          f'darkest stop is {max(scrim_alphas) if scrim_alphas else "missing"}')
+    check('hero banner: copy keeps its text halo',
+          re.search(r'\.hero__heading,\s*\.hero__text\s*\{[^}]*text-shadow', css) is not None)
+
     # A featured-collection with no collection chosen renders four "Example
     # product" placeholder cards on the live storefront. Fine as a theme-editor
     # preview, wrong in a shipped template.
