@@ -11,31 +11,12 @@
   "sections": {
     "hero": {
       "type": "hero-banner",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "text": "Our Gin",
-            "size": "h0"
-          }
-        },
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "<p>On Scotland's North East coast, forest envelops a castle and meets the sea. From aromatic leaves and roots gathered where the two meet, we shaped our gin to evoke the experience of forest and garden.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "heading",
-        "text"
-      ],
       "settings": {
         "height": "medium",
         "content_position": "left",
         "duotone": false,
         "duotone_opacity": 40,
-        "scrim": true,
+        "scrim": false,
         "padding_top": 80,
         "padding_bottom": 8
       }
