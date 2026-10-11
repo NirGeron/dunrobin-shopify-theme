@@ -45,7 +45,7 @@
       "settings": {
         "logo_height": 44,
         "menu": "main-menu",
-        "layout": "left",
+        "layout": "center",
         "sticky": false,
         "show_search": false,
         "show_account": false
