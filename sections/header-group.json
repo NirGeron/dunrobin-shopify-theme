@@ -43,7 +43,8 @@
     "header": {
       "type": "header",
       "settings": {
-        "logo_height": 44,
+        "logo": "shopify://shop_images/Gemini_Generated_Image_7icvz87icvz87icv.jpg",
+        "logo_height": 90,
         "menu": "main-menu",
         "layout": "left",
         "sticky": false,
