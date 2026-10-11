@@ -2327,25 +2327,19 @@ textarea.field__input {
   box-shadow: 0 0.4rem 1.6rem rgba(0, 0, 0, 0.34);
 }
 
-/* Smaller on a phone, where it otherwise covers a thumb's width of body text,
-   and out of the way while the visitor is scrolling down the page. It comes
-   back as soon as they scroll up or stop (see initWhatsAppTuck). */
+/* Smaller on a phone, where it otherwise covers a thumb's width of body text.
+   It never hides or moves while the page scrolls: the only thing that shifts
+   it is the sticky Add to bag bar below. */
 @media screen and (max-width: 749px) {
   .whatsapp-float {
     width: 4.8rem;
     height: 4.8rem;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, bottom 0.25s ease, opacity 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, bottom 0.25s ease;
   }
 
   .whatsapp-float svg {
     width: 2.8rem;
     height: 2.8rem;
-  }
-
-  .whatsapp-float.is-tucked {
-    opacity: 0;
-    pointer-events: none;
-    transform: translateY(1.2rem);
   }
 
   /* Lift clear of the sticky Add to bag bar rather than sitting on it. */
@@ -2366,6 +2360,108 @@ textarea.field__input {
     width: 3.4rem;
     height: 3.4rem;
   }
+}
+
+/* --------------------------------------------------------------------------
+   Back to top button
+   -------------------------------------------------------------------------- */
+
+/* Same z-index as the WhatsApp button, so an open panel covers both alike.
+   It is positioned from four custom properties so the stacking arithmetic
+   lives in one place:
+     --btt-base   bottom of the stack (the corner, or the sticky bar's top)
+     --btt-below  what sits under it: the WhatsApp button plus a 1.2rem gap
+     --btt-edge   distance from the right edge
+   With the WhatsApp button present it is centred on it, so the edge is the
+   WhatsApp offset plus half the difference in diameter. The button is
+   rendered after the WhatsApp one, which is what makes the sibling selector
+   below work; when WhatsApp is off, the defaults put it in the corner.
+   Hidden with visibility as well as opacity so it is out of the tab order
+   until it shows. */
+.back-to-top {
+  --btt-size: 4.4rem;
+  --btt-edge: 1.6rem;
+  --btt-base: calc(1.6rem + env(safe-area-inset-bottom, 0px));
+  --btt-below: 0rem;
+
+  position: fixed;
+  right: var(--btt-edge);
+  bottom: calc(var(--btt-base) + var(--btt-below));
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--btt-size);
+  height: var(--btt-size);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background-color: var(--brand);
+  color: var(--button-text);
+  box-shadow: 0 0.2rem 1.2rem rgba(0, 0, 0, 0.28);
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(1.2rem);
+  transition: opacity 0.2s ease, transform 0.2s ease, background-color 0.2s ease,
+    bottom 0.25s ease, visibility 0s linear 0.2s;
+}
+
+.back-to-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition-delay: 0s;
+}
+
+.back-to-top.is-visible:hover {
+  background-color: var(--brand-dark);
+  transform: translateY(-0.2rem);
+}
+
+.back-to-top svg {
+  width: 2rem;
+  height: 2rem;
+  /* The shared icon is drawn at 1.4, which goes thin at this size. */
+  stroke-width: 1.8;
+}
+
+/* WhatsApp is 4.8rem at 1.6rem from the corner on a phone. */
+.whatsapp-float ~ .back-to-top {
+  --btt-edge: 1.8rem;
+  --btt-below: 6rem;
+}
+
+/* Lift clear of the sticky Add to bag bar, as the WhatsApp button does. */
+@media screen and (max-width: 749px) {
+  .has-sticky-atc .back-to-top {
+    --btt-base: calc(var(--sticky-atc-height) + 1.2rem + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* WhatsApp is 6rem at 2.4rem from the corner here. */
+@media screen and (min-width: 750px) {
+  .back-to-top {
+    --btt-size: 4.8rem;
+    --btt-edge: 2.4rem;
+    --btt-base: 2.4rem;
+  }
+
+  .whatsapp-float ~ .back-to-top {
+    --btt-edge: 3rem;
+    --btt-below: 7.2rem;
+  }
+
+  .back-to-top svg {
+    width: 2.2rem;
+    height: 2.2rem;
+  }
+}
+
+/* global.js moves focus to <body> when the button is used, so keyboard users
+   carry on from the top of the page. It is not a control; no ring needed. */
+body[tabindex='-1']:focus {
+  outline: none;
 }
 
 /* --------------------------------------------------------------------------
