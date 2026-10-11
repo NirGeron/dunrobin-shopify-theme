@@ -175,6 +175,43 @@
         "image_width": 340
       }
     },
+    "rich_text_R8cam8": {
+      "type": "rich-text",
+      "blocks": {
+        "eyebrow_yRNYmb": {
+          "type": "eyebrow",
+          "settings": {
+            "text": "Our creed"
+          }
+        },
+        "text_BtXnMR": {
+          "type": "text",
+          "settings": {
+            "text": ""
+          }
+        },
+        "button_NheDaJ": {
+          "type": "button",
+          "settings": {
+            "label": "Shop Now",
+            "link": "shopify://products/dunrobin-gin",
+            "style": "primary"
+          }
+        }
+      },
+      "block_order": [
+        "eyebrow_yRNYmb",
+        "text_BtXnMR",
+        "button_NheDaJ"
+      ],
+      "name": "Rich text",
+      "settings": {
+        "color_scheme": "default",
+        "alignment": "center",
+        "padding_top": 8,
+        "padding_bottom": 24
+      }
+    },
     "serve": {
       "type": "image-with-text",
       "blocks": {
@@ -324,6 +361,7 @@
     "lookbook",
     "intro",
     "pair",
+    "rich_text_R8cam8",
     "serve",
     "1786549912a9f82cd7",
     "team"
