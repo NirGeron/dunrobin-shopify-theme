@@ -913,7 +913,7 @@ textarea.field__input {
 
 /* Angled toward whichever side carries the copy, so white text stays legible
    over bright, un-duotoned photography. The wash is deliberately light and
-   even, only easing from .38 on the copy side to .22 on the other: a heavier
+   even, only easing from .30 on the copy side to .16 on the other: a heavier
    shade behind the copy that falls away quickly splits the picture into a dark
    half and a bright half. The text halo below does the rest of the work. */
 .hero__scrim {
@@ -923,11 +923,11 @@ textarea.field__input {
 }
 
 .hero--left .hero__scrim {
-  background: linear-gradient(to right, rgba(0, 0, 0, 0.38), rgba(0, 0, 0, 0.3) 55%, rgba(0, 0, 0, 0.22));
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.23) 55%, rgba(0, 0, 0, 0.16));
 }
 
 .hero--right .hero__scrim {
-  background: linear-gradient(to left, rgba(0, 0, 0, 0.38), rgba(0, 0, 0, 0.3) 55%, rgba(0, 0, 0, 0.22));
+  background: linear-gradient(to left, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.23) 55%, rgba(0, 0, 0, 0.16));
 }
 
 /* On a phone the content column is the full screen, so a side gradient would
@@ -939,10 +939,10 @@ textarea.field__input {
   .hero--right .hero__scrim {
     background: linear-gradient(
       to bottom,
-      rgba(0, 0, 0, 0.24),
-      rgba(0, 0, 0, 0.35) 30%,
-      rgba(0, 0, 0, 0.35) 72%,
-      rgba(0, 0, 0, 0.2)
+      rgba(0, 0, 0, 0.2),
+      rgba(0, 0, 0, 0.3) 30%,
+      rgba(0, 0, 0, 0.3) 72%,
+      rgba(0, 0, 0, 0.16)
     );
   }
 }
@@ -952,7 +952,10 @@ textarea.field__input {
    a plain drop shadow. */
 .hero__heading,
 .hero__text {
-  text-shadow: 0 0 0.8rem rgba(0, 0, 0, 0.5), 0 0 3rem rgba(0, 0, 0, 0.6);
+  text-shadow:
+    0 0 0.4rem rgba(0, 0, 0, 0.6),
+    0 0 1.4rem rgba(0, 0, 0, 0.55),
+    0 0 3.2rem rgba(0, 0, 0, 0.5);
 }
 
 .hero--center .hero__scrim {
