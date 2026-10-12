@@ -2251,6 +2251,21 @@ textarea.field__input {
   border-top-color: var(--border);
 }
 
+/* The payment icons are inline SVGs with no wrapper styling, so without this
+   they stack in a single column. Lay them out as a wrapping horizontal row. */
+.footer__payment {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.footer__payment-icon {
+  display: block;
+  width: 3.8rem;
+  height: 2.4rem;
+}
+
 .footer__social {
   display: flex;
   gap: 1.2rem;
