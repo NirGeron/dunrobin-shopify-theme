@@ -1,26 +1,29 @@
+{%- comment -%}
+  description is the page's meta description worked out in layout/theme.liquid
+  (the admin's search listing, else text from the page itself), so the social
+  cards and the search snippet say the same thing.
+{%- endcomment -%}
+
 {%- liquid
+  assign og_description = description
+
   if template.name == 'product'
     assign og_title = product.title
-    assign og_description = product.description | strip_html | truncatewords: 50
     assign og_image = product.featured_media.preview_image
     assign og_type = 'product'
   elsif template.name == 'article'
     assign og_title = article.title
-    assign og_description = article.excerpt_or_content | strip_html | truncatewords: 50
     assign og_image = article.image
     assign og_type = 'article'
   elsif template.name == 'collection'
     assign og_title = collection.title
-    assign og_description = collection.description | strip_html | truncatewords: 50
     assign og_image = collection.featured_image
     assign og_type = 'website'
   elsif template.name == 'blog'
     assign og_title = 'blogs.general.title' | t
-    assign og_description = page_description
     assign og_type = 'website'
   else
     assign og_title = page_title
-    assign og_description = page_description
     assign og_type = 'website'
   endif
 
@@ -33,7 +36,7 @@
 <meta property="og:url" content="{{ canonical_url }}">
 <meta property="og:title" content="{{ og_title | default: shop.name | escape }}">
 <meta property="og:type" content="{{ og_type }}">
-<meta property="og:description" content="{{ og_description | default: shop.description | default: shop.name | escape }}">
+<meta property="og:description" content="{{ og_description | default: shop.description | default: shop.name | escape_once }}">
 
 {%- if og_image -%}
   <meta property="og:image" content="https:{{ og_image | image_url: width: 1200 }}">
@@ -49,4 +52,4 @@
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{ og_title | default: shop.name | escape }}">
-<meta name="twitter:description" content="{{ og_description | default: shop.description | default: shop.name | escape }}">
+<meta name="twitter:description" content="{{ og_description | default: shop.description | default: shop.name | escape_once }}">

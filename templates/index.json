@@ -132,19 +132,34 @@
     "intro": {
       "type": "rich-text",
       "blocks": {
+        "eyebrow": {
+          "type": "eyebrow",
+          "settings": {
+            "text": "Dunrobin Highland Distillery"
+          }
+        },
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "text": "Highland craft gin from Dunrobin Castle",
+            "size": "h2"
+          }
+        },
         "text": {
           "type": "text",
           "settings": {
-            "text": "<p>On Scotland's North East coast, forest envelops a castle and meets the sea. From aromatic leaves and roots gathered where the two meet, we shaped our gin to evoke the experience of forest and garden.</p>"
+            "text": "<p>On Scotland's North East coast, forest envelops a castle and meets the sea. From aromatic leaves and roots gathered where the two meet, we shaped our gin to evoke the experience of forest and garden.</p><p><a href=\"/products/dunrobin-gin\">Dunrobin Gin</a> is made in Golspie, in Sutherland in the Scottish Highlands, by Lizzie and Boban, who live here with their family. Its botanicals are juniper, lemon, coriander, clove, blackcurrant, angelica root and rose-scented pelargonium leaf. Each 70cl bottle is 45% ABV and sealed by hand in green wax.</p><p>The gin carries <em>Sans Peur</em>, “without fear”, the motto of the House of Sutherland, and builds on a distilling tradition in this part of the Highlands that goes back to Clynelish in 1819. Read <a href=\"/pages/about\">our story</a> to meet the people and the place behind it.</p><p>You can order Dunrobin Gin online, or call in to the Wee Gin Shop at Dunrobin Castle, a stop on the North Coast 500. <a href=\"/pages/visit\">Plan your visit</a>.</p>"
           }
         }
       },
       "block_order": [
+        "eyebrow",
+        "heading",
         "text"
       ],
       "settings": {
         "color_scheme": "default",
-        "alignment": "center",
+        "alignment": "left",
         "padding_top": 32,
         "padding_bottom": 32
       }

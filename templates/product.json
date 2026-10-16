@@ -90,9 +90,116 @@
         "padding_top": 64,
         "padding_bottom": 96
       }
+    },
+    "about": {
+      "type": "rich-text",
+      "blocks": {
+        "eyebrow": {
+          "type": "eyebrow",
+          "settings": {
+            "text": "The gin"
+          }
+        },
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "text": "About Dunrobin Gin",
+            "size": "h2"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Dunrobin Gin is a Highland craft gin made in Golspie, in the Scottish Highlands. Lizzie and Boban created it to evoke the experience of forest and garden, using leaves and roots gathered around Dunrobin Castle, where the woodland meets the sea.</p><p>The recipe brings together juniper, lemon, coriander, clove, blackcurrant, angelica root and rose-scented pelargonium leaf, with spring water from the Big Burn. It is bottled at 45% ABV in a 70cl bottle and sealed by hand in green wax.</p><p>Every bottle carries <em>Sans Peur</em>, “without fear”, the motto of the House of Sutherland. Order it here, or find it at the <a href=\"/pages/visit\">Wee Gin Shop at Dunrobin Castle</a>.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "eyebrow",
+        "heading",
+        "text"
+      ],
+      "settings": {
+        "color_scheme": "default",
+        "alignment": "left",
+        "padding_top": 0,
+        "padding_bottom": 48
+      }
+    },
+    "faq": {
+      "type": "collapsible-content",
+      "blocks": {
+        "strength": {
+          "type": "item",
+          "settings": {
+            "heading": "How strong is Dunrobin Gin, and what size is the bottle?",
+            "content": "<p>Dunrobin Gin is 45% ABV and comes in a 70cl bottle. Each bottle contains 31.5 UK units of alcohol.</p>",
+            "open": false
+          }
+        },
+        "botanicals": {
+          "type": "item",
+          "settings": {
+            "heading": "What botanicals are in Dunrobin Gin?",
+            "content": "<p>Juniper, lemon, coriander, clove, blackcurrant, angelica root and rose-scented pelargonium leaf. The pelargonium and the blackcurrant leaf come from the gardens at Dunrobin Castle.</p>",
+            "open": false
+          }
+        },
+        "serve": {
+          "type": "item",
+          "settings": {
+            "heading": "How should I serve it?",
+            "content": "<p>Pour it over plenty of ice, top with a good tonic and finish with a slice of lemon or a sprig of pine. It also works stirred cold into a coupe.</p>",
+            "open": false
+          }
+        },
+        "delivery": {
+          "type": "item",
+          "settings": {
+            "heading": "How is it delivered?",
+            "content": "<p>Shipping is calculated at checkout. Every order needs an adult signature on delivery, and the courier checks age at the door.</p>",
+            "open": false
+          }
+        },
+        "gift": {
+          "type": "item",
+          "settings": {
+            "heading": "Is Dunrobin Gin a good gift?",
+            "content": "<p>Each bottle is sealed by hand in green wax, which makes it an easy gift for a gin lover. Enter the recipient’s address at checkout to send it straight to them, and make sure an adult is there to sign for it.</p>",
+            "open": false
+          }
+        },
+        "in_person": {
+          "type": "item",
+          "settings": {
+            "heading": "Where can I buy it in person?",
+            "content": "<p>At the Wee Gin Shop at Dunrobin Castle, Golspie KW10 6SF, open daily from 10am to 5pm between April and October. <a href=\"/pages/visit\">See how to find us</a>.</p>",
+            "open": false
+          }
+        }
+      },
+      "block_order": [
+        "strength",
+        "botanicals",
+        "serve",
+        "delivery",
+        "gift",
+        "in_person"
+      ],
+      "settings": {
+        "eyebrow": "",
+        "heading": "Questions about Dunrobin Gin",
+        "heading_alignment": "center",
+        "narrow": true,
+        "color_scheme": "alt",
+        "padding_top": 80,
+        "padding_bottom": 96
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "about",
+    "faq"
   ]
 }

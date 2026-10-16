@@ -39,6 +39,9 @@
       if blurb == blank
         assign blurb = collection.description
       endif
+      if blurb == blank and collection.handle == 'all'
+        assign blurb = 'collections.general.intro_all' | t | prepend: '<p>' | append: '</p>'
+      endif
     -%}
     {%- if blurb != blank -%}
       <div class="collection-intro rte">{{ blurb }}</div>

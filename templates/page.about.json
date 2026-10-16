@@ -1,0 +1,190 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "eyebrow": "Our story",
+        "narrow": true,
+        "alignment": "center",
+        "padding_top": 80,
+        "padding_bottom": 32
+      }
+    },
+    "story": {
+      "type": "image-with-text",
+      "blocks": {
+        "eyebrow": {
+          "type": "eyebrow",
+          "settings": {
+            "text": "The people"
+          }
+        },
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "text": "A family distillery in Golspie",
+            "size": "h2"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Lizzie and Boban live with their family in Golspie. They have treasured every step of the journey in creating Dunrobin Gin, from the recipe work to the day the still arrived to opening the doors of the pop up shop at the castle.</p><p>Creating something of their own that represents their home has been a delight. Their vision is to now move on to starting their own whisky.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "eyebrow",
+        "heading",
+        "text"
+      ],
+      "settings": {
+        "builtin_image": "team",
+        "image_ratio": "square",
+        "layout": "image_first",
+        "wide_media": false,
+        "color_scheme": "default",
+        "padding_top": 32,
+        "padding_bottom": 64
+      }
+    },
+    "botanicals": {
+      "type": "image-with-text",
+      "blocks": {
+        "eyebrow": {
+          "type": "eyebrow",
+          "settings": {
+            "text": "The botanicals"
+          }
+        },
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "text": "Gathered where forest and sea meet",
+            "size": "h2"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Our gin is shaped to evoke the experience of forest and garden. Its botanicals are juniper, lemon, coriander, clove, blackcurrant, angelica root and rose-scented pelargonium leaf, with spring water from the Big Burn.</p><p>We worked with Susanne Masters and Dunrobin Castle’s head gardener, Ian Crisp, on the botanical research behind the recipe.</p>"
+          }
+        },
+        "button": {
+          "type": "button",
+          "settings": {
+            "label": "Shop Dunrobin Gin",
+            "link": "/products/dunrobin-gin",
+            "style": "primary"
+          }
+        }
+      },
+      "block_order": [
+        "eyebrow",
+        "heading",
+        "text",
+        "button"
+      ],
+      "settings": {
+        "builtin_image": "bottle",
+        "image_ratio": "portrait",
+        "layout": "text_first",
+        "wide_media": false,
+        "color_scheme": "alt",
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
+    },
+    "heritage": {
+      "type": "image-with-text",
+      "blocks": {
+        "eyebrow": {
+          "type": "eyebrow",
+          "settings": {
+            "text": "House of Sutherland"
+          }
+        },
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "text": "Sutherland’s distilling heritage",
+            "size": "h2"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Distilling in this part of the Highlands goes back to 1819, when the 1st Duke of Sutherland founded Clynelish. Dunrobin Highland Distillery carries that heritage forward from Golspie, home to Dunrobin Castle, the seat of the Dukes of Sutherland.</p><p>Our motto comes from the same house: <em>Sans Peur</em>, “without fear”.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "eyebrow",
+        "heading",
+        "text"
+      ],
+      "settings": {
+        "builtin_image": "castle",
+        "image_ratio": "landscape",
+        "layout": "image_first",
+        "wide_media": false,
+        "color_scheme": "default",
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
+    },
+    "cta": {
+      "type": "rich-text",
+      "blocks": {
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "text": "Taste it for yourself",
+            "size": "h2"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Order Dunrobin Gin online, or call in to the Wee Gin Shop at Dunrobin Castle.</p>"
+          }
+        },
+        "shop": {
+          "type": "button",
+          "settings": {
+            "label": "Shop Dunrobin Gin",
+            "link": "/products/dunrobin-gin",
+            "style": "primary"
+          }
+        },
+        "visit": {
+          "type": "button",
+          "settings": {
+            "label": "Visit the Wee Gin Shop",
+            "link": "/pages/visit",
+            "style": "secondary"
+          }
+        }
+      },
+      "block_order": [
+        "heading",
+        "text",
+        "shop",
+        "visit"
+      ],
+      "settings": {
+        "color_scheme": "alt",
+        "alignment": "center",
+        "padding_top": 80,
+        "padding_bottom": 80
+      }
+    }
+  },
+  "order": [
+    "main",
+    "story",
+    "botanicals",
+    "heritage",
+    "cta"
+  ]
+}

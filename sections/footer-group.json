@@ -32,7 +32,7 @@
           "type": "text",
           "settings": {
             "heading": "Contact",
-            "text": "<p><a href=\"tel:+447526070580\">+44 7526 070580</a></p><p>Golspie KW10 6SF, UK</p><p><a href=\"mailto:info@dunrobindistillery.com\">info@dunrobindistillery.com</a></p>"
+            "text": "<p><a href=\"tel:+447526070580\">+44 7526 070580</a></p><p>Golspie KW10 6SF, UK</p><p><a href=\"mailto:info@dunrobindistillery.com\">info@dunrobindistillery.com</a></p><p><a href=\"/pages/about\">About us</a> · <a href=\"/pages/visit\">Visit us</a> · <a href=\"/pages/contact\">Contact us</a></p>"
           }
         },
         "policies": {

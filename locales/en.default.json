@@ -113,7 +113,9 @@
         "one": "{{ count }} product",
         "other": "{{ count }} products"
       },
-      "no_matches": "No products found"
+      "no_matches": "No products found",
+      "intro_all": "Every bottle of Dunrobin Gin is made in Golspie, in the Scottish Highlands, with botanicals from the grounds of Dunrobin Castle. Choose a bottle below, or read the story behind the gin on the blog.",
+      "meta_description_all": "Shop Dunrobin Gin, a Highland craft gin made in Golspie with botanicals from the grounds of Dunrobin Castle. Order online from the distillery."
     },
     "sorting": {
       "title": "Sort by"
@@ -153,7 +155,9 @@
         "one": "{{ count }} post",
         "other": "{{ count }} posts"
       },
-      "no_posts": "No posts yet"
+      "no_posts": "No posts yet",
+      "intro": "Stories from Dunrobin Highland Distillery in Golspie, Sutherland: the people behind the gin, the botanicals from Dunrobin Castle's grounds and the Highland distilling heritage that inspired it.",
+      "meta_description": "Stories from Dunrobin Highland Distillery: the people, the botanicals and the Highland heritage behind our craft gin, made in Golspie, Sutherland."
     },
     "filters": {
       "all": "All"
@@ -162,6 +166,14 @@
       "tag": "Heritage",
       "title": "Your first dispatch",
       "excerpt": "Write about the distillery, the botanicals or the castle. Posts you publish to the chosen blog appear here automatically."
+    }
+  },
+  "pages": {
+    "about": {
+      "meta_description": "The story of Dunrobin Highland Distillery: a Golspie family, the botanicals of Dunrobin Castle and the distilling heritage of Sutherland, Scotland."
+    },
+    "visit": {
+      "meta_description": "Visit the Wee Gin Shop at Dunrobin Castle in Golspie, a stop on the North Coast 500. Open daily from 10am to 5pm, April to October. Plan your visit."
     }
   },
   "customer": {

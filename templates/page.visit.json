@@ -1,0 +1,148 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "eyebrow": "Visit us",
+        "narrow": true,
+        "alignment": "center",
+        "padding_top": 80,
+        "padding_bottom": 32
+      }
+    },
+    "shop": {
+      "type": "image-with-text",
+      "blocks": {
+        "eyebrow": {
+          "type": "eyebrow",
+          "settings": {
+            "text": "Dunrobin Castle, Golspie"
+          }
+        },
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "text": "The Wee Gin Shop",
+            "size": "h2"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>The Wee Gin Shop is at Dunrobin Castle in Golspie, in the Scottish Highlands, and is open daily from 10am to 5pm between April and October. Call in to see Dunrobin Gin and take a bottle home.</p><p>Dunrobin Castle, Golspie, Sutherland KW10 6SF</p>"
+          }
+        },
+        "specs": {
+          "type": "specs",
+          "settings": {
+            "label_1": "Open",
+            "value_1": "Daily, 10am to 5pm",
+            "label_2": "Season",
+            "value_2": "April to October",
+            "label_3": "Where",
+            "value_3": "Golspie, KW10 6SF"
+          }
+        }
+      },
+      "block_order": [
+        "eyebrow",
+        "heading",
+        "text",
+        "specs"
+      ],
+      "settings": {
+        "builtin_image": "castle",
+        "image_ratio": "landscape",
+        "layout": "image_first",
+        "wide_media": false,
+        "color_scheme": "default",
+        "padding_top": 32,
+        "padding_bottom": 64
+      }
+    },
+    "route": {
+      "type": "rich-text",
+      "blocks": {
+        "eyebrow": {
+          "type": "eyebrow",
+          "settings": {
+            "text": "Getting here"
+          }
+        },
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "text": "A stop on the North Coast 500",
+            "size": "h2"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Golspie is on the A9 on the east coast of the North Coast 500 route, north of Inverness. The shop sits right outside Dunrobin Castle, so you can combine a visit to the gin with the castle and its gardens.</p><p>Opening times can change from year to year, so please <a href=\"/pages/contact\">get in touch</a> before a long journey.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "eyebrow",
+        "heading",
+        "text"
+      ],
+      "settings": {
+        "color_scheme": "alt",
+        "alignment": "center",
+        "padding_top": 80,
+        "padding_bottom": 80
+      }
+    },
+    "faq": {
+      "type": "collapsible-content",
+      "blocks": {
+        "hours": {
+          "type": "item",
+          "settings": {
+            "heading": "When is the Wee Gin Shop open?",
+            "content": "<p>Daily from 10am to 5pm, between April and October.</p>",
+            "open": false
+          }
+        },
+        "where": {
+          "type": "item",
+          "settings": {
+            "heading": "Where is it?",
+            "content": "<p>At Dunrobin Castle, Golspie KW10 6SF, Sutherland. Golspie is on the A9 on the east coast of the North Coast 500.</p>",
+            "open": false
+          }
+        },
+        "online": {
+          "type": "item",
+          "settings": {
+            "heading": "Can I buy Dunrobin Gin online instead?",
+            "content": "<p>Yes. Order from <a href=\"/products/dunrobin-gin\">our online shop</a>. Shipping is calculated at checkout, and an adult must sign for the delivery.</p>",
+            "open": false
+          }
+        }
+      },
+      "block_order": [
+        "hours",
+        "where",
+        "online"
+      ],
+      "settings": {
+        "eyebrow": "",
+        "heading": "Visiting questions",
+        "heading_alignment": "center",
+        "narrow": true,
+        "color_scheme": "default",
+        "padding_top": 80,
+        "padding_bottom": 96
+      }
+    }
+  },
+  "order": [
+    "main",
+    "shop",
+    "route",
+    "faq"
+  ]
+}

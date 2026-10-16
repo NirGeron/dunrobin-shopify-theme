@@ -43,6 +43,15 @@
       </div>
     {%- endunless -%}
 
+    {%- comment -%}
+      Without a few sentences of its own this page is nothing but post titles,
+      which search engines treat as thin content. Later pages of the list skip
+      it so the same paragraph is not repeated on every one.
+    {%- endcomment -%}
+    {%- if paginate.current_page == 1 -%}
+      <div class="collection-intro rte"><p>{{ 'blogs.general.intro' | t }}</p></div>
+    {%- endif -%}
+
     {%- if paginate.items > 0 -%}
       <div class="collection-toolbar">
         <span class="collection-toolbar__count">
