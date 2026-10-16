@@ -58,6 +58,15 @@
             "open": false
           }
         },
+        "tasting_notes": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Tasting notes",
+            "content": "<p><strong>Flavours:</strong> earthy, spiced, piney</p><p><strong>Taste:</strong> a smooth sip, with a spiced-floral richness, lifted by notes of juniper and forest</p><p><strong>Finish:</strong> earthy and spicy, with an edge of bitterness</p>",
+            "page": "",
+            "open": false
+          }
+        },
         "details": {
           "type": "detail_rows",
           "settings": {
@@ -81,6 +90,7 @@
         "quantity",
         "buy_buttons",
         "tasting",
+        "tasting_notes",
         "details"
       ],
       "settings": {
@@ -110,7 +120,7 @@
         "text": {
           "type": "text",
           "settings": {
-            "text": "<p>Dunrobin Gin is a Highland craft gin made in Golspie, in the Scottish Highlands. Lizzie and Boban created it to evoke the experience of forest and garden, using leaves and roots gathered around Dunrobin Castle, where the woodland meets the sea.</p><p>The recipe brings together juniper, lemon, coriander, clove, blackcurrant, angelica root and rose-scented pelargonium leaf, with spring water from the Big Burn. It is bottled at 45% ABV in a 70cl bottle and sealed by hand in green wax.</p><p>Every bottle carries <em>Sans Peur</em>, “without fear”, the motto of the House of Sutherland. Order it here, or find it at the <a href=\"/pages/visit\">Wee Gin Shop at Dunrobin Castle</a>.</p>"
+            "text": "<p>Dunrobin Gin is a Highland craft gin made in Golspie, in the Scottish Highlands. Lizzie and Boban created it to evoke the experience of forest and garden, using leaves and roots gathered around Dunrobin Castle, where the woodland meets the sea. It brings home in a bottle the feeling of standing in the garden after the rain, breathing it all in.</p><p>The recipe has a base of juniper, coriander seed and angelica root. Lemon, rose-scented pelargonium leaf and blackcurrant leaf add lighter tones, and a light touch of clove brings a hint of warmth, with spring water from the Big Burn. It is bottled at 45% ABV in a 70cl bottle and sealed by hand in green wax.</p><p>Every bottle carries <em>Sans Peur</em>, “without fear”, the motto of the House of Sutherland. Order it here, or find it at the <a href=\"/pages/visit\">Wee Gin Shop at Dunrobin Castle</a>.</p>"
           }
         }
       },
@@ -141,7 +151,7 @@
           "type": "item",
           "settings": {
             "heading": "What botanicals are in Dunrobin Gin?",
-            "content": "<p>Juniper, lemon, coriander, clove, blackcurrant, angelica root and rose-scented pelargonium leaf. The pelargonium and the blackcurrant leaf come from the gardens at Dunrobin Castle.</p>",
+            "content": "<p>Juniper, lemon, coriander, clove, blackcurrant, angelica root and rose-scented pelargonium leaf. The rose-scented pelargonium is grown in tubs in the castle’s formal garden and by the castle entrance, and the blackcurrant comes from the kitchen gardens.</p>",
             "open": false
           }
         },
@@ -149,7 +159,7 @@
           "type": "item",
           "settings": {
             "heading": "How should I serve it?",
-            "content": "<p>Pour it over plenty of ice, top with a good tonic and finish with a slice of lemon or a sprig of pine. It also works stirred cold into a coupe.</p>",
+            "content": "<p>Sip it over ice to open up the flavours. For a classic gin and tonic, use lots of ice, then squeeze a slice of lemon over the glass and drop it in.</p>",
             "open": false
           }
         },
@@ -157,7 +167,7 @@
           "type": "item",
           "settings": {
             "heading": "How is it delivered?",
-            "content": "<p>Shipping is calculated at checkout. Every order needs an adult signature on delivery, and the courier checks age at the door.</p>",
+            "content": "<p>Delivery is by tracked UK Royal Mail 48-hour service, and an adult must sign for the parcel on arrival. We do not deliver outside the UK at the moment. We will update this page and our social media as delivery options develop.</p>",
             "open": false
           }
         },
@@ -165,7 +175,7 @@
           "type": "item",
           "settings": {
             "heading": "Is Dunrobin Gin a good gift?",
-            "content": "<p>Each bottle is sealed by hand in green wax, which makes it an easy gift for a gin lover. Enter the recipient’s address at checkout to send it straight to them, and make sure an adult is there to sign for it.</p>",
+            "content": "<p>Each bottle is sealed by hand in green wax, which makes it an easy gift for a gin lover. Enter the recipient’s address at checkout to send it straight to them, and make sure an adult is there to sign for it. We deliver to UK addresses only at the moment.</p>",
             "open": false
           }
         },
