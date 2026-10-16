@@ -170,7 +170,7 @@ def test_structure():
               set(d.get('order', [])) == set(d.get('sections', {})))
 
     # settings_data keys must exist in settings_schema.
-    schema_ids = {s['id'] for g in json.load(open(rel('config/settings_schema.json')))
+    schema_ids = {s['id'] for g in load_json(rel('config/settings_schema.json'))
                   for s in g.get('settings', []) if 'id' in s}
     data = load_json(rel('config/settings_data.json'))
     # Shopify writes two keys here itself: `blocks` holds the app embeds turned
@@ -183,7 +183,7 @@ def test_structure():
         check(f'settings_data key "{k}" declared', k in schema_ids)
 
     # font_picker defaults must be handles Shopify recognises.
-    for g in json.load(open(rel('config/settings_schema.json'))):
+    for g in load_json(rel('config/settings_schema.json')):
         for s in g.get('settings', []):
             if s.get('type') == 'font_picker':
                 check(f'font_picker "{s["id"]}" has a default', 'default' in s)
@@ -204,7 +204,7 @@ def test_structure():
     # Referenced snippets, assets and translation keys must exist.
     snippets = {f[:-7] for f in os.listdir(rel('snippets'))}
     assets = set(os.listdir(rel('assets')))
-    locale = json.load(open(rel('locales/en.default.json')))
+    locale = load_json(rel('locales/en.default.json'))
     icon_cases = set(re.findall(r"when\s+'([\w-]+)'", open(rel('snippets/icon.liquid')).read()))
 
     def has_key(k):
@@ -314,7 +314,7 @@ def test_structure():
           'visitors who confirmed under the old behaviour would never be asked again')
     gate = open(rel('snippets/age-gate.liquid')).read()
     check('age gate: frequency reaches the markup', 'data-frequency=' in gate)
-    schema_ids_local = {x['id'] for g in json.load(open(rel('config/settings_schema.json')))
+    schema_ids_local = {x['id'] for g in load_json(rel('config/settings_schema.json'))
                         for x in g.get('settings', []) if 'id' in x}
     check('age gate: frequency is a theme setting', 'age_gate_frequency' in schema_ids_local)
 
@@ -440,7 +440,7 @@ def test_structure():
     # exactly how the WhatsApp button shipped invisible. Image pickers are
     # excluded: they have no default because the merchant uploads them.
     schema_defaults = [s['id']
-                       for g in json.load(open(rel('config/settings_schema.json')))
+                       for g in load_json(rel('config/settings_schema.json'))
                        for s in g.get('settings', [])
                        if s.get('id') and 'default' in s]
     absent = [i for i in schema_defaults if i not in data['current']]
@@ -588,7 +588,7 @@ def test_structure():
     sd_src = no_comments(open(rel('snippets/structured-data.liquid')).read())
     password_src = open(rel('layout/password.liquid')).read()
     schema_ids = [s['id']
-                  for g in json.load(open(rel('config/settings_schema.json')))
+                  for g in load_json(rel('config/settings_schema.json'))
                   for s in g.get('settings', []) if s.get('id')]
     check('search console: verification setting exists in the schema',
           'google_site_verification' in schema_ids)
@@ -641,6 +641,79 @@ def test_structure():
     check('meta tags: og:image is served over https, not http',
           'property="og:image" content="https:' in meta_src
           and 'property="og:image" content="http:' not in meta_src)
+
+    # Meta descriptions. One set under Search engine listing wins as written;
+    # a page without one gets text from its own content, then the shop's home
+    # description, cut to 155 characters. The same text feeds the og and
+    # twitter cards, so the snippet and a shared link never disagree.
+    fallback_at = layout_src.find('if meta_description == blank')
+    truncate_at = layout_src.find('truncate: 155')
+    check('meta description: the admin-set description is the starting value',
+          'assign meta_description = page_description' in layout_src)
+    check('meta description: only a derived description is cut to 155 characters',
+          0 <= fallback_at < truncate_at,
+          'truncating page_description itself would shorten what the merchant wrote')
+    for tpl in ('product', 'collection', 'article', 'blog', 'page'):
+        check(f"meta description: derived for the '{tpl}' template",
+              f"when '{tpl}'" in layout_src)
+    check('meta description: falls back to the shop description last',
+          bool(re.search(r'if meta_description == blank\s+assign meta_description = shop\.description',
+                         layout_src)))
+    check('meta description: entities from the rich text editor are not escaped twice',
+          '<meta name="description" content="{{ meta_description | escape_once }}">' in layout_src
+          and 'page_description | escape' not in layout_src)
+    check('meta description: handed to the social meta tags',
+          "render 'meta-tags', description: meta_description" in layout_src
+          and 'assign og_description = description' in meta_src
+          and 'page_description' not in meta_src)
+    for key in ('collections.general.meta_description_all', 'blogs.general.meta_description',
+                'pages.about.meta_description', 'pages.visit.meta_description'):
+        text = locale
+        for part in key.split('.'):
+            text = text.get(part, {}) if isinstance(text, dict) else {}
+        check(f'meta description: {key} fits a search snippet',
+              isinstance(text, str) and 100 <= len(text) <= 155,
+              f'{len(text) if isinstance(text, str) else "missing"} characters')
+
+    # Pages with no copy of their own to summarise still need a real intro:
+    # the all-products page and the first page of the blog.
+    collection_src = open(rel('sections/main-collection.liquid')).read()
+    blog_src = open(rel('sections/main-blog.liquid')).read()
+    check('collection: /collections/all falls back to a written intro',
+          "collection.handle == 'all'" in collection_src
+          and 'collections.general.intro_all' in collection_src)
+    check('blog: shows an intro on the first page only',
+          'paginate.current_page == 1' in blog_src and 'blogs.general.intro' in blog_src)
+
+    # About and Visit are separate pages with their own templates, linked from
+    # the footer; the Contact page must be linked too (it was orphaned).
+    for suffix in ('about', 'visit'):
+        tpl_path = rel('templates', f'page.{suffix}.json')
+        check(f'page template: page.{suffix}.json exists', os.path.exists(tpl_path))
+        if os.path.exists(tpl_path):
+            tpl = load_json(tpl_path)
+            first = next(iter(tpl['sections'].values()))
+            check(f'page template: page.{suffix}.json starts with the page heading',
+                  first['type'] == 'main-page' and tpl['order'][0] == next(iter(tpl['sections'])),
+                  'every page needs one H1, which main-page renders from the page title')
+    footer_group = open(rel('sections/footer-group.json')).read()
+    for handle in ('about', 'visit', 'contact'):
+        check(f'footer: links to /pages/{handle}', f'/pages/{handle}' in footer_group)
+
+    # Search Console coverage. The 404 page must not advertise /404 as its own
+    # canonical (a 404 URL Google then lists as "Not found"), and pages with
+    # nothing to rank (search results, empty collections) stay out of the index.
+    check('head: no canonical on the 404 page',
+          bool(re.search(r"if template\.name != '404'\s*-%\}\s*<link rel=\"canonical\" href=\"\{\{ canonical_url \}\}\">",
+                         layout_src)))
+    check('head: search results are noindex',
+          "template.name == 'search'" in layout_src)
+    check('head: empty collections are noindex',
+          "template.name == 'collection' and collection.products_count == 0" in layout_src)
+    check('head: noindex pages still pass their links on',
+          '<meta name="robots" content="noindex, follow">' in layout_src)
+    check('head: only that one robots tag is emitted',
+          layout_src.count('name="robots"') == 1)
 
     # Favicon: an uploaded one wins; otherwise the layouts fall back to the
     # shipped icon, so the page never goes out without <link rel="icon">.

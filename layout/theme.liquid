@@ -6,7 +6,31 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="theme-color" content="{{ settings.color_brand }}">
-    <link rel="canonical" href="{{ canonical_url }}">
+    {%- comment -%}
+      The 404 page's canonical_url is /404, which is itself a 404, so Search
+      Console lists it as a "Not found" page of its own. A page that answers
+      404 needs no canonical.
+
+      Search results and empty collections are crawlable (robots.txt allows
+      them) but have nothing to rank: results change with every query, and an
+      empty collection is a heading and a "no products" line. Left indexable
+      they pile up as "Crawled - currently not indexed". noindex lifts itself
+      once a collection has products. follow keeps their links counted.
+    {%- endcomment -%}
+    {%- if template.name != '404' -%}
+      <link rel="canonical" href="{{ canonical_url }}">
+    {%- endif -%}
+    {%- liquid
+      assign noindex = false
+      if template.name == 'search'
+        assign noindex = true
+      elsif template.name == 'collection' and collection.products_count == 0
+        assign noindex = true
+      endif
+    -%}
+    {%- if noindex -%}
+      <meta name="robots" content="noindex, follow">
+    {%- endif -%}
 
     {%- if settings.favicon != blank -%}
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 48, height: 48 }}">
@@ -34,12 +58,53 @@
       {%- unless document_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
     </title>
 
-    {%- if page_description -%}
-      <meta name="description" content="{{ page_description | escape }}">
+    {%- comment -%}
+      A description set under Search engine listing in the admin always wins and
+      is used as written. When one is missing, Google fills the snippet with
+      whatever text it likes, so each template derives one from its own content
+      instead (cut to 155 characters, the most a result shows on desktop), then
+      from the shop's home description. Stripping tags would glue one paragraph
+      to the next, so a space goes in after each block first, and splitting on
+      a single space (which also splits on newlines and drops repeats) tidies
+      the whitespace. escape_once leaves entities such as &amp; from the rich
+      text editor alone instead of escaping them twice.
+    {%- endcomment -%}
+    {%- liquid
+      assign meta_description = page_description
+      if meta_description == blank
+        case template.name
+          when 'product'
+            assign meta_description = product.description
+          when 'collection'
+            assign meta_description = collection.description
+            if meta_description == blank and collection.handle == 'all'
+              assign meta_description = 'collections.general.meta_description_all' | t
+            endif
+          when 'article'
+            assign meta_description = article.excerpt_or_content
+          when 'blog'
+            assign meta_description = 'blogs.general.meta_description' | t
+          when 'page'
+            assign meta_description = page.content
+            if meta_description == blank and page.template_suffix == 'about'
+              assign meta_description = 'pages.about.meta_description' | t
+            elsif meta_description == blank and page.template_suffix == 'visit'
+              assign meta_description = 'pages.visit.meta_description' | t
+            endif
+        endcase
+        if meta_description == blank
+          assign meta_description = shop.description
+        endif
+        assign meta_description = meta_description | replace: '</p>', '</p> ' | replace: '</li>', '</li> ' | replace: '</h2>', '</h2> ' | replace: '</h3>', '</h3> ' | replace: '<br>', ' ' | replace: '<br/>', ' ' | replace: '<br />', ' '
+        assign meta_description = meta_description | strip_html | split: ' ' | join: ' ' | truncate: 155
+      endif
+    -%}
+    {%- if meta_description != blank -%}
+      <meta name="description" content="{{ meta_description | escape_once }}">
     {%- endif -%}
 
     {% render 'search-console' %}
-    {% render 'meta-tags' %}
+    {% render 'meta-tags', description: meta_description %}
     {% render 'structured-data' %}
 
     <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
