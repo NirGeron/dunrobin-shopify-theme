@@ -157,6 +157,7 @@
         "heading",
         "text"
       ],
+      "disabled": true,
       "settings": {
         "color_scheme": "default",
         "alignment": "left",
