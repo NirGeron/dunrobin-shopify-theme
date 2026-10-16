@@ -6,20 +6,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="theme-color" content="{{ settings.color_brand }}">
-    {%- comment -%}
-      The 404 page's canonical_url is /404, which is itself a 404, so Search
-      Console lists it as a "Not found" page of its own. A page that answers
-      404 needs no canonical.
+    <link rel="canonical" href="{{ canonical_url }}">
 
+    {%- comment -%}
       Search results and empty collections are crawlable (robots.txt allows
       them) but have nothing to rank: results change with every query, and an
       empty collection is a heading and a "no products" line. Left indexable
       they pile up as "Crawled - currently not indexed". noindex lifts itself
       once a collection has products. follow keeps their links counted.
+
+      The 404 page's canonical is /404, but Shopify adds that itself even when
+      the theme leaves the tag out, so there is nothing to do about it here.
     {%- endcomment -%}
-    {%- if template.name != '404' -%}
-      <link rel="canonical" href="{{ canonical_url }}">
-    {%- endif -%}
     {%- liquid
       assign noindex = false
       if template.name == 'search'
