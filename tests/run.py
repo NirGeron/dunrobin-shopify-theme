@@ -700,12 +700,11 @@ def test_structure():
     for handle in ('about', 'visit', 'contact'):
         check(f'footer: links to /pages/{handle}', f'/pages/{handle}' in footer_group)
 
-    # Search Console coverage. The 404 page must not advertise /404 as its own
-    # canonical (a 404 URL Google then lists as "Not found"), and pages with
-    # nothing to rank (search results, empty collections) stay out of the index.
-    check('head: no canonical on the 404 page',
-          bool(re.search(r"if template\.name != '404'\s*-%\}\s*<link rel=\"canonical\" href=\"\{\{ canonical_url \}\}\">",
-                         layout_src)))
+    # Search Console coverage. Pages with nothing to rank (search results,
+    # empty collections) stay out of the index.
+    check('head: every page carries a canonical',
+          '<link rel="canonical" href="{{ canonical_url }}">' in layout_src
+          and "template.name != '404'" not in layout_src)
     check('head: search results are noindex',
           "template.name == 'search'" in layout_src)
     check('head: empty collections are noindex',
