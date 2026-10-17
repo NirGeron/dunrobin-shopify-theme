@@ -46,6 +46,9 @@
     "whatsapp": {
       "label": "Chat with us on WhatsApp"
     },
+    "shop_now": {
+      "label": "Shop now"
+    },
     "back_to_top": {
       "label": "Back to top"
     }
