@@ -567,6 +567,86 @@ def test_structure():
           int(hdr_z.group(1)) < int(sticky_z.group(1)) < wa_z,
           f'header {hdr_z and hdr_z.group(1)}, sticky {sticky_z and sticky_z.group(1)}, whatsapp {wa_z}')
 
+    # Floating Shop now. It occupies the WhatsApp corner while that button is
+    # hidden, and must not render alongside it or on the cart page.
+    shop_src = open(rel('snippets/shop-now-button.liquid')).read()
+    shop_code = re.sub(r'\{%-?\s*comment\s*-?%\}.*?\{%-?\s*endcomment\s*-?%\}', '',
+                       shop_src, flags=re.S)
+    shop_at = layout_src.find("render 'shop-now-button'")
+    check('shop now: rendered from the layout, after whatsapp and before back to top',
+          0 <= wa_at < shop_at < btt_at,
+          f'whatsapp {wa_at}, shop now {shop_at}, back-to-top {btt_at}')
+    check('shop now: links to the Dunrobin Gin product',
+          "all_products['dunrobin-gin']" in shop_code and
+          "'/products/dunrobin-gin'" in shop_code)
+    check('shop now: has a visible label from the locale file',
+          "'general.shop_now.label' | t" in shop_code and
+          bool(load_json(rel('locales', 'en.default.json'))['general'].get('shop_now', {}).get('label')))
+    check('shop now: hidden on the cart page and while WhatsApp is showing',
+          "template.name == 'cart'" in shop_code and
+          'settings.whatsapp_enabled' in shop_code and
+          'whatsapp_showing' in shop_code)
+    shop_z = re.search(r'\.shop-now-float\s*\{[^}]*z-index:\s*(\d+)', css)
+    check('shop now: has a z-index', bool(shop_z))
+    if shop_z:
+        shop_z = int(shop_z.group(1))
+        check('shop now: shares the whatsapp stacking slot',
+              shop_z == wa_z, f'shop now {shop_z} vs whatsapp {wa_z}')
+        for name, sel in (('cart drawer', r'\.cart-drawer\s*\{'),
+                          ('mobile nav', r'\.mobile-nav\s*\{'),
+                          ('age gate', r'\.age-gate\s*\{')):
+            m = re.search(sel + r'[^}]*z-index:\s*(\d+)', css)
+            if m:
+                check(f'shop now: sits below the {name}', shop_z < int(m.group(1)),
+                      f'shop now {shop_z} vs {name} {m.group(1)}')
+
+    # It behaves like the WhatsApp button: a real site button with the cart
+    # icon, parked in the same corner, never tucked away while scrolling, and
+    # lifted by the same sticky-bar rule. Back to top may only mention it as
+    # the sibling it stacks above.
+    check('shop now: uses the site button and the cart icon',
+          'class="button shop-now-float"' in shop_code and
+          "render 'icon', name: 'shopping-cart'" in shop_code and
+          "when 'shopping-cart'" in open(rel('snippets/icon.liquid')).read())
+    check('shop now: nothing in the script hides it while scrolling',
+          'shop-now' not in open(rel('assets/global.js')).read().lower() and
+          'shopNow' not in open(rel('assets/global.js')).read())
+    shop_css = css[css.index('Floating Shop now'):css.index('Back to top button')]
+    check('shop now: no hidden state in the stylesheet',
+          'is-tucked' not in shop_css and 'opacity: 0' not in shop_css and
+          'visibility: hidden' not in shop_css)
+
+    def decl(block, prop):
+        m = re.search(r'(?:^|[;{\s])' + prop + r'\s*:\s*([^;}]+)', block)
+        return re.sub(r'\s+', ' ', m.group(1)).strip() if m else None
+
+    wa_block = re.search(r'\.whatsapp-float\s*\{([^}]*)\}', css).group(1)
+    shop_block = re.search(r'\.shop-now-float\s*\{([^}]*)\}', css).group(1)
+    for prop in ('right', 'bottom'):
+        check(f'shop now: {prop} matches the whatsapp button',
+              decl(shop_block, prop) == decl(wa_block, prop),
+              f'shop {decl(shop_block, prop)} vs whatsapp {decl(wa_block, prop)}')
+    wa_desk = re.search(
+        r'@media[^{]*min-width:\s*750px\)\s*\{\s*\.whatsapp-float\s*\{([^}]*)\}', css)
+    shop_desk = re.search(
+        r'@media[^{]*min-width:\s*750px\)\s*\{\s*\.shop-now-float\s*\{([^}]*)\}', css)
+    check('shop now: desktop corner matches the whatsapp button',
+          bool(wa_desk and shop_desk) and
+          decl(shop_desk.group(1), 'right') == decl(wa_desk.group(1), 'right') and
+          decl(shop_desk.group(1), 'bottom') == decl(wa_desk.group(1), 'bottom'),
+          f'shop {shop_desk and shop_desk.group(1)!r} vs whatsapp {wa_desk and wa_desk.group(1)!r}')
+    wa_lift = re.search(r'\.has-sticky-atc \.whatsapp-float\s*\{([^}]*)\}', css)
+    shop_lift = re.search(r'\.has-sticky-atc \.shop-now-float\s*\{([^}]*)\}', css)
+    check('shop now: lifts clear of the sticky bar the same way whatsapp does',
+          bool(wa_lift and shop_lift) and
+          decl(shop_lift.group(1), 'bottom') == decl(wa_lift.group(1), 'bottom'),
+          f'shop {shop_lift and shop_lift.group(1)!r} vs whatsapp {wa_lift and wa_lift.group(1)!r}')
+    shop_targets = re.findall(r'([^{}]*\.shop-now-float[^{}]*)\{', btt_css)
+    check('back to top: only touches shop now as a sibling selector, never its own element',
+          shop_targets and
+          all(re.search(r'\.shop-now-float\s*~\s*\.back-to-top\s*$', t.strip()) for t in shop_targets),
+          f'selectors: {[t.strip() for t in shop_targets]}')
+
     # 44px is the touch guideline. The header icons may only shrink on the very
     # narrowest phones, where four of them would crush the logo.
     small_icons = [int(m) for m in re.findall(
@@ -1077,30 +1157,57 @@ window.addEventListener('load', function () {
       // so both reads see the same moment of any animation.
       var btt = document.querySelector('[data-back-to-top]');
       var waBtn = document.querySelector('.whatsapp-float');
+      var shopBtn = document.querySelector('.shop-now-float');
+      var rectKey = function (el) {
+        var r = el.getBoundingClientRect();
+        return [r.left, r.top, r.width, r.height].join(',');
+      };
+      var overlaps = function (a, b) {
+        return !(a.right <= b.left || a.left >= b.right ||
+                 a.bottom <= b.top || a.top >= b.bottom);
+      };
+      out.whatsAppPresent = !!waBtn;
       if (waBtn) {
         var waStyle = getComputedStyle(waBtn);
         out.whatsAppOpacityAfterScroll = parseFloat(waStyle.opacity);
         out.whatsAppPointerEvents = waStyle.pointerEvents;
+      }
+      out.shopNow = { present: !!shopBtn };
+      if (shopBtn) {
+        var shopStyle = getComputedStyle(shopBtn);
+        var shopRect = shopBtn.getBoundingClientRect();
+        out.shopNow.opacity = parseFloat(shopStyle.opacity);
+        out.shopNow.pointerEvents = shopStyle.pointerEvents;
+        out.shopNow.position = shopStyle.position;
+        out.shopNow.hasIcon = !!shopBtn.querySelector('svg');
+        out.shopNow.right = Math.round(window.innerWidth - shopRect.right);
+        out.shopNow.bottom = Math.round(window.innerHeight - shopRect.bottom);
+        out.shopNow.lifted = document.body.classList.contains('has-sticky-atc');
       }
       out.backToTop = { present: !!btt };
       if (btt) {
         out.backToTop.shownAtBottom = btt.classList.contains('is-visible');
         out.backToTop.shouldShowAtBottom =
           window.scrollY > document.documentElement.scrollHeight * 0.25;
+        var bb = btt.getBoundingClientRect();
         if (waBtn) {
-          var rectKey = function (el) {
-            var r = el.getBoundingClientRect();
-            return [r.left, r.top, r.width, r.height].join(',');
-          };
-          var bb = btt.getBoundingClientRect();
           var wb = waBtn.getBoundingClientRect();
-          out.backToTop.overlapsWhatsApp = !(bb.right <= wb.left || bb.left >= wb.right ||
-                                             bb.bottom <= wb.top || bb.top >= wb.bottom);
+          out.backToTop.overlapsWhatsApp = overlaps(bb, wb);
           var waWith = rectKey(waBtn);
           btt.style.display = 'none';
           var waWithout = rectKey(waBtn);
           btt.style.display = '';
           out.backToTop.whatsAppUnmoved = waWith === waWithout;
+          bb = btt.getBoundingClientRect();
+        }
+        if (shopBtn) {
+          var sb = shopBtn.getBoundingClientRect();
+          out.shopNow.overlapsBackToTop = overlaps(bb, sb);
+          var shopWith = rectKey(shopBtn);
+          btt.style.display = 'none';
+          var shopWithout = rectKey(shopBtn);
+          btt.style.display = '';
+          out.shopNow.unmoved = shopWith === shopWithout;
         }
       }
 
@@ -1282,12 +1389,16 @@ def test_render():
             check(f'{tag}: revealed content is not stuck invisible',
                   not d.get('revealsStuck'), str(d.get('revealsStuck', [])[:3]))
 
-            # Back to top: absent on the cart page, elsewhere it follows the
-            # scroll position and leaves the WhatsApp button exactly where it was.
+            # Back to top and Shop now: absent on the cart page, elsewhere they
+            # follow the scroll position and leave each other exactly where they
+            # were. WhatsApp is checked the same way when that button is rendered.
             btt = d.get('backToTop', {})
+            shop = d.get('shopNow') or {}
             if page == 'cart.html':
                 check(f'{tag}: no back-to-top button on the cart page',
                       btt.get('present') is False)
+                check(f'{tag}: no shop now button on the cart page',
+                      shop.get('present') is False)
             else:
                 check(f'{tag}: back-to-top button is on the page', btt.get('present') is True)
                 check(f'{tag}: back-to-top shows past a quarter of the page and not before',
@@ -1295,15 +1406,38 @@ def test_render():
                       f'shown {btt.get("shownAtBottom")}, expected {btt.get("shouldShowAtBottom")}')
                 check(f'{tag}: back-to-top is hidden again at the top',
                       btt.get('shownAtTop') is False)
-                check(f'{tag}: whatsapp button is still fully visible right after scrolling',
-                      d.get('whatsAppOpacityAfterScroll') == 1 and
-                      d.get('whatsAppPointerEvents') != 'none',
-                      f'opacity {d.get("whatsAppOpacityAfterScroll")}, '
-                      f'pointer-events {d.get("whatsAppPointerEvents")}')
-                check(f'{tag}: back-to-top does not overlap the whatsapp button',
-                      btt.get('overlapsWhatsApp') is False)
-                check(f'{tag}: whatsapp button does not move because of back-to-top',
-                      btt.get('whatsAppUnmoved') is True)
+                check(f'{tag}: shop now button is on the page',
+                      shop.get('present') is True)
+                check(f'{tag}: shop now button is still fully visible right after scrolling',
+                      shop.get('opacity') == 1 and shop.get('pointerEvents') != 'none',
+                      f'opacity {shop.get("opacity")}, pointer-events {shop.get("pointerEvents")}')
+                check(f'{tag}: shop now stays fixed, with its cart icon',
+                      shop.get('position') == 'fixed' and shop.get('hasIcon') is True,
+                      f'position {shop.get("position")}, icon {shop.get("hasIcon")}')
+                # Same corner as WhatsApp: 1.6rem on a phone, 2.4rem from 750px.
+                # 1rem is 10px. On a phone the sticky bar may lift it; that
+                # move is the only other legal bottom.
+                corner = 16 if w <= 749 else 24
+                bottom = shop.get('bottom')
+                parked = bottom == corner or (w <= 749 and bottom >= corner + 40)
+                check(f'{tag}: shop now keeps the whatsapp corner',
+                      shop.get('right') == corner and parked,
+                      f'right {shop.get("right")}, bottom {bottom}, '
+                      f'lifted {shop.get("lifted")}, expected {corner}px')
+                check(f'{tag}: back-to-top does not overlap the shop now button',
+                      shop.get('overlapsBackToTop') is False)
+                check(f'{tag}: shop now button does not move because of back-to-top',
+                      shop.get('unmoved') is True)
+                if d.get('whatsAppPresent'):
+                    check(f'{tag}: whatsapp button is still fully visible right after scrolling',
+                          d.get('whatsAppOpacityAfterScroll') == 1 and
+                          d.get('whatsAppPointerEvents') != 'none',
+                          f'opacity {d.get("whatsAppOpacityAfterScroll")}, '
+                          f'pointer-events {d.get("whatsAppPointerEvents")}')
+                    check(f'{tag}: back-to-top does not overlap the whatsapp button',
+                          btt.get('overlapsWhatsApp') is False)
+                    check(f'{tag}: whatsapp button does not move because of back-to-top',
+                          btt.get('whatsAppUnmoved') is True)
 
             if 'cartEscapeCloses' in d:
                 check(f'{tag}: Escape closes the cart drawer',

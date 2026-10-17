@@ -1406,7 +1406,7 @@ textarea.field__input {
 
 /* Sticky Add to bag — phone only. The gallery is ~70% of the first screen, so
    the real button starts below the fold; this keeps the action in reach until
-   the real one is on screen (see initStickyAtc). Under the WhatsApp button
+   the real one is on screen (see initStickyAtc). Under the floating buttons
    (50) and above the header (40). */
 .sticky-atc {
   display: none;
@@ -2385,19 +2385,71 @@ textarea.field__input {
 }
 
 /* --------------------------------------------------------------------------
+   Floating Shop now button
+   -------------------------------------------------------------------------- */
+
+/* Same corner, offsets and stacking slot as the WhatsApp button, and the
+   same rule about scrolling: it never hides or moves, except to lift clear
+   of the sticky Add to bag bar. It is only rendered while WhatsApp is
+   hidden, so the two never share the corner.
+   The face is a normal .button, with the cart icon beside the label. The
+   white edge keeps that navy visible on the navy footer; on a white page
+   the edge disappears. */
+.shop-now-float {
+  position: fixed;
+  right: 1.6rem;
+  bottom: calc(1.6rem + env(safe-area-inset-bottom, 0px));
+  z-index: 50;
+  gap: 0.6rem;
+  height: 4.4rem;
+  min-height: 4.4rem;
+  padding: 0 1.2rem;
+  white-space: nowrap;
+  box-shadow: 0 0 0 2px #fff, 0 0.2rem 1.2rem rgba(0, 0, 0, 0.18);
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease,
+    box-shadow 0.2s ease, bottom 0.25s ease;
+}
+
+.shop-now-float svg {
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+}
+
+.shop-now-float:hover {
+  box-shadow: 0 0 0 2px #fff, 0 0.4rem 1.6rem rgba(0, 0, 0, 0.22);
+}
+
+@media screen and (max-width: 749px) {
+  /* Lift clear of the sticky Add to bag bar, as the WhatsApp button does. */
+  .has-sticky-atc .shop-now-float {
+    bottom: calc(var(--sticky-atc-height) + 1.2rem + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+@media screen and (min-width: 750px) {
+  .shop-now-float {
+    right: 2.4rem;
+    bottom: 2.4rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
    Back to top button
    -------------------------------------------------------------------------- */
 
-/* Same z-index as the WhatsApp button, so an open panel covers both alike.
+/* Same z-index as the floating buttons, so an open panel covers them alike.
    It is positioned from four custom properties so the stacking arithmetic
    lives in one place:
      --btt-base   bottom of the stack (the corner, or the sticky bar's top)
-     --btt-below  what sits under it: the WhatsApp button plus a 1.2rem gap
+     --btt-below  what sits under it: the floating button plus a 1.2rem gap
      --btt-edge   distance from the right edge
-   With the WhatsApp button present it is centred on it, so the edge is the
-   WhatsApp offset plus half the difference in diameter. The button is
-   rendered after the WhatsApp one, which is what makes the sibling selector
-   below work; when WhatsApp is off, the defaults put it in the corner.
+   With the WhatsApp button present it is centred on that circle, so the
+   edge is the WhatsApp offset plus half the difference in diameter. The
+   Shop now button is wider than this circle, so that one keeps the same
+   right edge and only lifts this button above it. Either floating button
+   is rendered before this one, which is what makes the sibling selectors
+   below work; when neither is on screen, the defaults put it in the corner.
    Hidden with visibility as well as opacity so it is out of the tab order
    until it shows. */
 .back-to-top {
@@ -2454,6 +2506,12 @@ textarea.field__input {
   --btt-below: 6rem;
 }
 
+/* Shop now is 4.4rem tall and wider than this circle, so the circle keeps
+   the corner's right edge and sits clear of it, including while it slides in. */
+.shop-now-float ~ .back-to-top {
+  --btt-below: 6rem;
+}
+
 /* Lift clear of the sticky Add to bag bar, as the WhatsApp button does. */
 @media screen and (max-width: 749px) {
   .has-sticky-atc .back-to-top {
@@ -2472,6 +2530,10 @@ textarea.field__input {
   .whatsapp-float ~ .back-to-top {
     --btt-edge: 3rem;
     --btt-below: 7.2rem;
+  }
+
+  .shop-now-float ~ .back-to-top {
+    --btt-below: 6rem;
   }
 
   .back-to-top svg {

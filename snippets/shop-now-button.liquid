@@ -1,0 +1,38 @@
+{%- comment -%}
+  Floating "Shop now" button, bottom right of every page.
+
+  It takes the corner the WhatsApp button used, and only while that button
+  is hidden. The two share one spot: turning WhatsApp back on hands the
+  corner back, rather than stacking a second button on top of it. Like
+  WhatsApp, it stays put while the page scrolls. The only thing that moves
+  it is the sticky Add to bag bar.
+
+  It sits below the cart drawer, mobile nav and age gate in the stacking
+  order (see the z-index scale in base.css), so it never floats over a
+  panel the visitor has opened or over the age gate.
+
+  Not on the cart page: the button sits exactly where the full-width
+  checkout button ends up while scrolling, and nothing should compete
+  with checkout for that tap.
+{%- endcomment -%}
+
+{%- liquid
+  assign wa_phone = settings.whatsapp_phone | strip
+  assign whatsapp_showing = false
+  if settings.whatsapp_enabled and wa_phone != blank and template.name != 'cart'
+    assign whatsapp_showing = true
+  endif
+
+  assign shop_href = '/products/dunrobin-gin'
+  assign shop_product = all_products['dunrobin-gin']
+  if shop_product != empty and shop_product.url != blank
+    assign shop_href = shop_product.url
+  endif
+-%}
+
+{%- unless template.name == 'cart' or whatsapp_showing -%}
+  <a class="button shop-now-float" href="{{ shop_href }}">
+    {% render 'icon', name: 'shopping-cart' %}
+    {{ 'general.shop_now.label' | t }}
+  </a>
+{%- endunless -%}

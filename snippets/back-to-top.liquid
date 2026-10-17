@@ -3,9 +3,9 @@
   visitor has scrolled past the top quarter of the page (see initBackToTop in
   global.js), so a page that barely scrolls never shows it.
 
-  Rendered straight after the WhatsApp button on purpose: base.css stacks it
-  above that button with a sibling selector, and falls back to the corner when
-  the WhatsApp button is switched off.
+  Rendered straight after the floating Shop now and WhatsApp buttons on
+  purpose: base.css stacks it above whichever of those is on screen, with a
+  sibling selector, and falls back to the corner when neither is.
 
   Not on the cart page, for the same reason as the WhatsApp button: that corner
   belongs to checkout there.
