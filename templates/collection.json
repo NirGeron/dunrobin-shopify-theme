@@ -353,40 +353,119 @@
         "padding_bottom": 96
       }
     },
-    "next-chapter": {
-      "type": "image-with-text",
+    "collapsible_content_EyNEmg": {
+      "type": "collapsible-content",
       "blocks": {
-        "eyebrow": {
-          "type": "eyebrow",
+        "item_4fXJ3D": {
+          "type": "item",
           "settings": {
-            "text": "House of Sutherland"
+            "heading": "Where is Dunrobin Gin made?",
+            "content": "<p>Dunrobin Gin is made at Dunrobin Highland Distillery, located in the historic Old Dairy building at Dunrobin Farm in Golspie, Sutherland.</p><p>Once home to dairy production, this historic building has begun a new chapter, bringing together generations of local heritage with the craft of Highland gin distilling.</p>",
+            "page": "",
+            "open": false
           }
         },
-        "heading": {
-          "type": "heading",
+        "item_nqgq6w": {
+          "type": "item",
           "settings": {
-            "text": "The next chapter",
-            "size": "h2"
+            "heading": "What does Dunrobin Gin taste like?",
+            "content": "<p>Dunrobin Gin captures the character of the North Highlands through a distinctive blend of earthy, spiced and piney flavours.</p><p>It offers a smooth sip with spiced-floral richness, lifted by juniper and woodland notes, followed by an earthy, gently spicy finish with a subtle edge of bitterness.</p>",
+            "page": "",
+            "open": false
           }
         },
-        "text": {
-          "type": "text",
+        "item_NiUKRM": {
+          "type": "item",
           "settings": {
-            "text": "<p>Every bottle is drawn from the land around the castle — spring water from the hills, botanicals from the forest and garden. Follow the dispatches for what comes next.</p>"
+            "heading": "Which botanicals are used in Dunrobin Gin?",
+            "content": "<p>Dunrobin Gin is crafted using juniper, coriander seed, angelica root, lemon, clove, rose-scented pelargonium and blackcurrant leaf.</p><p>Our rose-scented pelargonium and blackcurrant leaves are carefully grown and harvested from the gardens of Dunrobin Castle in Sutherland.</p>",
+            "page": "",
+            "open": false
+          }
+        },
+        "item_WGViUa": {
+          "type": "item",
+          "settings": {
+            "heading": "What is the alcohol strength of Dunrobin Gin?",
+            "content": "<p>Dunrobin Gin has an alcohol strength of 45% ABV.</p>",
+            "page": "",
+            "open": false
+          }
+        },
+        "item_KVrcpD": {
+          "type": "item",
+          "settings": {
+            "heading": "What is the best way to serve Dunrobin Gin?",
+            "content": "<p>Dunrobin Gin is a versatile spirit that can be enjoyed in several ways.&nbsp;</p><p>Distillery founders Lizzie and Boban Costin particularly enjoy it neat over ice, or served with a premium tonic water, plenty of ice and a fresh lemon garnish.</p>",
+            "page": "",
+            "open": false
+          }
+        },
+        "item_TQPk98": {
+          "type": "item",
+          "settings": {
+            "heading": "Which tonic water and garnish pair best with Dunrobin Gin?",
+            "content": "<p>A premium tonic water complements the earthy, floral and spiced notes of Dunrobin Gin.&nbsp;</p><p>At The Wee Gin Shop at Dunrobin Castle, we serve our gin with Walter Gregor's Tonic, proudly made in Scotland, and a fresh lemon garnish.</p>",
+            "page": "",
+            "open": false
+          }
+        },
+        "item_8bUyYW": {
+          "type": "item",
+          "settings": {
+            "heading": "Can Dunrobin Gin be used in cocktails?",
+            "content": "<p>Absolutely! Dunrobin Gin makes a wonderful base for a range of gin cocktails, from a classic Martini to our own Highland-inspired creations.</p><p>One of our favourites is the Gardener's G&T, a refreshing twist on the classic gin and tonic, with the addition of fresh elderflower cordial and a rosemary garnish.</p>",
+            "page": "",
+            "open": false
+          }
+        },
+        "item_JU4MMh": {
+          "type": "item",
+          "settings": {
+            "heading": "Where can I buy Dunrobin Gin?",
+            "content": "<p>Dunrobin Gin is available to purchase online through the Dunrobin Highland Distillery website, with UK delivery available.</p><p>You can also discover our gin in person at The Wee Gin Shop at Dunrobin Castle, which opens seasonally between spring and autumn.</p>",
+            "page": "",
+            "open": false
+          }
+        },
+        "item_AXePRU": {
+          "type": "item",
+          "settings": {
+            "heading": "Do you offer premium Scottish gin gift sets?",
+            "content": "<p>Yes! Our Dunrobin Gin gift sets are available in two sizes, each beautifully presented in our premium gift packaging.</p><p>Choose between a 20cl or 70cl bottle of Dunrobin Gin, paired with a box of locally handmade Highland Whisky Chocolates created using Dunrobin Gin.</p>",
+            "page": "",
+            "open": false
+          }
+        },
+        "item_qd7FXD": {
+          "type": "item",
+          "settings": {
+            "heading": "Is Dunrobin Gin available in smaller bottles?",
+            "content": "<p>Yes! Dunrobin Gin is available in 20cl bottles, presented in our newly designed premium gift tubes.</p><p>Ideal for gifting, sharing or discovering Dunrobin Gin for the first time, our smaller bottles offer a little taste of the North Highlands.</p>",
+            "page": "",
+            "open": false
           }
         }
       },
       "block_order": [
-        "eyebrow",
-        "heading",
-        "text"
+        "item_4fXJ3D",
+        "item_nqgq6w",
+        "item_NiUKRM",
+        "item_WGViUa",
+        "item_KVrcpD",
+        "item_TQPk98",
+        "item_8bUyYW",
+        "item_JU4MMh",
+        "item_AXePRU",
+        "item_qd7FXD"
       ],
+      "name": "Collapsible content",
       "settings": {
-        "builtin_image": "castle",
-        "image_ratio": "landscape",
-        "layout": "image_first",
-        "wide_media": false,
-        "color_scheme": "alt",
+        "eyebrow": "",
+        "heading": "Frequently Asked Questions About Dunrobin Gin",
+        "heading_alignment": "center",
+        "narrow": true,
+        "color_scheme": "default",
         "padding_top": 96,
         "padding_bottom": 96
       }
@@ -402,6 +481,6 @@
     "rich_text_eicGFj",
     "image_with_text_gkWfB3",
     "rich_text_jJCKm6",
-    "next-chapter"
+    "collapsible_content_EyNEmg"
   ]
 }
