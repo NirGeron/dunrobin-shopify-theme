@@ -22,46 +22,28 @@
     "shop": {
       "type": "image-with-text",
       "blocks": {
-        "eyebrow": {
-          "type": "eyebrow",
-          "settings": {
-            "text": "Dunrobin Castle, Golspie"
-          }
-        },
         "heading": {
           "type": "heading",
           "settings": {
-            "text": "The Wee Gin Shop",
+            "text": "Discover a taste of the Scottish Highlands on your North Coast 500 journey.",
             "size": "h2"
           }
         },
         "text": {
           "type": "text",
           "settings": {
-            "text": "<p>The Wee Gin Shop is at Dunrobin Castle in Golspie, in the Scottish Highlands, and is open daily from 10am to 5pm between April and October. Call in to see Dunrobin Gin and take a bottle home.</p><p>Dunrobin Castle, Golspie, Sutherland KW10 6SF</p>"
-          }
-        },
-        "specs": {
-          "type": "specs",
-          "settings": {
-            "label_1": "Open",
-            "value_1": "Daily, 10am to 5pm",
-            "label_2": "Season",
-            "value_2": "April to October",
-            "label_3": "Where",
-            "value_3": "Golspie, KW10 6SF"
+            "text": "<p>Looking to experience Dunrobin Gin in person and discover the landscape and heritage behind our Highland spirit?</p><p>You can visit us at The Wee Gin Shop, situated in the car park, at the entrance to&nbsp;Dunrobin Castle&nbsp;in Golspie, Sutherland, during the Castle's visitor season between spring and autumn.&nbsp;</p><p>While Dunrobin Highland Distillery itself is a working production site and isn't currently open for public tours, The Wee Gin Shop offers the perfect opportunity to discover our gin, meet our friendly team and take in the beautiful surroundings of Dunrobin Castle, with views across its gardens and towards the Moray Firth.</p><p>Whether you're visiting Dunrobin Castle, exploring the North Highlands or travelling along the&nbsp;North Coast 500, we'd love to welcome you.</p>"
           }
         }
       },
       "block_order": [
-        "eyebrow",
         "heading",
-        "text",
-        "specs"
+        "text"
       ],
       "settings": {
+        "image": "shopify://shop_images/IMG_4704-2.jpg",
         "builtin_image": "castle",
-        "image_ratio": "landscape",
+        "image_ratio": "adapt",
         "layout": "image_first",
         "wide_media": false,
         "color_scheme": "default",
@@ -72,28 +54,21 @@
     "route": {
       "type": "rich-text",
       "blocks": {
-        "eyebrow": {
-          "type": "eyebrow",
-          "settings": {
-            "text": "Getting here"
-          }
-        },
         "heading": {
           "type": "heading",
           "settings": {
-            "text": "A stop on the North Coast 500",
+            "text": "Experience Dunrobin Gin at The Wee Gin Shop",
             "size": "h2"
           }
         },
         "text": {
           "type": "text",
           "settings": {
-            "text": "<p>Golspie is on the A9 on the east coast of the North Coast 500 route, north of Inverness. The shop sits right outside Dunrobin Castle, so you can combine a visit to the gin with the castle and its gardens.</p><p>Opening times can change from year to year, so please <a href=\"/pages/contact\">get in touch</a> before a long journey.</p>"
+            "text": "<p>The Wee Gin Shop is all part of the North Highland experience.</p><p>Pull up a seat in our gin garden and enjoy a refreshing Dunrobin Gin and tonic, discover one of our Highland-inspired cocktails, or choose a mocktail for the designated driver.</p><p>Our team are always happy to share more about Dunrobin Highland Distillery,&nbsp;<a href=\"/blogs/news/the-story-behind-dunrobin-highland-distillery-dunrobin-gin\" target=\"_blank\" title=\"The Story Behind Dunrobin Highland Distillery | Dunrobin Gin\">the story behind our gin</a> and the botanicals that make it distinctive.</p><p>You can also explore our collection of Dunrobin Gin bottles, premium gift sets, locally handmade chocolates and branded gifts, offering a little taste of Sutherland to take home.</p><p>And with Dunrobin Castle as your backdrop and the beautiful East Sutherland coastline stretching beyond, can you imagine a better way to round off your visit?</p>"
           }
         }
       },
       "block_order": [
-        "eyebrow",
         "heading",
         "text"
       ],
@@ -104,30 +79,186 @@
         "padding_bottom": 80
       }
     },
+    "image_banner_YripnM": {
+      "type": "image-banner",
+      "name": "Image banner",
+      "settings": {
+        "image": "shopify://shop_images/0653A75E-BD6C-40AF-838D-C0141B946FD0_2dba39ba-97f3-479e-b8a6-f437cc685fc2.jpg",
+        "height": "medium",
+        "trim_top": 5,
+        "trim_bottom": 36,
+        "fit_mobile": true,
+        "caption": "",
+        "show_seal": false,
+        "seal_size": 30
+      }
+    },
+    "image_with_text_86qirB": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_74QLep": {
+          "type": "heading",
+          "settings": {
+            "text": "A Scottish Gin Stop on the North Coast 500",
+            "size": "h2"
+          }
+        },
+        "text_fj9qty": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Planning a road trip along Scotland's famous North Coast 500?</p><p>Situated just off the A9 at Dunrobin Castle, near Golspie, The Wee Gin Shop offers a welcoming stop on your journey through Sutherland and the North Highlands.</p><p>Whether you're heading north towards Brora and Caithness or travelling south along the coast towards Inverness, you can call in to discover a locally produced Scottish gin inspired by the very landscape you're exploring.</p><p>With our range of 20cl and 70cl bottles, gift sets and handmade chocolates, there's plenty to discover, even if you're simply stopping by to pick up a souvenir of your Highland adventure.&nbsp;</p><p>And for those behind the wheel, our selection of mocktails means there's something for everyone to enjoy before continuing their NC500 journey.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_74QLep",
+        "text_fj9qty"
+      ],
+      "name": "Image with text",
+      "settings": {
+        "image": "shopify://shop_images/IMG_6584.jpg",
+        "builtin_image": "castle",
+        "image_ratio": "portrait",
+        "layout": "text_first",
+        "wide_media": false,
+        "color_scheme": "default",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
+    },
+    "multicolumn_UghAM9": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_LRmqNM": {
+          "type": "column",
+          "settings": {
+            "number": "April - September",
+            "heading": "10:00am - 5:00pm",
+            "text": "<p>7 days a week</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_wPrWr4": {
+          "type": "column",
+          "settings": {
+            "number": "October",
+            "heading": "10:30am - 4:30pm",
+            "text": "<p>7 Days a week</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_yi7DGd": {
+          "type": "column",
+          "settings": {
+            "number": "November - March",
+            "heading": "Closed for the Season",
+            "text": "<p><a href=\"/collections/all\" target=\"_blank\" title=\"All products\">But you can still shop online!</a></p>",
+            "link_label": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "column_LRmqNM",
+        "column_wPrWr4",
+        "column_yi7DGd"
+      ],
+      "name": "Multi-column",
+      "settings": {
+        "eyebrow": "",
+        "heading": "Opening Times",
+        "subheading": "",
+        "heading_alignment": "center",
+        "columns": 3,
+        "alignment": "left",
+        "image_ratio": "landscape",
+        "bordered": true,
+        "side_image_position": "right",
+        "side_image_muted": true,
+        "color_scheme": "alt",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
+    },
+    "image_banner_Hqt7yM": {
+      "type": "image-banner",
+      "name": "Image banner",
+      "settings": {
+        "image": "shopify://shop_images/2018-06-12_10.34.47_3.jpg",
+        "height": "medium",
+        "trim_top": 5,
+        "trim_bottom": 36,
+        "fit_mobile": true,
+        "caption": "",
+        "show_seal": false,
+        "seal_size": 30
+      }
+    },
     "faq": {
       "type": "collapsible-content",
       "blocks": {
         "hours": {
           "type": "item",
           "settings": {
-            "heading": "When is the Wee Gin Shop open?",
-            "content": "<p>Daily from 10am to 5pm, between April and October.</p>",
+            "heading": "Where is The Wee Gin Shop?",
+            "content": "<p>The Wee Gin Shop is situated beside the main entrance to Dunrobin Castle in Golspie, Sutherland, in the Scottish Highlands.&nbsp;</p><p>You'll find us within the main Castle car park, meaning you can visit the shop without purchasing admission to Dunrobin Castle itself.</p><p><strong>Address:&nbsp;</strong>The Wee Gin Shop, Dunrobin Castle, Golspie, Sutherland, KW10 6SF.</p><p><strong>What3Words:&nbsp;</strong>///potions.towel.rents</p><p>&nbsp;</p>",
+            "page": "",
             "open": false
           }
         },
         "where": {
           "type": "item",
           "settings": {
-            "heading": "Where is it?",
-            "content": "<p>At Dunrobin Castle, Golspie KW10 6SF, Sutherland. Golspie is on the A9 on the east coast of the North Coast 500.</p>",
+            "heading": "How do I get to The Wee Gin Shop?",
+            "content": "<p>The Wee Gin Shop is easily accessible from the A9, between Golspie and Brora, making it a convenient stop when exploring the North Coast 500.</p><p>Follow the signs for Dunrobin Castle and continue along the main drive towards the Castle car park. You'll find The Wee Gin Shop and our gin garden beside the Castle entrance.</p>",
+            "page": "",
             "open": false
           }
         },
         "online": {
           "type": "item",
           "settings": {
-            "heading": "Can I buy Dunrobin Gin online instead?",
-            "content": "<p>Yes. Order from <a href=\"/products/dunrobin-gin\">our online shop</a>. Shipping is calculated at checkout, and an adult must sign for the delivery.</p>",
+            "heading": "What are The Wee Gin Shop's opening hours?",
+            "content": "<p>The Wee Gin Shop is open seven days a week during the visitor season.</p><p><strong>April to September:</strong>&nbsp;10am–5pm</p><p><strong>October:</strong>&nbsp;10:30am–4:30pm</p><p><strong>November to March:</strong>&nbsp;Closed for the winter season.</p><p>Although The Wee Gin Shop closes during the winter months, you can still purchase Dunrobin Gin, chocolates and gift sets through our&nbsp;<a href=\"/collections/all\" target=\"_blank\" title=\"All products\">online shop</a>, with UK delivery available.</p>",
+            "page": "",
+            "open": false
+          }
+        },
+        "item_d3xVdi": {
+          "type": "item",
+          "settings": {
+            "heading": "Do I need a ticket to Dunrobin Castle to visit The Wee Gin Shop?",
+            "content": "<p>No! The Wee Gin Shop is situated in the main car park beside the Castle entrance, so you can visit us without purchasing an admission ticket to Dunrobin Castle.</p><p>Of course, if you're planning to explore the Castle, gardens and museum during your visit to Golspie, The Wee Gin Shop is the perfect place to round off your day.</p>",
+            "page": "",
+            "open": false
+          }
+        },
+        "item_LPzbqt": {
+          "type": "item",
+          "settings": {
+            "heading": "Is The Wee Gin Shop a good stop on the North Coast 500?",
+            "content": "<p>Absolutely! Situated at Dunrobin Castle, just off the A9 in Golspie, The Wee Gin Shop is an ideal stop for anyone travelling the North Coast 500 through Sutherland.</p><p>Whether you're stopping for a refreshing mocktail, discovering locally made Scottish gin or picking up a gift to enjoy later in your journey, you're always welcome to call in.</p>",
+            "page": "",
+            "open": false
+          }
+        },
+        "item_UpxFeU": {
+          "type": "item",
+          "settings": {
+            "heading": "Can I buy Scottish gin gifts at The Wee Gin Shop?",
+            "content": "<p>Yes! We offer a range of gifts inspired by Dunrobin Castle and the North Highlands.&nbsp;</p><p>From our signature Dunrobin Gin in 20cl and 70cl bottles to premium gift sets, handmade gin chocolates created by Highland Whisky Chocolates in Golspie, and branded merchandise including hats and bags, there's something for every gin lover.</p>",
+            "page": "",
+            "open": false
+          }
+        },
+        "item_x98TwA": {
+          "type": "item",
+          "settings": {
+            "heading": "Can I visit Dunrobin Highland Distillery?",
+            "content": "<p>Dunrobin Highland Distillery is a working production site at Dunrobin Farm, near Dunrobin Castle, and isn't currently open for public tours.</p><p>However, you're very welcome to visit The Wee Gin Shop at Dunrobin Castle, where our team can tell you more about the distillery, the story behind Dunrobin Gin and the botanicals that make it unique. You can also learn more about our story on our&nbsp;<a href=\"/pages/about\" target=\"_blank\" title=\"About Dunrobin Highland Distillery | Golspie, Scotland\">About Us</a>&nbsp;page.&nbsp;</p>",
+            "page": "",
             "open": false
           }
         }
@@ -135,15 +266,57 @@
       "block_order": [
         "hours",
         "where",
-        "online"
+        "online",
+        "item_d3xVdi",
+        "item_LPzbqt",
+        "item_UpxFeU",
+        "item_x98TwA"
       ],
       "settings": {
         "eyebrow": "",
-        "heading": "Visiting questions",
+        "heading": "Good to Know Before you Visit",
         "heading_alignment": "center",
         "narrow": true,
         "color_scheme": "default",
         "padding_top": 80,
+        "padding_bottom": 96
+      }
+    },
+    "rich_text_FnqV9C": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_9a8mkY": {
+          "type": "heading",
+          "settings": {
+            "text": "Can't Visit us in Person?",
+            "size": "h1"
+          }
+        },
+        "text_67ceK4": {
+          "type": "text",
+          "settings": {
+            "text": "<p>You can still enjoy a little taste of the North Highlands wherever you are.</p><p></p><p>Explore our online collection of Dunrobin Gin, premium gift sets and locally handmade chocolates, available for delivery throughout the UK.</p>"
+          }
+        },
+        "button_wnWBWr": {
+          "type": "button",
+          "settings": {
+            "label": "Shop Dunrobin Gin Online",
+            "link": "shopify://collections/all",
+            "style": "primary"
+          }
+        }
+      },
+      "block_order": [
+        "heading_9a8mkY",
+        "text_67ceK4",
+        "button_wnWBWr"
+      ],
+      "name": "Rich text",
+      "settings": {
+        "color_scheme": "alt",
+        "alignment": "center",
+        "padding_top": 96,
         "padding_bottom": 96
       }
     }
@@ -152,6 +325,11 @@
     "main",
     "shop",
     "route",
-    "faq"
+    "image_banner_YripnM",
+    "image_with_text_86qirB",
+    "multicolumn_UghAM9",
+    "image_banner_Hqt7yM",
+    "faq",
+    "rich_text_FnqV9C"
   ]
 }
