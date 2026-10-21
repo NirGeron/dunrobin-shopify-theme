@@ -12,7 +12,7 @@
     "main": {
       "type": "main-page",
       "settings": {
-        "eyebrow": "Our story",
+        "eyebrow": "A North highland story continued",
         "narrow": true,
         "alignment": "center",
         "padding_top": 80,
@@ -25,20 +25,20 @@
         "eyebrow": {
           "type": "eyebrow",
           "settings": {
-            "text": "The people"
+            "text": "Our story our home"
           }
         },
         "heading": {
           "type": "heading",
           "settings": {
-            "text": "A family distillery in Golspie",
+            "text": "A Scottish Highland Gin Inspired by Sutherland's Heritage",
             "size": "h2"
           }
         },
         "text": {
           "type": "text",
           "settings": {
-            "text": "<p>Lizzie and Boban live with their family in Golspie. They have treasured every step of the journey in creating Dunrobin Gin, from the recipe work to the day the still arrived to opening the doors of the pop up shop at the castle.</p><p>Creating something of their own that represents their home has been a delight. Their vision is to now move on to starting their own whisky.</p>"
+            "text": "<p>Established in 2025, Dunrobin Highland Distillery brings a new chapter of distilling to the heart of Sutherland, continuing a story rooted in the history, landscape and heritage of the North Highlands.</p><p>Based at Dunrobin Farm, near&nbsp;<a href=\"https://www.dunrobincastle.co.uk\" target=\"_blank\" title=\"Dunrobin Castle Website\">Dunrobin Castle</a>&nbsp;in Golspie, our family-run Scottish distillery creates a premium craft gin that reflects the character of the place we are proud to call home.</p><p>Dunrobin Highland Distillery was founded by husband-and-wife team Boban and Lizzie Costin, with a shared ambition to bring the heritage of distilling back to Sutherland Estates.</p><p>As the daughter of the Earl of Sutherland, Lizzie has a deep connection to Dunrobin Castle and the surrounding estate. Together with Boban, the couple wanted to revive this historic craft while raising their young family in Sutherland, sharing the stories, traditions and natural beauty of this remarkable corner of the Scottish Highlands.</p><p>For us, Dunrobin Gin is far more than just a bottled spirit. It is a celebration of the place we call home, the people who have shaped it and the generations of history that continue to inspire us.</p>"
           }
         }
       },
@@ -48,12 +48,12 @@
         "text"
       ],
       "settings": {
-        "builtin_image": "team",
-        "image_ratio": "square",
+        "builtin_image": "castle",
+        "image_ratio": "portrait",
         "layout": "image_first",
         "wide_media": false,
         "color_scheme": "default",
-        "padding_top": 32,
+        "padding_top": 56,
         "padding_bottom": 64
       }
     },
@@ -63,20 +63,20 @@
         "eyebrow": {
           "type": "eyebrow",
           "settings": {
-            "text": "The botanicals"
+            "text": "OVER TWO CENTURIES OF HERITAGE"
           }
         },
         "heading": {
           "type": "heading",
           "settings": {
-            "text": "Gathered where forest and sea meet",
+            "text": "A History of Distilling in Sutherland and the North Highlands",
             "size": "h2"
           }
         },
         "text": {
           "type": "text",
           "settings": {
-            "text": "<p>At Dunrobin we aim to recreate some of the magic of the place: the formal gardens and woodland aromas, the elegance of the castle and a wider sense of landscape and heritage. The gin brings home in a bottle the feeling of standing in the garden after the rain, breathing it all in.</p><p>Its base is juniper, coriander seed and angelica root, which gives a balanced, classic feel with a forest-like openness. Lemon, rose-scented pelargonium leaf and blackcurrant leaf add lighter tones, and a light touch of clove brings a hint of warmth. The pelargonium is grown in tubs in the formal garden, which is open to the public, and by the castle entrance, and the blackcurrant is part of the kitchen gardens. The gin is made with spring water from the Big Burn.</p><p>We are proud to have worked with two experts in botanicals: Iain Crisp, Dunrobin’s head gardener, who has tended the garden and the surrounding woodland for 20 years, and Susanne Masters, an ethnobotanist who brought her expertise, creativity and guidance to the recipe work. Together they helped us include every element we felt was needed to represent such a place.</p>"
+            "text": "<p>The story of distilling on Sutherland Estates stretches back more than 200 years.&nbsp;</p><p>In 1819, the Marquess of Stafford, later the first Duke of Sutherland, established the original Clynelish Distillery in nearby Brora, just north of Golspie.</p><p>The distillery played an important role in the development of the local economy, providing a market for barley grown by local farmers and creating employment opportunities in East Sutherland.</p><p>This marked an important chapter in the history of distilling in the North Highlands, establishing a connection between the land, its people and the craft of spirit production.</p><p>Today, more than two centuries later, Lizzie and Boban are proud to continue that story through Dunrobin Highland Distillery.</p><p>While the spirit may be different, the inspiration remains closely connected to the same landscape, heritage and sense of place that have shaped Sutherland for generations.</p><p>From an idea sparked during a stag weekend to the creation of our very own Highland distillery, discover more about the journey that brought Dunrobin Gin to life.&nbsp;</p><p><a href=\"/blogs/news/the-story-behind-dunrobin-highland-distillery-dunrobin-gin\" target=\"_blank\" title=\"The Story Behind Dunrobin Highland Distillery | Dunrobin Gin\">Read the full story behind Dunrobin Highland Distillery and Dunrobin.</a></p>"
           }
         },
         "button": {
@@ -95,6 +95,7 @@
         "button"
       ],
       "settings": {
+        "image": "shopify://shop_images/Screenshot_2026-08-07_at_14.44.19.png",
         "builtin_image": "bottle",
         "image_ratio": "portrait",
         "layout": "text_first",
@@ -110,20 +111,20 @@
         "eyebrow": {
           "type": "eyebrow",
           "settings": {
-            "text": "House of Sutherland"
+            "text": "NATURE AT THE HEART"
           }
         },
         "heading": {
           "type": "heading",
           "settings": {
-            "text": "Sutherland’s distilling heritage",
+            "text": "Inspired by Golspie, Dunrobin Castle and the North Highland Landscape",
             "size": "h2"
           }
         },
         "text": {
           "type": "text",
           "settings": {
-            "text": "<p>Distilling in this part of the Highlands goes back to 1819, when the 1st Duke of Sutherland founded Clynelish. Dunrobin Highland Distillery carries that heritage forward from Golspie, home to Dunrobin Castle, the seat of the Dukes of Sutherland.</p><p>Our motto comes from the same house: <em>Sans Peur</em>, “without fear”.</p>"
+            "text": "<p>Every aspect of Dunrobin Highland Distillery has been inspired by its surroundings.&nbsp;</p><p>From the woodland and formal gardens of Dunrobin Castle to the rolling hills of Sutherland and the coastline overlooking the Moray Firth, the landscape of the North Highlands is woven into the story of Dunrobin Gin.</p><p>Our recipe was developed to capture something of this remarkable place, bringing together carefully selected botanicals that reflect the gardens, woodland and natural character of the Castle's surroundings.</p><p>Working closely with ethnobotanist&nbsp;<a href=\"https://susannemasters.com\" target=\"_blank\" title=\"https://susannemasters.com\">Susanne Masters</a>&nbsp;and Dunrobin Castle's Head Gardener, Iain Crisp, whose knowledge of the gardens and East Sutherland's growing conditions spans more than 20 years, we developed a distinctive Highland gin inspired by the landscape around us.</p><p>At its heart is a classic combination of juniper, coriander seed and angelica root, complemented by lemon, clove, rose-scented pelargonium and blackcurrant leaf.</p><p>The rose-scented pelargonium is carefully grown in the formal gardens of Dunrobin Castle, while the blackcurrant leaves are harvested from the Castle's kitchen gardens.</p><p>Together, these botanicals create a gin with a distinctive woodland character, combining earthy, piney and spiced notes with a delicate floral freshness.</p><p>A taste of Sutherland, inspired by the gardens, woodland and coastline of our Highland home.</p>"
           }
         }
       },
@@ -138,6 +139,176 @@
         "layout": "image_first",
         "wide_media": false,
         "color_scheme": "default",
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
+    },
+    "image_with_text_wJrKp9": {
+      "type": "image-with-text",
+      "blocks": {
+        "eyebrow_mBiXya": {
+          "type": "eyebrow",
+          "settings": {
+            "text": "DESIGNED TO TELL A STORY"
+          }
+        },
+        "heading_nQtJkU": {
+          "type": "heading",
+          "settings": {
+            "text": "The Dunrobin Story, Reflected in Every Bottle",
+            "size": "h2"
+          }
+        },
+        "text_4JUp8y": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Our connection to Dunrobin Castle, Golspie and the surrounding Sutherland landscape goes far beyond the botanicals used in our gin.</p><p>The very design of our bottles reflects the place and heritage behind Dunrobin Highland Distillery.</p><p>Working closely with internationally renowned Italian designer <a href=\"https://www.nichetto.com\" target=\"_blank\" title=\"https://www.nichetto.com\">Luca Nichetto</a>, we have carefully developed a distinctive visual identity that brings the Dunrobin story to life through thoughtful, contemporary design.</p><p>Each element of our distinctive pictogram represents a part of the landscape that inspires us.</p><p>The curved shape reflects the rolling hills of Sutherland that frame Dunrobin Castle and Golspie, where the fresh spring water used in our spirits is sourced.</p><p>The flowing line represents the beautiful East Sutherland coastline, stretching towards the horizon and reflecting the sea that has shaped this part of the Scottish Highlands for generations.</p><p>Our newly designed bottles place this pictogram at their heart, wrapping continuously around the glass and extending across our premium gift packaging.</p><p>Its scale and prominence reflect the grandeur and presence of Dunrobin Castle, while the continuous 360-degree design represents a story that never truly ends, paying tribute to the generations of history and heritage behind Dunrobin.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "eyebrow_mBiXya",
+        "heading_nQtJkU",
+        "text_4JUp8y"
+      ],
+      "settings": {
+        "builtin_image": "castle",
+        "image_ratio": "landscape",
+        "layout": "image_first",
+        "wide_media": false,
+        "color_scheme": "default",
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
+    },
+    "image_with_text_EKFn3f": {
+      "type": "image-with-text",
+      "blocks": {
+        "eyebrow_nRCkbm": {
+          "type": "eyebrow",
+          "settings": {
+            "text": "FROM DAIRY TO DISTILLERY"
+          }
+        },
+        "heading_zEezCj": {
+          "type": "heading",
+          "settings": {
+            "text": "Making Dunrobin Gin at Dunrobin Farm, Golspie",
+            "size": "h2"
+          }
+        },
+        "text_KfCbgG": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Dunrobin Gin is carefully distilled on Sutherland Estates, in the historic Old Dairy building at Dunrobin Farm, less than a mile from Dunrobin Castle in Golspie.</p><p>Once a working dairy, this building has been given a new lease of life as the home of Dunrobin Highland Distillery, continuing its history of local production in a new and exciting way.</p><p>From milk production to premium Scottish gin, the Old Dairy remains a place where the traditions of the estate meet the craftsmanship of today.</p><p>This is where Lizzie and Boban bring Dunrobin Gin to life, from the infusion of carefully selected botanicals through to bottling and the hand-applied wax seal that finishes every bottle.</p><p>Each stage is carried out with care and attention to detail, creating a Highland gin that reflects both the heritage of its home and the passion of the people behind it.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "eyebrow_nRCkbm",
+        "heading_zEezCj",
+        "text_KfCbgG"
+      ],
+      "settings": {
+        "builtin_image": "castle",
+        "image_ratio": "landscape",
+        "layout": "image_first",
+        "wide_media": false,
+        "color_scheme": "default",
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
+    },
+    "image_with_text_Gtwj67": {
+      "type": "image-with-text",
+      "blocks": {
+        "eyebrow_WM7r6N": {
+          "type": "eyebrow",
+          "settings": {
+            "text": "A Taste of Sutherland"
+          }
+        },
+        "heading_yTjjYb": {
+          "type": "heading",
+          "settings": {
+            "text": "Discover Dunrobin Gin | From Sutherland to Your Home",
+            "size": "h2"
+          }
+        },
+        "text_zJiA6k": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Whether you've visited Dunrobin Castle, explored the&nbsp;North Coast 500&nbsp;or simply share our love of the Scottish Highlands, Dunrobin Gin offers a way to enjoy a little taste of Sutherland wherever you are.</p><p>Our collection includes our signature Dunrobin Gin, available in 20cl and 70cl bottles, alongside premium gin gift sets and locally handmade chocolates created in collaboration with&nbsp;<a href=\"https://www.facebook.com/profile.php?id=100057594132068\" target=\"_blank\" title=\"https://www.facebook.com/profile.php?id=100057594132068\">Highland Whisky Chocolates</a>&nbsp;in Golspie.</p><p>Explore our online shop&nbsp;to discover the full Dunrobin Highland Distillery collection, available for UK delivery.</p>"
+          }
+        },
+        "button_mDecfh": {
+          "type": "button",
+          "settings": {
+            "label": "Shop Dunrobin Gin",
+            "link": "/products/dunrobin-gin",
+            "style": "primary"
+          }
+        }
+      },
+      "block_order": [
+        "eyebrow_WM7r6N",
+        "heading_yTjjYb",
+        "text_zJiA6k",
+        "button_mDecfh"
+      ],
+      "settings": {
+        "builtin_image": "bottle",
+        "image_ratio": "portrait",
+        "layout": "text_first",
+        "wide_media": false,
+        "color_scheme": "alt",
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
+    },
+    "image_with_text_KGLNK9": {
+      "type": "image-with-text",
+      "blocks": {
+        "eyebrow_gQrrkz": {
+          "type": "eyebrow",
+          "settings": {
+            "text": "A Highland Welcome"
+          }
+        },
+        "heading_mt6KiA": {
+          "type": "heading",
+          "settings": {
+            "text": "Visit The Wee Gin Shop at Dunrobin Castle",
+            "size": "h2"
+          }
+        },
+        "text_qHwcxy": {
+          "type": "text",
+          "settings": {
+            "text": "<p>If you're exploring Golspie, visiting Dunrobin Castle or travelling along the North Coast 500, you can also discover Dunrobin Gin in person at The Wee Gin Shop.</p><p>Situated within the grounds of Dunrobin Castle in Sutherland, The Wee Gin Shop is open seasonally during the Castle's visitor season, offering a welcoming place to enjoy a Dunrobin Gin and tonic, discover our Highland-inspired cocktails or pick up a bottle or gift to take home.</p><p><strong>Planning a visit?</strong>&nbsp;</p><p>Explore our&nbsp;<a href=\"/pages/visit\" target=\"_blank\" title=\"Visit\">Visit Us</a>&nbsp;page to find out more about The Wee Gin Shop, seasonal opening hours and how to find us at Dunrobin Castle, Golspie.</p>"
+          }
+        },
+        "button_639z9U": {
+          "type": "button",
+          "settings": {
+            "label": "Visit Us",
+            "link": "shopify://pages/visit",
+            "style": "primary"
+          }
+        }
+      },
+      "block_order": [
+        "eyebrow_gQrrkz",
+        "heading_mt6KiA",
+        "text_qHwcxy",
+        "button_639z9U"
+      ],
+      "settings": {
+        "builtin_image": "bottle",
+        "image_ratio": "portrait",
+        "layout": "text_first",
+        "wide_media": false,
+        "color_scheme": "alt",
         "padding_top": 64,
         "padding_bottom": 64
       }
@@ -194,6 +365,10 @@
     "story",
     "botanicals",
     "heritage",
+    "image_with_text_wJrKp9",
+    "image_with_text_EKFn3f",
+    "image_with_text_Gtwj67",
+    "image_with_text_KGLNK9",
     "cta"
   ]
 }
