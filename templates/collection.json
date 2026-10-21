@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
@@ -13,6 +22,222 @@
         "image_ratio": "portrait",
         "footer_note": "",
         "padding_top": 64,
+        "padding_bottom": 96
+      }
+    },
+    "image_with_text_LAbynX": {
+      "type": "image-with-text",
+      "blocks": {
+        "eyebrow_Whk9Nm": {
+          "type": "eyebrow",
+          "settings": {
+            "text": "A taste of Dunrobin Castle"
+          }
+        },
+        "heading_tpAUip": {
+          "type": "heading",
+          "settings": {
+            "text": "Dunrobin Gin | Premium Scottish Highland Gin",
+            "size": "h2"
+          }
+        },
+        "text_yV3eT7": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Dunrobin Gin offers gin lovers the opportunity to bring home a little of the magic of Dunrobin Castle, nestled on the coast of Sutherland in the Scottish Highlands.</p><p>Inspired by botanicals carefully hand-harvested from the formal gardens of Dunrobin Castle, the woodland aromas of the surrounding grounds, and the landscape and heritage of the North Highlands, Dunrobin Gin captures the character and elegance of the Castle itself.</p><p>Imagine standing in the Castle gardens after a refreshing Highland rain shower, breathing in the earthy woodland aromas, the freshness of the surrounding flora and fauna, and the crisp coastal air. This is the experience we have sought to capture in every bottle of Dunrobin Gin.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "eyebrow_Whk9Nm",
+        "heading_tpAUip",
+        "text_yV3eT7"
+      ],
+      "name": "Image with text",
+      "settings": {
+        "image": "shopify://shop_images/2018-06-12_10.34.47_3.jpg",
+        "builtin_image": "castle",
+        "image_ratio": "portrait",
+        "layout": "text_first",
+        "wide_media": false,
+        "color_scheme": "default",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
+    },
+    "image_with_text_8LiFpr": {
+      "type": "image-with-text",
+      "blocks": {
+        "eyebrow_yEinpp": {
+          "type": "eyebrow",
+          "settings": {
+            "text": "From Garden to Glass"
+          }
+        },
+        "heading_qP8KfF": {
+          "type": "heading",
+          "settings": {
+            "text": "The Botanicals Behind Dunrobin Gin",
+            "size": "h2"
+          }
+        },
+        "text_hKhx4A": {
+          "type": "text",
+          "settings": {
+            "text": "<p>At the heart of Dunrobin Gin is a carefully balanced combination of juniper, coriander seed and angelica root, creating a classic gin foundation with a distinctive woodland character.</p><p>Lighter notes of lemon, rose-scented pelargonium and blackcurrant leaf add freshness and floral complexity, while a delicate touch of clove brings a gentle warmth to the finish.&nbsp;</p><p>Our rose-scented pelargonium is carefully grown in the formal gardens of Dunrobin Castle, where visitors can discover it for themselves, as well as near the Castle entrance, where it welcomes visitors on their arrival. Blackcurrant leaves are harvested from bushes in the Castle's kitchen gardens, nurtured by its experienced gardening team.&nbsp;</p><p>Once harvested, these botanicals are carefully preserved, steeped and infused, before being distilled using traditional copper pot stills crafted by Forsyths, renowned Scottish stillmakers based in Rothes, Speyside.</p><p>With generations of expertise in traditional copper craftsmanship, Forsyths are recognised for producing high-quality distillation equipment used by distilleries around the world. Their copper stills play an important role in the distillation process, helping to create a refined, balanced spirit that allows the carefully selected botanicals to shine through.</p><p>Combined with fresh spring water from the surrounding hills, every stage of production takes place on site at Dunrobin Highland Distillery, where founders Lizzie and Boban carefully craft their gin at Dunrobin Farm.</p><p>From garden to glass, the entire distilling process remains within the Golspie area, reflecting the Distillery's deep connection to its Highland home.</p><p>Together, these botanicals create a premium Scottish gin that captures the character of the gardens, woodland and natural beauty surrounding Dunrobin Castle.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "eyebrow_yEinpp",
+        "heading_qP8KfF",
+        "text_hKhx4A"
+      ],
+      "name": "Image with text",
+      "settings": {
+        "image": "shopify://shop_images/IMG_6425.jpg",
+        "builtin_image": "castle",
+        "image_ratio": "portrait",
+        "layout": "image_first",
+        "wide_media": false,
+        "color_scheme": "default",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
+    },
+    "image_with_text_r4DrbB": {
+      "type": "image-with-text",
+      "blocks": {
+        "eyebrow_WjKheA": {
+          "type": "eyebrow",
+          "settings": {
+            "text": "Where we came from"
+          }
+        },
+        "heading_etCrb7": {
+          "type": "heading",
+          "settings": {
+            "text": "The Story Behind Our Scottish Highland Gin",
+            "size": "h2"
+          }
+        },
+        "text_Mw46eQ": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Creating the recipe for Dunrobin Gin was a collaborative labour of love, bringing together a shared passion for botanicals, the landscape and the heritage of Dunrobin Castle.</p><p>We were proud to work alongside two experts whose knowledge and creativity helped bring our vision to life.</p><p>Iain Crisp, Head Gardener at Dunrobin Castle, has spent 20 years tending the formal gardens and surrounding woodland. His extensive knowledge of the Castle's botanicals, and of the plants that thrive in this part of the Highlands, played an important role in developing the recipe.</p><p>We also worked closely with ethnobotanist&nbsp;<a href=\"https://susannemasters.com\" target=\"_blank\" title=\"https://susannemasters.com\">Susanne Masters</a>, whose expertise, creativity and understanding of the relationship between people and plants helped shape the final blend.</p><p>Together, their knowledge and guidance allowed us to create a gin that brings together the elements we felt were essential to representing Dunrobin Castle and its remarkable surroundings.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "eyebrow_WjKheA",
+        "heading_etCrb7",
+        "text_Mw46eQ"
+      ],
+      "name": "Image with text",
+      "settings": {
+        "image": "shopify://shop_images/Gemini_Generated_Image_wjkiuawjkiuawjki.jpg",
+        "builtin_image": "castle",
+        "image_ratio": "portrait",
+        "layout": "text_first",
+        "wide_media": false,
+        "color_scheme": "default",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
+    },
+    "multicolumn_JM799k": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_4eAKEC": {
+          "type": "column",
+          "settings": {
+            "number": "01",
+            "heading": "Flavour Profile",
+            "text": "<p>Earthy, spiced and piney.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_T9cQJQ": {
+          "type": "column",
+          "settings": {
+            "number": "02",
+            "heading": "The palate",
+            "text": "<p>Describe the taste in a sentence or two.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_bFg9qx": {
+          "type": "column",
+          "settings": {
+            "number": "03",
+            "heading": "Finish",
+            "text": "<p>Earthy and gently spicy, with a subtle edge of bitterness.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "column_4eAKEC",
+        "column_T9cQJQ",
+        "column_bFg9qx"
+      ],
+      "name": "Multi-column",
+      "settings": {
+        "eyebrow": "Dunrobin Gin",
+        "heading": "Tasting Notes",
+        "subheading": "",
+        "heading_alignment": "center",
+        "columns": 3,
+        "alignment": "left",
+        "image_ratio": "landscape",
+        "bordered": true,
+        "side_image_position": "right",
+        "side_image_muted": true,
+        "color_scheme": "alt",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
+    },
+    "image_with_text_NednUU": {
+      "type": "image-with-text",
+      "blocks": {
+        "eyebrow_jmkkLJ": {
+          "type": "eyebrow",
+          "settings": {
+            "text": "Inspired by Dunrobin"
+          }
+        },
+        "heading_UV7kV4": {
+          "type": "heading",
+          "settings": {
+            "text": "Our New Bottle Design",
+            "size": "h2"
+          }
+        },
+        "text_xDaF6Q": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Every element of our newly designed Dunrobin Gin bottle tells part of the story of the landscape and heritage that inspires Dunrobin Highland Distillery.</p><p>Working closely with internationally renowned Italian designer Luca Nichetto, founder of&nbsp;<a href=\"https://www.nichetto.com\" target=\"_blank\" title=\"https://www.nichetto.com\">NICHETTO®</a>, every aspect of Dunrobin Highland Distillery's visual identity, from our logo and bottle design to our premium gift packaging, has been carefully developed to bring the Dunrobin story to life through thoughtful, distinctive design.</p><p>The bottle's curved shape reflects the rolling hills of Sutherland that frame Dunrobin Castle, where the fresh spring water used in our spirits is sourced.</p><p>A flowing line represents the beautiful Highland coastline, stretching towards the horizon and reflecting the sea that has shaped this corner of Scotland for generations.</p><p>Our new premium bottle design places the Dunrobin Highland Distillery pictogram at its heart, wrapping continuously around the entire bottle and extending across our newly designed gift packaging.</p><p>Its scale and prominence reflect the grandeur and presence of Dunrobin Castle, while the continuous 360-degree design represents a story that never truly ends, paying tribute to the generations of history and heritage behind Dunrobin.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "eyebrow_jmkkLJ",
+        "heading_UV7kV4",
+        "text_xDaF6Q"
+      ],
+      "name": "Image with text",
+      "settings": {
+        "image": "shopify://shop_images/IMG_8110.jpg",
+        "builtin_image": "castle",
+        "image_ratio": "portrait",
+        "layout": "image_first",
+        "wide_media": false,
+        "color_scheme": "default",
+        "padding_top": 96,
         "padding_bottom": 96
       }
     },
@@ -45,18 +270,23 @@
         "text"
       ],
       "settings": {
+        "builtin_image": "castle",
         "image_ratio": "landscape",
         "layout": "image_first",
         "wide_media": false,
         "color_scheme": "alt",
         "padding_top": 96,
-        "padding_bottom": 96,
-        "builtin_image": "castle"
+        "padding_bottom": 96
       }
     }
   },
   "order": [
     "main",
+    "image_with_text_LAbynX",
+    "image_with_text_8LiFpr",
+    "image_with_text_r4DrbB",
+    "multicolumn_JM799k",
+    "image_with_text_NednUU",
     "next-chapter"
   ]
 }
