@@ -78,21 +78,12 @@
           "settings": {
             "text": "<p>The story of distilling on Sutherland Estates stretches back more than 200 years.&nbsp;</p><p>In 1819, the Marquess of Stafford, later the first Duke of Sutherland, established the original Clynelish Distillery in nearby Brora, just north of Golspie.</p><p>The distillery played an important role in the development of the local economy, providing a market for barley grown by local farmers and creating employment opportunities in East Sutherland.</p><p>This marked an important chapter in the history of distilling in the North Highlands, establishing a connection between the land, its people and the craft of spirit production.</p><p>Today, more than two centuries later, Lizzie and Boban are proud to continue that story through Dunrobin Highland Distillery.</p><p>While the spirit may be different, the inspiration remains closely connected to the same landscape, heritage and sense of place that have shaped Sutherland for generations.</p><p>From an idea sparked during a stag weekend to the creation of our very own Highland distillery, discover more about the journey that brought Dunrobin Gin to life.&nbsp;</p><p><a href=\"/blogs/news/the-story-behind-dunrobin-highland-distillery-dunrobin-gin\" target=\"_blank\" title=\"The Story Behind Dunrobin Highland Distillery | Dunrobin Gin\">Read the full story behind Dunrobin Highland Distillery and Dunrobin.</a></p>"
           }
-        },
-        "button": {
-          "type": "button",
-          "settings": {
-            "label": "Shop Dunrobin Gin",
-            "link": "/products/dunrobin-gin",
-            "style": "primary"
-          }
         }
       },
       "block_order": [
         "eyebrow",
         "heading",
-        "text",
-        "button"
+        "text"
       ],
       "settings": {
         "image": "shopify://shop_images/Screenshot_2026-08-07_at_14.44.19.png",
@@ -134,8 +125,9 @@
         "text"
       ],
       "settings": {
+        "image": "shopify://shop_images/IMG_4718_VSCO_787244c8-bfbb-4896-86ce-4ecf1b1537a9.jpg",
         "builtin_image": "castle",
-        "image_ratio": "landscape",
+        "image_ratio": "adapt",
         "layout": "image_first",
         "wide_media": false,
         "color_scheme": "default",
@@ -172,9 +164,10 @@
         "text_4JUp8y"
       ],
       "settings": {
+        "image": "shopify://shop_images/IMG_8110.jpg",
         "builtin_image": "castle",
-        "image_ratio": "landscape",
-        "layout": "image_first",
+        "image_ratio": "adapt",
+        "layout": "text_first",
         "wide_media": false,
         "color_scheme": "default",
         "padding_top": 64,
@@ -210,8 +203,9 @@
         "text_KfCbgG"
       ],
       "settings": {
+        "image": "shopify://shop_images/WhatsApp_Image_2026-10-21_at_14.11.45.jpg",
         "builtin_image": "castle",
-        "image_ratio": "landscape",
+        "image_ratio": "adapt",
         "layout": "image_first",
         "wide_media": false,
         "color_scheme": "default",
@@ -257,6 +251,7 @@
         "button_mDecfh"
       ],
       "settings": {
+        "image": "shopify://shop_images/IMG_8142.jpg",
         "builtin_image": "bottle",
         "image_ratio": "portrait",
         "layout": "text_first",
@@ -304,9 +299,10 @@
         "button_639z9U"
       ],
       "settings": {
+        "image": "shopify://shop_images/IMG_4704-2.jpg",
         "builtin_image": "bottle",
         "image_ratio": "portrait",
-        "layout": "text_first",
+        "layout": "image_first",
         "wide_media": false,
         "color_scheme": "alt",
         "padding_top": 64,
