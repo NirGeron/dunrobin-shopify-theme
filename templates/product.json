@@ -71,7 +71,7 @@
           "type": "detail_rows",
           "settings": {
             "label_1": "Batch number",
-            "value_1": "1",
+            "value_1": "22",
             "label_2": "Units per bottle",
             "value_2": "31.5 UK units",
             "label_3": "",
@@ -144,6 +144,7 @@
           "settings": {
             "heading": "How strong is Dunrobin Gin, and what size is the bottle?",
             "content": "<p>Dunrobin Gin is 45% ABV and comes in a 70cl bottle. Each bottle contains 31.5 UK units of alcohol.</p>",
+            "page": "",
             "open": false
           }
         },
@@ -152,6 +153,7 @@
           "settings": {
             "heading": "What botanicals are in Dunrobin Gin?",
             "content": "<p>Juniper, lemon, coriander, clove, blackcurrant, angelica root and rose-scented pelargonium leaf. The rose-scented pelargonium is grown in tubs in the castle’s formal garden and by the castle entrance, and the blackcurrant comes from the kitchen gardens.</p>",
+            "page": "",
             "open": false
           }
         },
@@ -160,6 +162,7 @@
           "settings": {
             "heading": "How should I serve it?",
             "content": "<p>Sip it over ice to open up the flavours. For a classic gin and tonic, use lots of ice, then squeeze a slice of lemon over the glass and drop it in.</p>",
+            "page": "",
             "open": false
           }
         },
@@ -168,6 +171,7 @@
           "settings": {
             "heading": "How is it delivered?",
             "content": "<p>Delivery is by tracked UK Royal Mail 48-hour service, and an adult must sign for the parcel on arrival. We do not deliver outside the UK at the moment. We will update this page and our social media as delivery options develop.</p>",
+            "page": "",
             "open": false
           }
         },
@@ -176,6 +180,7 @@
           "settings": {
             "heading": "Is Dunrobin Gin a good gift?",
             "content": "<p>Each bottle is sealed by hand in green wax, which makes it an easy gift for a gin lover. Enter the recipient’s address at checkout to send it straight to them, and make sure an adult is there to sign for it. We deliver to UK addresses only at the moment.</p>",
+            "page": "",
             "open": false
           }
         },
@@ -184,6 +189,7 @@
           "settings": {
             "heading": "Where can I buy it in person?",
             "content": "<p>At the Wee Gin Shop at Dunrobin Castle, Golspie KW10 6SF, open daily from 10am to 5pm between April and October. <a href=\"/pages/visit\">See how to find us</a>.</p>",
+            "page": "",
             "open": false
           }
         }
