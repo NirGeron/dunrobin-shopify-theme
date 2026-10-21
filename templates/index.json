@@ -22,31 +22,213 @@
         "padding_bottom": 8
       }
     },
-    "dispatches": {
-      "type": "blog-posts",
+    "rich_text_y3N6na": {
+      "type": "rich-text",
+      "blocks": {
+        "eyebrow_VhBFhC": {
+          "type": "eyebrow",
+          "settings": {
+            "text": "Our creed"
+          }
+        },
+        "heading_mznbQk": {
+          "type": "heading",
+          "settings": {
+            "text": "A Highland Story, Distilled.",
+            "size": "h1"
+          }
+        },
+        "text_Wp8aAB": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Inspired by the landscape, heritage and spirit of Sutherland.</p>"
+          }
+        },
+        "button_gYyLG3": {
+          "type": "button",
+          "settings": {
+            "label": "Read our story",
+            "link": "shopify://pages/about",
+            "style": "primary"
+          }
+        }
+      },
+      "block_order": [
+        "eyebrow_VhBFhC",
+        "heading_mznbQk",
+        "text_Wp8aAB",
+        "button_gYyLG3"
+      ],
+      "name": "Rich text",
       "settings": {
-        "blog": "news",
-        "eyebrow": "",
-        "heading": "",
-        "posts_to_show": 3,
-        "columns": 3,
-        "mobile_carousel": true,
-        "stagger": true,
-        "feature_single": true,
-        "image_ratio": "adapt",
-        "show_filters": false,
-        "filters_to_show": 3,
-        "accent_color": "#8a6a3b",
-        "show_tag": true,
-        "show_date": true,
-        "show_excerpt": true,
-        "excerpt_words": 25,
-        "read_more_label": "Read more",
-        "show_view_all": false,
-        "view_all_label": "View all dispatches",
+        "color_scheme": "default",
+        "alignment": "center",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
+    },
+    "image_banner_yMC4BH": {
+      "type": "image-banner",
+      "name": "Image banner",
+      "settings": {
+        "image": "shopify://shop_images/JM3A0361.jpg",
+        "height": "medium",
+        "trim_top": 5,
+        "trim_bottom": 36,
+        "fit_mobile": true,
+        "caption": "",
+        "show_seal": false,
+        "seal_size": 30
+      }
+    },
+    "image_with_text_9CraRc": {
+      "type": "image-with-text",
+      "blocks": {
+        "eyebrow_brmCYB": {
+          "type": "eyebrow",
+          "settings": {
+            "text": "The distillery"
+          }
+        },
+        "heading_zkFhw7": {
+          "type": "heading",
+          "settings": {
+            "text": "Discover Dunrobin Highland Distillery",
+            "size": "h2"
+          }
+        },
+        "text_p6VEtb": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Established in 2025 by husband-and-wife team Boban and Lizzie Costin, Dunrobin Highland Distillery is a family-run Scottish gin distillery based in Golspie, Sutherland, in the heart of the North Highlands.</p><p>As the daughter of the Earl of Sutherland, Lizzie has a deep connection to&nbsp;Dunrobin Castle&nbsp;and the surrounding estate. Together, Lizzie and Boban have brought the heritage of distilling back to Sutherland Estates, creating a premium Highland gin inspired by the landscape, history and stories of the place they call home.</p><p>Crafted at Dunrobin Farm, just a short distance from Dunrobin Castle, Dunrobin Gin offers a way to experience a little of the Castle's magic, wherever you are.</p>"
+          }
+        },
+        "button_daPBVF": {
+          "type": "button",
+          "settings": {
+            "label": "Discover our story",
+            "link": "shopify://blogs/news/the-story-behind-dunrobin-highland-distillery-dunrobin-gin",
+            "style": "link"
+          }
+        }
+      },
+      "block_order": [
+        "eyebrow_brmCYB",
+        "heading_zkFhw7",
+        "text_p6VEtb",
+        "button_daPBVF"
+      ],
+      "name": "Image with text",
+      "settings": {
+        "image": "shopify://shop_images/meet_the_team_23f1d41c-cb5f-4759-90fe-67f94894ebe2.jpg",
+        "builtin_image": "castle",
+        "image_ratio": "portrait",
+        "layout": "image_first",
+        "wide_media": false,
+        "color_scheme": "default",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
+    },
+    "image_with_text_cH4gbB": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_6YanU4": {
+          "type": "heading",
+          "settings": {
+            "text": "A Taste of the North Highlands",
+            "size": "h2"
+          }
+        },
+        "text_qp8cgC": {
+          "type": "text",
+          "settings": {
+            "text": "<p>At the heart of Dunrobin Gin is a carefully balanced selection of botanicals, chosen to reflect the gardens, woodland and natural beauty of the Scottish Highlands.</p><p>Juniper, lemon, coriander, and angelica root form the foundation of our gin, complemented by clove and rose-scented pelargonium and blackcurrant leaves, both carefully grown and harvested from the gardens of Dunrobin Castle.</p><p>Together, these botanicals create a distinctive Scottish gin with earthy, piney and gently spiced notes, balanced by a delicate floral freshness.</p><p>From the formal gardens of Dunrobin Castle to the rolling hills of Sutherland and the coastline overlooking the Moray Firth, every element of Dunrobin Gin reflects the remarkable landscape that surrounds us.</p>"
+          }
+        },
+        "button_xhPeJ8": {
+          "type": "button",
+          "settings": {
+            "label": "Shop our products",
+            "link": "shopify://collections/all",
+            "style": "primary"
+          }
+        }
+      },
+      "block_order": [
+        "heading_6YanU4",
+        "text_qp8cgC",
+        "button_xhPeJ8"
+      ],
+      "name": "Image with text",
+      "settings": {
+        "image": "shopify://shop_images/IMG_6425.jpg",
+        "builtin_image": "castle",
+        "image_ratio": "portrait",
+        "layout": "text_first",
+        "wide_media": false,
+        "color_scheme": "default",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
+    },
+    "rich_text_JPJwxH": {
+      "type": "rich-text",
+      "blocks": {
+        "seal_GBzwCf": {
+          "type": "seal",
+          "settings": {
+            "size": 120
+          }
+        },
+        "heading_PzXQyX": {
+          "type": "heading",
+          "settings": {
+            "text": "Discover Dunrobin Gin at Dunrobin Castle",
+            "size": "h1"
+          }
+        },
+        "text_HJJh4L": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Whether you're exploring the North Coast 500, visiting Dunrobin Castle or simply discovering the North Highlands, you're welcome to experience Dunrobin Gin in person at The Wee Gin Shop.</p><p>Situated at Dunrobin Castle in Golspie, The Wee Gin Shop offers the opportunity to enjoy a refreshing gin and tonic, discover our Highland-inspired cocktails or pick up a bottle to take home.</p><p>Our collection includes Dunrobin Gin in 20cl and 70cl bottles, premium Scottish gin gift sets and locally handmade gin chocolates, created in collaboration with Highland Whisky Chocolates in Golspie.</p><p>And if you can't visit us in person, you can still enjoy a little taste of Sutherland, with our full collection available to purchase through our online shop for delivery throughout the UK.</p>"
+          }
+        },
+        "button_RWQiQ7": {
+          "type": "button",
+          "settings": {
+            "label": "Visit The Wee Gin Shop",
+            "link": "shopify://pages/visit",
+            "style": "primary"
+          }
+        }
+      },
+      "block_order": [
+        "seal_GBzwCf",
+        "heading_PzXQyX",
+        "text_HJJh4L",
+        "button_RWQiQ7"
+      ],
+      "name": "Rich text",
+      "settings": {
         "color_scheme": "alt",
-        "padding_top": 0,
-        "padding_bottom": 16
+        "alignment": "center",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
+    },
+    "image_banner_ncngm3": {
+      "type": "image-banner",
+      "name": "Image banner",
+      "settings": {
+        "image": "shopify://shop_images/2018-06-12_10.34.47_3.jpg",
+        "height": "medium",
+        "trim_top": 5,
+        "trim_bottom": 36,
+        "fit_mobile": true,
+        "caption": "",
+        "show_seal": false,
+        "seal_size": 30
       }
     },
     "lookbook": {
@@ -127,6 +309,33 @@
         "button_link": "",
         "padding_top": 40,
         "padding_bottom": 40
+      }
+    },
+    "dispatches": {
+      "type": "blog-posts",
+      "settings": {
+        "blog": "news",
+        "eyebrow": "",
+        "heading": "",
+        "posts_to_show": 3,
+        "columns": 3,
+        "mobile_carousel": true,
+        "stagger": true,
+        "feature_single": true,
+        "image_ratio": "adapt",
+        "show_filters": false,
+        "filters_to_show": 3,
+        "accent_color": "#8a6a3b",
+        "show_tag": true,
+        "show_date": true,
+        "show_excerpt": true,
+        "excerpt_words": 25,
+        "read_more_label": "Read more",
+        "show_view_all": false,
+        "view_all_label": "View all dispatches",
+        "color_scheme": "alt",
+        "padding_top": 0,
+        "padding_bottom": 16
       }
     },
     "intro": {
@@ -263,6 +472,7 @@
             "show_no_text_reviews": "no",
             "only_with_photos": false,
             "hide_reviews_with_keywords": "",
+            "show_only_reviews_with_keywords": "",
             "max_reviews": 100,
             "autoplay_style": "slide",
             "autoplay_speed": 5,
@@ -311,48 +521,22 @@
         "padding_top": 0,
         "padding_bottom": 0
       }
-    },
-    "team": {
-      "type": "image-with-text",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "text": "Meet The Team",
-            "size": "h2"
-          }
-        },
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Lizzie and Boban live with their family in Golspie. They have treasured every step of the journey in creating Dunrobin Gin, from the recipe work to the day the still arrived to opening the doors of the pop up shop at the castle. Creating something of their own that represents their home has been a delight. Their vision is to now move on to starting their own whisky.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "heading",
-        "text"
-      ],
-      "settings": {
-        "builtin_image": "team",
-        "image_ratio": "square",
-        "layout": "image_first",
-        "wide_media": false,
-        "color_scheme": "default",
-        "padding_top": 0,
-        "padding_bottom": 16
-      }
     }
   },
   "order": [
     "hero",
-    "dispatches",
+    "rich_text_y3N6na",
+    "image_banner_yMC4BH",
+    "image_with_text_9CraRc",
+    "image_with_text_cH4gbB",
+    "rich_text_JPJwxH",
+    "image_banner_ncngm3",
     "lookbook",
+    "dispatches",
     "intro",
     "pair",
     "rich_text_R8cam8",
     "serve",
-    "1786549912a9f82cd7",
-    "team"
+    "1786549912a9f82cd7"
   ]
 }
