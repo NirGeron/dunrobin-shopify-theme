@@ -162,7 +162,7 @@
           "type": "column",
           "settings": {
             "number": "02",
-            "heading": "The palate",
+            "heading": "The Palate",
             "text": "<p>Describe the taste in a sentence or two.</p>",
             "link_label": "",
             "link": ""
@@ -207,20 +207,20 @@
         "eyebrow_jmkkLJ": {
           "type": "eyebrow",
           "settings": {
-            "text": "Inspired by Dunrobin"
+            "text": "Highland Gin Gifts"
           }
         },
         "heading_UV7kV4": {
           "type": "heading",
           "settings": {
-            "text": "Our New Bottle Design",
+            "text": "Dunrobin Gin Gifts & Gift Sets",
             "size": "h2"
           }
         },
         "text_xDaF6Q": {
           "type": "text",
           "settings": {
-            "text": "<p>Every element of our newly designed Dunrobin Gin bottle tells part of the story of the landscape and heritage that inspires Dunrobin Highland Distillery.</p><p>Working closely with internationally renowned Italian designer Luca Nichetto, founder of&nbsp;<a href=\"https://www.nichetto.com\" target=\"_blank\" title=\"https://www.nichetto.com\">NICHETTO®</a>, every aspect of Dunrobin Highland Distillery's visual identity, from our logo and bottle design to our premium gift packaging, has been carefully developed to bring the Dunrobin story to life through thoughtful, distinctive design.</p><p>The bottle's curved shape reflects the rolling hills of Sutherland that frame Dunrobin Castle, where the fresh spring water used in our spirits is sourced.</p><p>A flowing line represents the beautiful Highland coastline, stretching towards the horizon and reflecting the sea that has shaped this corner of Scotland for generations.</p><p>Our new premium bottle design places the Dunrobin Highland Distillery pictogram at its heart, wrapping continuously around the entire bottle and extending across our newly designed gift packaging.</p><p>Its scale and prominence reflect the grandeur and presence of Dunrobin Castle, while the continuous 360-degree design represents a story that never truly ends, paying tribute to the generations of history and heritage behind Dunrobin.</p>"
+            "text": "<p><strong>A new way to experience Dunrobin: a collection inspired by the landscape, heritage and stories of the North Highlands.</strong>&nbsp;</p><p>Gifting has been at the heart of our newly designed Dunrobin Highland Distillery collection.&nbsp;</p><p>From our 20cl and 70cl bottles, presented in premium gift tubes, to our new gin and chocolate gift sets, each product offers a different way to discover, enjoy and share a taste of Dunrobin.</p><p>Our collection also includes locally handmade chocolates, created in collaboration with Highland Whisky Chocolates in Golspie, bringing together two Highland producers with a shared appreciation for quality and craftsmanship.&nbsp;</p><p><strong>Dunrobin Gin 20cl Gift Set</strong></p><p>A little taste of Dunrobin, beautifully presented.</p><p>Our 20cl gift set brings together a bottle of Dunrobin Gin and a box of locally handmade Highland Whisky Chocolates, created using Dunrobin Gin.</p><p>Presented together in our newly designed premium gift packaging, this smaller gift set is an ideal introduction to Dunrobin Gin, or a thoughtful gift inspired by the Scottish Highlands.</p><p><strong>Dunrobin Gin 70cl Gift Set</strong></p><p>A premium Scottish gin gift inspired by the North Highlands.&nbsp;</p><p>Our 70cl gift set pairs a full-sized bottle of Dunrobin Gin with a box of locally handmade Highland Whisky Chocolates, crafted using Dunrobin Gin.</p><p>Both are presented in our distinctive new gift packaging, bringing together the flavours, craftsmanship and heritage of Dunrobin in one beautifully presented collection.</p><p><strong>Dunrobin Gin Highland Whisky Chocolates</strong></p><p>Dunrobin Gin, reimagined in chocolate.</p><p>Created in collaboration with award-winning chocolatiers Highland Whisky Chocolates, these indulgent chocolates are handmade in Golspie, just a mile from Dunrobin Castle along the North Coast 500.</p><p>Made using Dunrobin Gin, each chocolate is carefully crafted by hand, bringing together local expertise and the distinctive flavours of our Highland spirit.&nbsp;</p><p>A little taste of Dunrobin, made with care in the heart of Sutherland.</p>"
           }
         }
       },
@@ -231,12 +231,124 @@
       ],
       "name": "Image with text",
       "settings": {
-        "image": "shopify://shop_images/IMG_8110.jpg",
+        "image": "shopify://shop_images/IMG_8116.jpg",
         "builtin_image": "castle",
         "image_ratio": "portrait",
         "layout": "image_first",
         "wide_media": false,
         "color_scheme": "default",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
+    },
+    "rich_text_eicGFj": {
+      "type": "rich-text",
+      "blocks": {
+        "eyebrow_np9FJi": {
+          "type": "eyebrow",
+          "settings": {
+            "text": "How to enjoy Dunrobin Highland Gin"
+          }
+        },
+        "heading_dmPmpA": {
+          "type": "heading",
+          "settings": {
+            "text": "The Perfect Serve",
+            "size": "h1"
+          }
+        },
+        "text_XbMLtd": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Dunrobin Gin can be enjoyed in a number of ways, allowing its distinctive botanicals and earthy, floral flavours to shine.</p><p>For a simple serve, enjoy Dunrobin Gin neat over ice, allowing the flavours to gradually open up.</p><p>For a classic gin and tonic, pour over plenty of ice, top with a premium tonic water and garnish with a fresh slice of lemon, gently squeezed before adding to the glass.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "eyebrow_np9FJi",
+        "heading_dmPmpA",
+        "text_XbMLtd"
+      ],
+      "name": "Rich text",
+      "settings": {
+        "color_scheme": "alt",
+        "alignment": "center",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
+    },
+    "image_with_text_gkWfB3": {
+      "type": "image-with-text",
+      "blocks": {
+        "eyebrow_yaD63J": {
+          "type": "eyebrow",
+          "settings": {
+            "text": "Inspired by Dunrobin"
+          }
+        },
+        "heading_LgjCzx": {
+          "type": "heading",
+          "settings": {
+            "text": "Our New Bottle Design",
+            "size": "h2"
+          }
+        },
+        "text_UcbGmi": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Every element of our newly designed Dunrobin Gin bottle tells part of the story of the landscape and heritage that inspires Dunrobin Highland Distillery.</p><p>Working closely with internationally renowned Italian designer Luca Nichetto, founder of&nbsp;<a href=\"https://www.nichetto.com\" target=\"_blank\" title=\"https://www.nichetto.com\">NICHETTO®</a>, every aspect of Dunrobin Highland Distillery's visual identity, from our logo and bottle design to our premium gift packaging, has been carefully developed to bring the Dunrobin story to life through thoughtful, distinctive design.</p><p>The bottle's curved shape reflects the rolling hills of Sutherland that frame Dunrobin Castle, where the fresh spring water used in our spirits is sourced.</p><p>A flowing line represents the beautiful Highland coastline, stretching towards the horizon and reflecting the sea that has shaped this corner of Scotland for generations.</p><p>Our new premium bottle design places the Dunrobin Highland Distillery pictogram at its heart, wrapping continuously around the entire bottle and extending across our newly designed gift packaging.</p><p>Its scale and prominence reflect the grandeur and presence of Dunrobin Castle, while the continuous 360-degree design represents a story that never truly ends, paying tribute to the generations of history and heritage behind Dunrobin.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "eyebrow_yaD63J",
+        "heading_LgjCzx",
+        "text_UcbGmi"
+      ],
+      "name": "Image with text",
+      "settings": {
+        "image": "shopify://shop_images/IMG_8099.jpg",
+        "builtin_image": "castle",
+        "image_ratio": "adapt",
+        "layout": "text_first",
+        "wide_media": false,
+        "color_scheme": "default",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
+    },
+    "rich_text_jJCKm6": {
+      "type": "rich-text",
+      "blocks": {
+        "eyebrow_bcpR6y": {
+          "type": "eyebrow",
+          "settings": {
+            "text": "FROM OUR DISTILLERY TO YOUR DOOR"
+          }
+        },
+        "heading_pjHE8t": {
+          "type": "heading",
+          "settings": {
+            "text": "UK Delivery Information",
+            "size": "h1"
+          }
+        },
+        "text_QHnTLX": {
+          "type": "text",
+          "settings": {
+            "text": "<p>All orders are dispatched using Royal Mail Tracked 48, with an adult signature required upon delivery.</p><p>At present, we deliver within the UK only. We hope to expand our delivery options in the future and will share any updates here and through our social media channels.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "eyebrow_bcpR6y",
+        "heading_pjHE8t",
+        "text_QHnTLX"
+      ],
+      "name": "Rich text",
+      "settings": {
+        "color_scheme": "alt",
+        "alignment": "center",
         "padding_top": 96,
         "padding_bottom": 96
       }
@@ -287,6 +399,9 @@
     "image_with_text_r4DrbB",
     "multicolumn_JM799k",
     "image_with_text_NednUU",
+    "rich_text_eicGFj",
+    "image_with_text_gkWfB3",
+    "rich_text_jJCKm6",
     "next-chapter"
   ]
 }
