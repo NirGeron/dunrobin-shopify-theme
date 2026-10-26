@@ -1,5 +1,7 @@
 {%- comment -%}
   Usage: {% render 'card-product', product: product, ratio: settings.card_image_ratio %}
+  Pass fit: 'contain' to show the whole picture inside the ratio box instead of
+  cropping it to fill, so every card is the same height.
 {%- endcomment -%}
 
 {%- liquid
@@ -17,7 +19,7 @@
   {%- else -%}
     <a
       href="{{ product.url }}"
-      class="card__media media media--{{ ratio }}"
+      class="card__media media media--{{ ratio }}{% if fit == 'contain' %} card__media--contain{% endif %}"
       aria-label="{{ product.title | escape }}"
       tabindex="-1"
     >
