@@ -1,0 +1,134 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "specs": {
+          "type": "specs",
+          "settings": {
+            "label_1": "ABV",
+            "value_1": "45%",
+            "label_2": "Gin",
+            "value_2": "20cl",
+            "label_3": "Chocolates",
+            "value_3": "9"
+          }
+        },
+        "description": {
+          "type": "description",
+          "settings": {}
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {}
+        },
+        "quantity": {
+          "type": "quantity",
+          "settings": {}
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": false
+          }
+        },
+        "tasting": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Botanicals",
+            "content": "<p>Juniper, Lemon, coriander, Clove, Blackcurrant, Angelica Root, Rose Scented Pelargonium Leaf</p>",
+            "page": "",
+            "open": false
+          }
+        },
+        "tasting_notes": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Tasting notes",
+            "content": "<p><strong>Flavours:</strong> earthy, spiced, piney</p><p><strong>Taste:</strong> a smooth sip, with a spiced-floral richness, lifted by notes of juniper and forest</p><p><strong>Finish:</strong> earthy and spicy, with an edge of bitterness</p>",
+            "page": "",
+            "open": false
+          }
+        },
+        "details": {
+          "type": "detail_rows",
+          "settings": {
+            "label_1": "Batch number",
+            "value_1": "22",
+            "label_2": "Units per bottle",
+            "value_2": "9 UK units",
+            "label_3": "",
+            "value_3": "",
+            "label_4": "",
+            "value_4": ""
+          }
+        }
+      },
+      "block_order": [
+        "title",
+        "price",
+        "specs",
+        "description",
+        "variant_picker",
+        "quantity",
+        "buy_buttons",
+        "tasting",
+        "tasting_notes",
+        "details"
+      ],
+      "settings": {
+        "media_layout": "gallery",
+        "media_ratio": "adapt",
+        "sticky_info": true,
+        "padding_top": 64,
+        "padding_bottom": 96
+      }
+    },
+    "faq": {
+      "type": "collapsible-content",
+      "blocks": {
+        "serve": {
+          "type": "item",
+          "settings": {
+            "heading": "How should I serve the gin?",
+            "content": "<p>Sip it over ice to open up the flavours. For a classic gin and tonic, use lots of ice, then squeeze a slice of lemon over the glass and drop it in.</p>",
+            "open": false
+          }
+        },
+        "delivery": {
+          "type": "item",
+          "settings": {
+            "heading": "How is it delivered?",
+            "content": "<p>Delivery is by tracked UK Royal Mail 48-hour service, and an adult must sign for the parcel on arrival. We do not deliver outside the UK at the moment. We will update this page and our social media as delivery options develop.</p>",
+            "open": false
+          }
+        }
+      },
+      "block_order": [
+        "serve",
+        "delivery"
+      ],
+      "settings": {
+        "eyebrow": "",
+        "heading": "Questions",
+        "heading_alignment": "center",
+        "narrow": true,
+        "color_scheme": "alt",
+        "padding_top": 64,
+        "padding_bottom": 80
+      }
+    }
+  },
+  "order": [
+    "main",
+    "faq"
+  ]
+}
