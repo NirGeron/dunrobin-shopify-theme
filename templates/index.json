@@ -104,6 +104,7 @@
         "text_p6VEtb",
         "button_daPBVF"
       ],
+      "disabled": true,
       "name": "Image with text",
       "settings": {
         "image": "shopify://shop_images/meet_the_team_23f1d41c-cb5f-4759-90fe-67f94894ebe2.jpg",
@@ -146,6 +147,7 @@
         "text_qp8cgC",
         "button_xhPeJ8"
       ],
+      "disabled": true,
       "name": "Image with text",
       "settings": {
         "image": "shopify://shop_images/IMG_6425.jpg",
