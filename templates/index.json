@@ -13,7 +13,7 @@
       "type": "hero-banner",
       "settings": {
         "image": "shopify://shop_images/Gemini_Generated_Image_yr689syr689syr68.jpg",
-        "height": "small",
+        "height": "full",
         "content_position": "center",
         "duotone": false,
         "duotone_opacity": 40,
