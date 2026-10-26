@@ -878,6 +878,12 @@ textarea.field__input {
 .hero--large { min-height: 78rem; }
 .hero--full { min-height: 100svh; }
 
+/* A picked photo shows whole at every width: the band takes the image's own
+   aspect ratio instead of a fixed height, so cover has nothing to crop. Any
+   content over it can still grow the band past the ratio. The doubled
+   class outranks the height presets, including the mobile overrides. */
+.hero.hero--photo { min-height: 0; aspect-ratio: var(--hero-ratio); }
+
 .hero__media {
   position: absolute;
   inset: 0;
@@ -3881,11 +3887,6 @@ body[tabindex='-1']:focus {
   .hero--medium { min-height: 49.6rem; }
   .hero--large { min-height: 62.4rem; }
   .hero--full { min-height: 80svh; }
-
-  /* A picked photo shows whole on a phone: the band takes the image's own
-     aspect ratio instead of a fixed height, so cover has nothing to crop.
-     Any content over it can still grow the band past the ratio. */
-  .hero--photo { min-height: 0; aspect-ratio: var(--hero-ratio); }
 
   /* Dispatches become a swipeable rail. The negative margin lets cards bleed
      to the screen edge while the first one still lines up with the page grid. */
