@@ -1355,8 +1355,17 @@ textarea.field__input {
   }
 }
 
+/* Product names run long ("Gin & Highland Whisky Chocolates Gift Set – 20cl"),
+   so the title sits a step below the page-heading size. */
 .product__title {
+  font-size: calc(3rem * var(--heading-scale));
   margin-bottom: 1.6rem;
+}
+
+@media screen and (min-width: 750px) {
+  .product__title {
+    font-size: calc(3.8rem * var(--heading-scale));
+  }
 }
 
 .product__price {
