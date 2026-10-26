@@ -3761,6 +3761,11 @@ body[tabindex='-1']:focus {
   .hero--large { min-height: 62.4rem; }
   .hero--full { min-height: 80svh; }
 
+  /* A picked photo shows whole on a phone: the band takes the image's own
+     aspect ratio instead of a fixed height, so cover has nothing to crop.
+     Any content over it can still grow the band past the ratio. */
+  .hero--photo { min-height: 0; aspect-ratio: var(--hero-ratio); }
+
   /* Dispatches become a swipeable rail. The negative margin lets cards bleed
      to the screen edge while the first one still lines up with the page grid. */
   .dispatch-grid--carousel {
