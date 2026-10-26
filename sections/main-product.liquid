@@ -1,5 +1,19 @@
 {%- liquid
   assign current_variant = product.selected_or_first_available_variant
+
+  comment
+    Bottle size taken from the product title (e.g. "... Gift Set – 70cl" gives
+    70cl), so spec values can use {size} and stay right for every size.
+  endcomment
+  assign product_size = ''
+  assign title_words = product.title | split: ' '
+  for word in title_words
+    assign word_end = word | slice: -2, 2
+    assign word_number = word | remove: 'cl' | plus: 0
+    if word_end == 'cl' and word_number > 0
+      assign product_size = word
+    endif
+  endfor
 -%}
 
 <div class="section-padding" style="--padding-top:{{ section.settings.padding_top }}px;--padding-bottom:{{ section.settings.padding_bottom }}px">
@@ -116,8 +130,9 @@
               <h1 class="product__title h1" {{ block.shopify_attributes }}>{{ product.title }}</h1>
 
             {%- when 'notice' -%}
-              {%- if block.settings.text != blank -%}
-                <p class="product__notice" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
+              {%- assign notice_text = product.metafields.custom.preorder_note.value | default: block.settings.text -%}
+              {%- if notice_text != blank -%}
+                <p class="product__notice" {{ block.shopify_attributes }}>{{ notice_text }}</p>
               {%- endif -%}
 
             {%- when 'vendor' -%}
@@ -133,26 +148,32 @@
                 {%- if block.settings.label_1 != blank -%}
                   <div class="spec-bar__item">
                     <span class="spec-bar__label">{{ block.settings.label_1 }}</span>
-                    <span class="spec-bar__value">{{ block.settings.value_1 }}</span>
+                    <span class="spec-bar__value">{{ block.settings.value_1 | replace: '{size}', product_size }}</span>
                   </div>
                 {%- endif -%}
                 {%- if block.settings.label_2 != blank -%}
                   <div class="spec-bar__item">
                     <span class="spec-bar__label">{{ block.settings.label_2 }}</span>
-                    <span class="spec-bar__value">{{ block.settings.value_2 }}</span>
+                    <span class="spec-bar__value">{{ block.settings.value_2 | replace: '{size}', product_size }}</span>
                   </div>
                 {%- endif -%}
                 {%- if block.settings.label_3 != blank -%}
                   <div class="spec-bar__item">
                     <span class="spec-bar__label">{{ block.settings.label_3 }}</span>
-                    <span class="spec-bar__value">{{ block.settings.value_3 }}</span>
+                    <span class="spec-bar__value">{{ block.settings.value_3 | replace: '{size}', product_size }}</span>
                   </div>
                 {%- endif -%}
               </div>
 
             {%- when 'description' -%}
+              {%- liquid
+                assign description_html = product.description
+                if block.settings.first_paragraph_only and description_html contains '</p>'
+                  assign description_html = description_html | split: '</p>' | first | append: '</p>'
+                endif
+              -%}
               <div class="product__description rte" {{ block.shopify_attributes }}>
-                {{ product.description }}
+                {{ description_html }}
               </div>
 
             {%- when 'text' -%}
@@ -291,8 +312,12 @@
                     <span class="accordion__icon"></span>
                   </summary>
                   <div class="accordion__content rte">
-                    {{ block.settings.content }}
-                    {%- if block.settings.page != blank -%}{{ block.settings.page.content }}{%- endif -%}
+                    {%- if block.settings.use_description -%}
+                      {{ product.description }}
+                    {%- else -%}
+                      {{ block.settings.content }}
+                      {%- if block.settings.page != blank -%}{{ block.settings.page.content }}{%- endif -%}
+                    {%- endif -%}
                   </div>
                 </details>
               </div>
@@ -443,11 +468,24 @@
           "type": "text",
           "id": "text",
           "label": "Text",
-          "default": "Pre-order: this item will be delivered on 1 December."
+          "default": "Pre-order: this item will be delivered on 1 December.",
+          "info": "Used when the product has no 'custom.preorder_note' metafield. Set that metafield on a product to give it its own note."
         }
       ]
     },
-    { "type": "description", "name": "Description", "limit": 1 },
+    {
+      "type": "description",
+      "name": "Description",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "first_paragraph_only",
+          "label": "Show only the first paragraph",
+          "default": false
+        }
+      ]
+    },
     {
       "type": "text",
       "name": "Custom text",
@@ -507,6 +545,12 @@
           "default": "<p>Juniper, lemon, coriander, clove, blackcurrant, angelica root and rose-scented pelargonium leaf.</p>"
         },
         { "type": "page", "id": "page", "label": "Or pull content from a page" },
+        {
+          "type": "checkbox",
+          "id": "use_description",
+          "label": "Show the product description instead",
+          "default": false
+        },
         { "type": "checkbox", "id": "open", "label": "Open by default", "default": false }
       ]
     },
