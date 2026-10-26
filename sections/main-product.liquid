@@ -151,8 +151,32 @@
               </div>
 
             {%- when 'description' -%}
-              <div class="product__description rte" {{ block.shopify_attributes }}>
-                {{ product.description }}
+              {%- liquid
+                assign description_id = 'ProductDescription-' | append: section.id
+                assign read_more_label = block.settings.read_more_label | default: 'Read more'
+                assign read_less_label = block.settings.read_less_label | default: 'Read less'
+              -%}
+              <div
+                class="product__description-wrap"
+                {% if block.settings.collapse %}
+                  data-read-more
+                  data-label-more="{{ read_more_label | escape }}"
+                  data-label-less="{{ read_less_label | escape }}"
+                {% endif %}
+                {{ block.shopify_attributes }}
+              >
+                <div class="product__description rte" id="{{ description_id }}">
+                  {{ product.description }}
+                </div>
+                {%- if block.settings.collapse -%}
+                  <button
+                    type="button"
+                    class="read-more__toggle"
+                    aria-expanded="false"
+                    aria-controls="{{ description_id }}"
+                    hidden
+                  >{{ read_more_label }}</button>
+                {%- endif -%}
               </div>
 
             {%- when 'text' -%}
@@ -447,7 +471,21 @@
         }
       ]
     },
-    { "type": "description", "name": "Description", "limit": 1 },
+    {
+      "type": "description",
+      "name": "Description",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "collapse",
+          "label": "Collapse long descriptions behind a Read more button",
+          "default": true
+        },
+        { "type": "text", "id": "read_more_label", "label": "Read more label", "default": "Read more" },
+        { "type": "text", "id": "read_less_label", "label": "Read less label", "default": "Read less" }
+      ]
+    },
     {
       "type": "text",
       "name": "Custom text",

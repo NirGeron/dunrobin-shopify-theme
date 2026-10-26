@@ -1387,10 +1387,44 @@ textarea.field__input {
   margin-bottom: 2.4rem;
 }
 
-.product__description {
+.product__description-wrap {
   margin: 2.4rem 0;
+}
+
+.product__description {
   color: var(--text-muted);
 }
+
+.product__description-wrap:not([data-read-more]) .product__description {
+  margin: 0;
+}
+
+/* Long descriptions fold to a few lines with a fade, and a Read more button
+   opens them. global.js adds .is-collapsed only when the text is taller than
+   the fold, so short copy, and visitors without scripting, see it in full. */
+.product__description.is-collapsed {
+  max-height: 15rem;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent);
+  mask-image: linear-gradient(to bottom, #000 55%, transparent);
+}
+
+.read-more__toggle {
+  margin-top: 1.2rem;
+  padding: 0 0 0.4rem;
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: 1.2rem;
+  font-weight: 500;
+  letter-spacing: var(--label-tracking);
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.read-more__toggle[hidden] { display: none; }
 
 .product-form__buttons {
   display: flex;

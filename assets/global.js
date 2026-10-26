@@ -16,6 +16,36 @@
   }
 
   /* ---------------------------------------------------------------------
+     Read more — folds a long product description behind a toggle
+     --------------------------------------------------------------------- */
+  var READ_MORE_FOLD = 150; // px, keep in step with .is-collapsed max-height
+
+  function initReadMore() {
+    document.querySelectorAll('[data-read-more]:not([data-read-more-ready])').forEach(function (wrap) {
+      var body = wrap.querySelector('.product__description');
+      var btn = wrap.querySelector('.read-more__toggle');
+      if (!body || !btn) return;
+      wrap.setAttribute('data-read-more-ready', '');
+
+      // Leave a little slack so a description that only just overflows the
+      // fold isn't hidden behind a button for the sake of a line or two.
+      if (body.scrollHeight <= READ_MORE_FOLD + 48) return;
+
+      function set(open) {
+        body.classList.toggle('is-collapsed', !open);
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        btn.textContent = open ? wrap.getAttribute('data-label-less') : wrap.getAttribute('data-label-more');
+      }
+
+      btn.hidden = false;
+      set(false);
+      btn.addEventListener('click', function () {
+        set(btn.getAttribute('aria-expanded') !== 'true');
+      });
+    });
+  }
+
+  /* ---------------------------------------------------------------------
      Scroll reveal
      --------------------------------------------------------------------- */
   function initReveal() {
@@ -905,6 +935,7 @@
     initArticleBody();
     initStickyAtc();
     initBackToTop();
+    initReadMore();
   }
 
   if (document.readyState === 'loading') {
@@ -919,5 +950,6 @@
     initArticleBody();
     initVariantPicker();
     initStickyAtc();
+    initReadMore();
   });
 })();
