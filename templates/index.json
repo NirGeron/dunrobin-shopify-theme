@@ -35,13 +35,13 @@
           "type": "heading",
           "settings": {
             "text": "A Highland Story, Distilled.",
-            "size": "h1"
+            "size": "h2"
           }
         },
         "text_Wp8aAB": {
           "type": "text",
           "settings": {
-            "text": "<p>Inspired by the landscape, heritage and spirit of Sutherland.</p>"
+            "text": "<h5>Inspired by the landscape, heritage and spirit of Sutherland.</h5>"
           }
         },
         "button_gYyLG3": {
@@ -173,13 +173,13 @@
           "type": "heading",
           "settings": {
             "text": "Discover Dunrobin Gin at Dunrobin Castle",
-            "size": "h1"
+            "size": "h2"
           }
         },
         "text_HJJh4L": {
           "type": "text",
           "settings": {
-            "text": "<p>Whether you're exploring the North Coast 500, visiting Dunrobin Castle or simply discovering the North Highlands, you're welcome to experience Dunrobin Gin in person at The Wee Gin Shop.</p><p>Situated at Dunrobin Castle in Golspie, The Wee Gin Shop offers the opportunity to enjoy a refreshing gin and tonic, discover our Highland-inspired cocktails or pick up a bottle to take home.</p><p>Our collection includes Dunrobin Gin in 20cl and 70cl bottles, premium Scottish gin gift sets and locally handmade gin chocolates, created in collaboration with Highland Whisky Chocolates in Golspie.</p><p>And if you can't visit us in person, you can still enjoy a little taste of Sutherland, with our full collection available to purchase through our online shop for delivery throughout the UK.</p>"
+            "text": "<h5>Whether you're exploring the North Coast 500, visiting Dunrobin Castle or simply discovering the North Highlands, you're welcome to experience Dunrobin Gin in person at The Wee Gin Shop.</h5><h5>Situated at Dunrobin Castle in Golspie, The Wee Gin Shop offers the opportunity to enjoy a refreshing gin and tonic, discover our Highland-inspired cocktails or pick up a bottle to take home.</h5><h5>Our collection includes Dunrobin Gin in 20cl and 70cl bottles, premium Scottish gin gift sets and locally handmade gin chocolates, created in collaboration with Highland Whisky Chocolates in Golspie.</h5><h5>And if you can't visit us in person, you can still enjoy a little taste of Sutherland, with our full collection available to purchase through our online shop for delivery throughout the UK.</h5>"
           }
         },
         "button_RWQiQ7": {
@@ -276,7 +276,7 @@
         "heading": "",
         "text": "",
         "columns": 3,
-        "grid_width": 780,
+        "grid_width": 700,
         "color_scheme": "night",
         "accent_color": "#c9a96a",
         "button_label": "",
