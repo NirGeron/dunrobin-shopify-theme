@@ -1368,6 +1368,13 @@ textarea.field__input {
   }
 }
 
+/* Sits under the title; same red as the form error messages. */
+.product__notice {
+  margin: -0.4rem 0 1.6rem;
+  color: #b3261e;
+  font-weight: 600;
+}
+
 .product__price {
   font-family: var(--font-heading);
   font-size: calc(2.6rem * var(--heading-scale));
