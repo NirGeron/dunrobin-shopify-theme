@@ -12,7 +12,7 @@
     "hero": {
       "type": "hero-banner",
       "settings": {
-        "image": "shopify://shop_images/image_5_d0c27500-dac1-4714-9ded-0de63e3bf487.png",
+        "image": "shopify://shop_images/Gemini_Generated_Image_yr689syr689syr68.jpg",
         "height": "small",
         "content_position": "center",
         "duotone": false,
@@ -63,22 +63,8 @@
       "settings": {
         "color_scheme": "default",
         "alignment": "center",
-        "padding_top": 96,
-        "padding_bottom": 96
-      }
-    },
-    "image_banner_yMC4BH": {
-      "type": "image-banner",
-      "name": "Image banner",
-      "settings": {
-        "image": "shopify://shop_images/JM3A0361.jpg",
-        "height": "medium",
-        "trim_top": 5,
-        "trim_bottom": 36,
-        "fit_mobile": true,
-        "caption": "",
-        "show_seal": false,
-        "seal_size": 30
+        "padding_top": 40,
+        "padding_bottom": 40
       }
     },
     "image_with_text_9CraRc": {
@@ -122,7 +108,7 @@
       "settings": {
         "image": "shopify://shop_images/meet_the_team_23f1d41c-cb5f-4759-90fe-67f94894ebe2.jpg",
         "builtin_image": "castle",
-        "image_ratio": "portrait",
+        "image_ratio": "landscape",
         "layout": "image_first",
         "wide_media": false,
         "color_scheme": "default",
@@ -168,7 +154,7 @@
         "layout": "text_first",
         "wide_media": false,
         "color_scheme": "default",
-        "padding_top": 96,
+        "padding_top": 24,
         "padding_bottom": 96
       }
     },
@@ -213,22 +199,8 @@
       "settings": {
         "color_scheme": "alt",
         "alignment": "center",
-        "padding_top": 96,
-        "padding_bottom": 96
-      }
-    },
-    "image_banner_ncngm3": {
-      "type": "image-banner",
-      "name": "Image banner",
-      "settings": {
-        "image": "shopify://shop_images/2018-06-12_10.34.47_3.jpg",
-        "height": "medium",
-        "trim_top": 5,
-        "trim_bottom": 36,
-        "fit_mobile": true,
-        "caption": "",
-        "show_seal": false,
-        "seal_size": 30
+        "padding_top": 40,
+        "padding_bottom": 40
       }
     },
     "lookbook": {
@@ -526,11 +498,9 @@
   "order": [
     "hero",
     "rich_text_y3N6na",
-    "image_banner_yMC4BH",
     "image_with_text_9CraRc",
     "image_with_text_cH4gbB",
     "rich_text_JPJwxH",
-    "image_banner_ncngm3",
     "lookbook",
     "dispatches",
     "intro",
