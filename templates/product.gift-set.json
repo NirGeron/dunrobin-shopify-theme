@@ -7,6 +7,12 @@
           "type": "title",
           "settings": {}
         },
+        "preorder": {
+          "type": "notice",
+          "settings": {
+            "text": "Pre-order: this gift set will be delivered on 1 December."
+          }
+        },
         "price": {
           "type": "price",
           "settings": {}
@@ -85,6 +91,7 @@
       },
       "block_order": [
         "title",
+        "preorder",
         "price",
         "specs",
         "summary",

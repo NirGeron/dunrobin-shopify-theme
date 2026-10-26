@@ -115,6 +115,11 @@
             {%- when 'title' -%}
               <h1 class="product__title h1" {{ block.shopify_attributes }}>{{ product.title }}</h1>
 
+            {%- when 'notice' -%}
+              {%- if block.settings.text != blank -%}
+                <p class="product__notice" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
+              {%- endif -%}
+
             {%- when 'vendor' -%}
               <p class="card__vendor" {{ block.shopify_attributes }}>{{ product.vendor }}</p>
 
@@ -428,6 +433,18 @@
         { "type": "text", "id": "value_2", "label": "Value 2", "default": "70cl" },
         { "type": "text", "id": "label_3", "label": "Label 3", "default": "Origin" },
         { "type": "text", "id": "value_3", "label": "Value 3", "default": "Golspie" }
+      ]
+    },
+    {
+      "type": "notice",
+      "name": "Notice (red)",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Pre-order: this item will be delivered on 1 December."
+        }
       ]
     },
     { "type": "description", "name": "Description", "limit": 1 },
