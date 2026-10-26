@@ -22,9 +22,11 @@
             "value_3": "9"
           }
         },
-        "description": {
-          "type": "description",
-          "settings": {}
+        "summary": {
+          "type": "text",
+          "settings": {
+            "text": "<p>A little taste of the Scottish Highlands: Dunrobin Gin from Golspie, paired with nine handcrafted gin chocolates made locally by Highland Whisky Chocolates.</p><p><strong>In the box</strong></p><ul><li>1 × 20cl Dunrobin Gin with luxury gift tube</li><li>1 × box of 9 handcrafted Highland Whisky Chocolates</li></ul>"
+          }
         },
         "variant_picker": {
           "type": "variant_picker",
@@ -38,6 +40,15 @@
           "type": "buy_buttons",
           "settings": {
             "show_dynamic_checkout": false
+          }
+        },
+        "chocolates": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Chocolate flavours & allergens",
+            "content": "<p>Dark Gin &amp; Mango, Milk Gin &amp; Apple, Milk Gin &amp; Lemon, White Chocolate Mojito Gin, White Gin &amp; Jellybean, Dark Gin &amp; Raspberry.</p><p><strong>Ingredients:</strong> alcohol, couverture MILK chocolate (minimum 33% cocoa mass), dark chocolate (minimum 56% cocoa), cocoa mass, emulsifier (SOYA lecithin (E322)), vanilla, sugar, whole MILK powder, cocoa butter (32%), invert sugar.</p><p><strong>Allergens:</strong> contains MILK and SOYA. Made in an environment where nuts may be in use.</p>",
+            "page": "",
+            "open": false
           }
         },
         "tasting": {
@@ -76,10 +87,11 @@
         "title",
         "price",
         "specs",
-        "description",
+        "summary",
         "variant_picker",
         "quantity",
         "buy_buttons",
+        "chocolates",
         "tasting",
         "tasting_notes",
         "details"
