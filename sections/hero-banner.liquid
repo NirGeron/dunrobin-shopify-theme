@@ -3,8 +3,8 @@
   in assets/base.css so the castle's spires stay in frame at every width.
 {%- endcomment -%}
 <div
-  class="hero hero--{{ section.settings.height }} hero--{{ section.settings.content_position }}{% if section.settings.image == blank %} hero--castle{% endif %}"
-  style="--padding-top:{{ section.settings.padding_top }}px;--padding-bottom:{{ section.settings.padding_bottom }}px"
+  class="hero hero--{{ section.settings.height }} hero--{{ section.settings.content_position }}{% if section.settings.image == blank %} hero--castle{% else %} hero--photo{% endif %}"
+  style="{% if section.settings.image != blank %}--hero-ratio:{{ section.settings.image.aspect_ratio }};{% endif %}--padding-top:{{ section.settings.padding_top }}px;--padding-bottom:{{ section.settings.padding_bottom }}px"
 >
   <div class="hero__media">
     {%- if section.settings.image != blank -%}
