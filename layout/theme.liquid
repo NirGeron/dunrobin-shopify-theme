@@ -225,6 +225,10 @@
       {% render 'age-gate' %}
     {%- endif -%}
 
+    {%- if settings.xmas_popup_enabled -%}
+      {% render 'christmas-popup' %}
+    {%- endif -%}
+
     {% render 'whatsapp-button' %}
     {% render 'shop-now-button' %}
     {% render 'back-to-top' %}

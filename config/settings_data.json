@@ -50,6 +50,12 @@
     "whatsapp_phone": "+447799887770",
     "age_gate_note": "",
     "age_gate_frequency": "session",
+    "xmas_popup_enabled": true,
+    "xmas_popup_alt": "Christmas gifts from the Highlands: Dunrobin Gin and handmade chocolates",
+    "xmas_popup_cta": "Shop the gifts",
+    "xmas_popup_link": "/collections/all",
+    "xmas_popup_frequency": "session",
+    "xmas_popup_delay": 1,
     "content_for_index": [],
     "blocks": {
       "6159598353363395418": {

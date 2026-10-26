@@ -2645,6 +2645,111 @@ body[tabindex='-1']:focus {
 }
 
 /* --------------------------------------------------------------------------
+   Christmas popup — the gift artwork over a navy veil, after the age gate
+   -------------------------------------------------------------------------- */
+
+/* Under the age gate (100) so the two can never stack, over everything else. */
+.xmas-popup {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.xmas-popup.is-open {
+  display: flex;
+  animation: xmas-popup-fade 0.4s ease both;
+}
+
+.xmas-popup__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(16, 28, 80, 0.72);
+}
+
+/* The artwork is 3:4 and the button row adds about 9.4rem, so the panel width
+   is capped by the height left on a short screen. That keeps the whole picture
+   and the button in view instead of letting either run off the bottom. */
+.xmas-popup__panel {
+  position: relative;
+  width: min(100%, 46rem, calc((100vh - 15rem) * 0.75));
+  width: min(100%, 46rem, calc((100svh - 15rem) * 0.75));
+  background: var(--bg);
+  box-shadow: 0 3rem 8rem rgba(0, 0, 0, 0.35);
+  animation: xmas-popup-rise 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.xmas-popup__image-link {
+  display: block;
+}
+
+.xmas-popup__image {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 4;
+}
+
+.xmas-popup__footer {
+  padding: 1.6rem;
+}
+
+.xmas-popup__cta {
+  display: flex;
+  width: 100%;
+}
+
+/* White with a navy rule, so it reads over both the navy and white tiles of
+   the pattern strip it sits on. */
+.xmas-popup__close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  padding: 0;
+  border: 1px solid var(--brand);
+  border-radius: var(--button-radius);
+  background: #fff;
+  color: var(--brand);
+  cursor: pointer;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.xmas-popup__close:hover {
+  background: var(--brand);
+  color: #fff;
+}
+
+.xmas-popup__close svg {
+  width: 2.2rem;
+  height: 2.2rem;
+}
+
+@keyframes xmas-popup-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes xmas-popup-rise {
+  from { transform: translateY(1.6rem); }
+  to { transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .xmas-popup.is-open,
+  .xmas-popup__panel {
+    animation: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
    Blog
    -------------------------------------------------------------------------- */
 

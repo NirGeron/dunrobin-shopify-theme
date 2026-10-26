@@ -1,0 +1,62 @@
+{%- comment -%}
+  Christmas gift popup, shown once a visitor has got past the age gate.
+
+  The artwork is a finished 3:4 picture (1200 x 1600) with its headline baked
+  in, so the popup is just that picture, a close button and one shop button.
+  global.js opens it, keeps it from returning within the chosen window and
+  never shows it in the theme editor. Add ?xmas_popup=1 to any URL to see it
+  again without clearing storage.
+{%- endcomment -%}
+
+{%- liquid
+  assign popup_image = settings.xmas_popup_image
+  assign popup_link = settings.xmas_popup_link | default: routes.all_products_collection_url
+  assign popup_alt = settings.xmas_popup_alt | default: shop.name
+-%}
+
+<div
+  class="xmas-popup"
+  id="XmasPopup"
+  role="dialog"
+  aria-modal="true"
+  aria-label="{{ popup_alt | escape }}"
+  data-frequency="{{ settings.xmas_popup_frequency | default: 'session' }}"
+  data-delay="{{ settings.xmas_popup_delay | default: 1 }}"
+  hidden
+>
+  <div class="xmas-popup__overlay" data-xmas-popup-close></div>
+
+  <div class="xmas-popup__panel">
+    <button type="button" class="xmas-popup__close" data-xmas-popup-close aria-label="{{ 'accessibility.close' | t }}">
+      {% render 'icon', name: 'close' %}
+    </button>
+
+    <a class="xmas-popup__image-link" href="{{ popup_link }}" tabindex="-1">
+      {%- if popup_image != blank -%}
+        <img
+          class="xmas-popup__image"
+          src="{{ popup_image | image_url: width: 1200 }}"
+          srcset="{{ popup_image | image_url: width: 600 }} 600w, {{ popup_image | image_url: width: 1200 }} 1200w"
+          sizes="(min-width: 750px) 460px, 90vw"
+          alt="{{ popup_alt | escape }}"
+          width="{{ popup_image.width }}"
+          height="{{ popup_image.height }}"
+        >
+      {%- else -%}
+        <img
+          class="xmas-popup__image"
+          src="{{ 'christmas-popup.jpg' | asset_url }}"
+          alt="{{ popup_alt | escape }}"
+          width="1200"
+          height="1600"
+        >
+      {%- endif -%}
+    </a>
+
+    <div class="xmas-popup__footer">
+      <a class="button xmas-popup__cta" href="{{ popup_link }}">
+        {{ settings.xmas_popup_cta | default: 'Shop the gifts' }}
+      </a>
+    </div>
+  </div>
+</div>

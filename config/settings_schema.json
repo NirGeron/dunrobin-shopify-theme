@@ -370,6 +370,66 @@
     ]
   },
   {
+    "name": "Christmas popup",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "A picture that opens over the site after the age gate. Each visitor sees it once, then it stays away for the time chosen below. Turn it off when the season ends."
+      },
+      {
+        "type": "checkbox",
+        "id": "xmas_popup_enabled",
+        "label": "Show the Christmas popup",
+        "default": true
+      },
+      {
+        "type": "image_picker",
+        "id": "xmas_popup_image",
+        "label": "Image",
+        "info": "Portrait, 3:4 (1200 x 1600 px works well). Defaults to the built-in Christmas gifts artwork."
+      },
+      {
+        "type": "text",
+        "id": "xmas_popup_alt",
+        "label": "Image description",
+        "default": "Christmas gifts from the Highlands: Dunrobin Gin and handmade chocolates",
+        "info": "Read aloud by screen readers. Match any words on the picture."
+      },
+      {
+        "type": "text",
+        "id": "xmas_popup_cta",
+        "label": "Button label",
+        "default": "Shop the gifts"
+      },
+      {
+        "type": "url",
+        "id": "xmas_popup_link",
+        "label": "Button and picture link",
+        "default": "/collections/all"
+      },
+      {
+        "type": "select",
+        "id": "xmas_popup_frequency",
+        "label": "How often to show",
+        "options": [
+          { "value": "session", "label": "Every new browsing session" },
+          { "value": "device", "label": "Once per device" }
+        ],
+        "default": "session"
+      },
+      {
+        "type": "range",
+        "id": "xmas_popup_delay",
+        "label": "Wait before opening",
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "unit": "s",
+        "default": 1
+      }
+    ]
+  },
+  {
     "name": "Social media",
     "settings": [
       { "type": "text", "id": "social_instagram_link", "label": "Instagram" },

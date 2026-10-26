@@ -232,6 +232,118 @@
   }
 
   /* ---------------------------------------------------------------------
+     Christmas popup
+     --------------------------------------------------------------------- */
+  function initXmasPopup() {
+    var popup = document.getElementById('XmasPopup');
+    if (!popup) return;
+
+    // ?xmas_popup=1 shows it again for checking, ignoring the "already seen" flag.
+    var forced = /[?&]xmas_popup=1(&|$)/.test(window.location.search);
+
+    // Never block the theme editor preview.
+    if (window.Shopify && window.Shopify.designMode && !forced) return;
+
+    var KEY = 'dunrobin:xmas-popup-seen';
+    var perSession = popup.getAttribute('data-frequency') !== 'device';
+
+    function store() {
+      try {
+        return perSession ? window.sessionStorage : window.localStorage;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    try {
+      var s = store();
+      if (!forced && s && s.getItem(KEY) === 'true') return;
+    } catch (e) {
+      /* storage unavailable — the popup simply shows each visit */
+    }
+
+    var lastFocus = null;
+
+    function focusables() {
+      return Array.prototype.slice.call(popup.querySelectorAll('a[href], button'))
+        .filter(function (el) {
+          return el.tabIndex >= 0;
+        });
+    }
+
+    function close() {
+      popup.classList.remove('is-open');
+      popup.hidden = true;
+      document.body.style.overflow = '';
+      document.removeEventListener('keydown', onKey);
+      if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+    }
+
+    function onKey(e) {
+      if (e.key === 'Escape') {
+        close();
+        return;
+      }
+      if (e.key !== 'Tab') return;
+
+      // Keep Tab inside the dialog while it is open.
+      var items = focusables();
+      if (!items.length) return;
+      var first = items[0];
+      var last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+
+    function open() {
+      // A visitor who has already followed a link away from the age gate, or
+      // opened the cart, should not have a second panel land on top of it.
+      if (popup.classList.contains('is-open')) return;
+      var gate = document.getElementById('AgeGate');
+      if (gate && gate.classList.contains('is-open')) return;
+
+      try {
+        var s = store();
+        if (s) s.setItem(KEY, 'true');
+      } catch (e) {
+        /* private browsing — the popup simply shows again */
+      }
+
+      lastFocus = document.activeElement;
+      popup.hidden = false;
+      popup.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+      document.addEventListener('keydown', onKey);
+
+      var closeButton = popup.querySelector('.xmas-popup__close');
+      if (closeButton) closeButton.focus({ preventScroll: true });
+    }
+
+    on('[data-xmas-popup-close]', 'click', close, popup);
+
+    var delay = parseFloat(popup.getAttribute('data-delay'));
+    if (isNaN(delay) || delay < 0) delay = 1;
+
+    function schedule() {
+      setTimeout(open, delay * 1000);
+    }
+
+    // First visit: the age gate comes first, and the popup follows once the
+    // visitor confirms. Declining leaves the site, so it never shows.
+    var gate = document.getElementById('AgeGate');
+    if (gate && gate.classList.contains('is-open')) {
+      on('[data-age-gate-accept]', 'click', schedule, gate);
+    } else {
+      schedule();
+    }
+  }
+
+  /* ---------------------------------------------------------------------
      Cart
      --------------------------------------------------------------------- */
   var cartDrawer = document.getElementById('CartDrawer');
@@ -783,6 +895,7 @@
     initGallery();
     initMobileNav();
     initAgeGate();
+    initXmasPopup();
     initCart();
     initProductForm();
     initVariantPicker();
