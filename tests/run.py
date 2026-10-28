@@ -576,9 +576,9 @@ def test_structure():
     check('shop now: rendered from the layout, after whatsapp and before back to top',
           0 <= wa_at < shop_at < btt_at,
           f'whatsapp {wa_at}, shop now {shop_at}, back-to-top {btt_at}')
-    check('shop now: links to the Dunrobin Gin product',
-          "all_products['dunrobin-gin']" in shop_code and
-          "'/products/dunrobin-gin'" in shop_code)
+    check('shop now: links to the same page as the Christmas popup',
+          'settings.xmas_popup_link' in shop_code and
+          'routes.all_products_collection_url' in shop_code)
     check('shop now: has a visible label from the locale file',
           "'general.shop_now.label' | t" in shop_code and
           bool(load_json(rel('locales', 'en.default.json'))['general'].get('shop_now', {}).get('label')))

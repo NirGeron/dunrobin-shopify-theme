@@ -1,5 +1,6 @@
 {%- comment -%}
-  Floating "Shop now" button, bottom right of every page.
+  Floating "Shop now" button, bottom right of every page. It goes to the same
+  page as the Christmas popup (the all-products page unless that is changed).
 
   It takes the corner the WhatsApp button used, and only while that button
   is hidden. The two share one spot: turning WhatsApp back on hands the
@@ -23,11 +24,7 @@
     assign whatsapp_showing = true
   endif
 
-  assign shop_href = '/products/dunrobin-gin'
-  assign shop_product = all_products['dunrobin-gin']
-  if shop_product != empty and shop_product.url != blank
-    assign shop_href = shop_product.url
-  endif
+  assign shop_href = settings.xmas_popup_link | default: routes.all_products_collection_url
 -%}
 
 {%- unless template.name == 'cart' or whatsapp_showing -%}
