@@ -1137,6 +1137,10 @@ textarea.field__input {
   width: 100%;
 }
 
+.card__media--contain { background: transparent; }
+
+.card__media--contain img { object-fit: contain; }
+
 .card__media img {
   transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
