@@ -211,7 +211,7 @@
         "image_QMnjme": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/WhatsApp_Image_2026-10-11_at_18.24.23.jpg",
+            "image": "shopify://shop_images/IMG_8109.jpg",
             "builtin": "none",
             "alt": "RAISE ONE",
             "caption": "Slàinte mhath"
@@ -220,7 +220,7 @@
         "martini": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/WhatsApp_Image_2026-10-11_at_18.11.16.jpg",
+            "image": "shopify://shop_images/IMG_8192.jpg",
             "builtin": "martini",
             "alt": "",
             "caption": "Raise one"
@@ -229,7 +229,7 @@
         "navy_table": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/Dunrobin_Distillery_Can_you_think_of_a_better_way_to_unwind_A_quiet_corner_a_captivating_book_and_a_finely_crafted_local_gi.png",
+            "image": "shopify://shop_images/IMG_8137.jpg",
             "builtin": "navy_table",
             "alt": "",
             "caption": "Citrus and light"
@@ -238,7 +238,7 @@
         "spruce": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/WhatsApp_Image_2026-10-11_at_18.09.01.jpg",
+            "image": "shopify://shop_images/IMG_8211.jpg",
             "builtin": "spruce",
             "alt": "",
             "caption": "Pine and ice"
@@ -247,7 +247,7 @@
         "velvet_serve": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/WhatsApp_Image_2026-10-11_at_18.10.53.jpg",
+            "image": "shopify://shop_images/IMG_8205.jpg",
             "builtin": "velvet_serve",
             "alt": "",
             "caption": "Pour slowly"
@@ -256,7 +256,7 @@
         "highland": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/Gemini_Generated_Image_wjkiuawjkiuawjki.jpg",
+            "image": "shopify://shop_images/IMG_8175.jpg",
             "builtin": "highland",
             "alt": "",
             "caption": "The Highlands"
@@ -462,6 +462,7 @@
             "reviewer_name_format": "none",
             "padding_top": 20,
             "padding_bottom": 20,
+            "max_width": 1400,
             "cards_per_row_desktop": "0",
             "card_radius": 20,
             "background_color": "#f3f3f3",
