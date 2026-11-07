@@ -15,6 +15,7 @@
     Product     BreadcrumbList. The Product markup itself is output by
                 sections/main-product.liquid via the structured_data filter.
     Collection  BreadcrumbList
+    Visit page  Store (The Wee Gin Shop: address, phone, seasonal hours)
     Article     Article + BreadcrumbList
 
   Every value goes through the json filter so a quote or ampersand in a
@@ -110,6 +111,57 @@
           "name": {{ shop.name | json }},
           "url": {{ shop.url | json }},
           "publisher": { "@id": {{ shop.url | append: '/#organization' | json }} }
+        }
+      ]
+    }
+  </script>
+{%- endif -%}
+
+{%- comment -%}
+  The Wee Gin Shop is a physical shop on the North Coast 500, so the Visit page
+  also describes it as a Store. Hours follow the seasons on that page (April to
+  September 10am-5pm, October 10:30am-4:30pm, closed November to March); the
+  validFrom/validThrough dates use the current year, so a specification simply
+  lapses outside its season instead of advertising hours that are not true.
+  Update these if the hours on the Visit page change.
+{%- endcomment -%}
+{%- if template.name == 'page' and page.template_suffix == 'visit' -%}
+  {%- assign sd_year = 'now' | date: '%Y' -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Store",
+      "@id": {{ canonical_url | append: '#store' | json }},
+      "name": "The Wee Gin Shop",
+      "description": "The Wee Gin Shop at Dunrobin Castle in Golspie, a North Coast 500 stop selling Dunrobin Gin, Scottish gin gifts and gin gift sets.",
+      "url": {{ canonical_url | json }},
+      "image": {{ sd_logo_url | json }},
+      "telephone": "+447526070580",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Dunrobin Castle",
+        "addressLocality": "Golspie",
+        "addressRegion": "Highland",
+        "postalCode": "KW10 6SF",
+        "addressCountry": "GB"
+      },
+      "parentOrganization": { "@id": {{ shop.url | append: '/#organization' | json }} },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+          "opens": "10:00",
+          "closes": "17:00",
+          "validFrom": {{ sd_year | append: '-04-01' | json }},
+          "validThrough": {{ sd_year | append: '-09-30' | json }}
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+          "opens": "10:30",
+          "closes": "16:30",
+          "validFrom": {{ sd_year | append: '-10-01' | json }},
+          "validThrough": {{ sd_year | append: '-10-31' | json }}
         }
       ]
     }

@@ -42,11 +42,19 @@
       A blog's page_title is the blog's name in Shopify, which for the default
       blog is "News". This page lists blog posts, so it takes its title from the
       locale file instead.
+
+      The all-products collection is called "Products" by Shopify, which is the
+      title it would get in search results. When no SEO title has been set for
+      it in the admin (page_title is then just the collection's own title), the
+      locale file supplies a keyword title instead. A title set in the admin
+      always wins.
     {%- endcomment -%}
     {%- liquid
       assign document_title = page_title
       if template.name == 'blog'
         assign document_title = 'blogs.general.title' | t
+      elsif template.name == 'collection' and collection.handle == 'all' and page_title == collection.title
+        assign document_title = 'collections.general.title_all' | t
       endif
     -%}
     <title>
