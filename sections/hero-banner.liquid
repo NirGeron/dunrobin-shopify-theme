@@ -54,6 +54,25 @@
           {%- assign heading_tag = 'h1' -%}
         {%- endif -%}
 
+        {%- comment -%}
+          The home page hero is a photograph with no heading block, which left
+          the page with no <h1> at all. When that is the case a visually hidden
+          one carries the page's main keywords (text in locales/en.default.json),
+          so nothing changes on screen. Adding a heading block to the hero
+          replaces it.
+        {%- endcomment -%}
+        {%- if template.name == 'index' and section.index == 1 -%}
+          {%- assign hero_has_heading = false -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'heading' -%}
+              {%- assign hero_has_heading = true -%}
+            {%- endif -%}
+          {%- endfor -%}
+          {%- unless hero_has_heading -%}
+            <h1 class="visually-hidden">{{ 'general.home_h1' | t }}</h1>
+          {%- endunless -%}
+        {%- endif -%}
+
         {%- for block in section.blocks -%}
           {%- case block.type -%}
             {%- when 'logo' -%}
