@@ -19,7 +19,7 @@
         "preorder": {
           "type": "notice",
           "settings": {
-            "text": "Pre-order: this gift set will be delivered on 1 December."
+            "text": "Will be delivered Dec 1st"
           }
         },
         "price": {
