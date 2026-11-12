@@ -12,7 +12,7 @@
     "main": {
       "type": "main-collection",
       "settings": {
-        "heading": "",
+        "heading": "Our Collection",
         "eyebrow": "",
         "description": "",
         "show_banner": true,
