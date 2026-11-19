@@ -1,1 +1,254 @@
-{"sections":{"main":{"type":"main-page","settings":{"narrow":true,"alignment":"center","padding_top":80,"padding_bottom":96}}},"order":["main"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "eyebrow": "A Highland Story, shared",
+        "narrow": true,
+        "alignment": "center",
+        "padding_top": 80,
+        "padding_bottom": 96
+      }
+    },
+    "image_banner_ty3iNU": {
+      "type": "image-banner",
+      "name": "Image banner",
+      "settings": {
+        "image": "shopify://shop_images/JM3A0104-2.jpg",
+        "height": "medium",
+        "trim_top": 5,
+        "trim_bottom": 36,
+        "fit_mobile": true,
+        "caption": "",
+        "show_seal": false,
+        "seal_size": 30
+      }
+    },
+    "image_with_text_D3qCmK": {
+      "type": "image-with-text",
+      "blocks": {
+        "eyebrow_iUPMg3": {
+          "type": "eyebrow",
+          "settings": {
+            "text": "LOVE FROM SCOTLAND | NOVEMBER 2026"
+          }
+        },
+        "heading_m4UmTX": {
+          "type": "heading",
+          "settings": {
+            "text": "Celebrating Scottish Craft This Christmas",
+            "size": "h2"
+          }
+        },
+        "text_BjDWMi": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Dunrobin Gin has been selected by Scottish travel writer Kate Hopper for Love From Scotland’s 2026 Christmas gift guide, celebrating independent makers, contemporary design and Scottish craftsmanship.</p><p>We're delighted to feature alongside some of Scotland’s finest independent producers, each with their own unique story to tell.</p>"
+          }
+        },
+        "button_EJWwbx": {
+          "type": "button",
+          "settings": {
+            "label": "Read the full article",
+            "link": "https://www.lovefromscotland.co.uk/the-scottish-christmas-gift-guide-sustainable-independent-design-led/",
+            "style": "primary"
+          }
+        }
+      },
+      "block_order": [
+        "eyebrow_iUPMg3",
+        "heading_m4UmTX",
+        "text_BjDWMi",
+        "button_EJWwbx"
+      ],
+      "name": "Image with text",
+      "settings": {
+        "image": "shopify://shop_images/0423336E-6B28-4E61-B64C-CE22AD7778EF.jpg",
+        "builtin_image": "castle",
+        "image_ratio": "portrait",
+        "layout": "image_first",
+        "wide_media": false,
+        "color_scheme": "default",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
+    },
+    "image_with_text_pXGG8k": {
+      "type": "image-with-text",
+      "blocks": {
+        "eyebrow_4BKG9X": {
+          "type": "eyebrow",
+          "settings": {
+            "text": "The Northern Times | December 2025"
+          }
+        },
+        "heading_4MK3hN": {
+          "type": "heading",
+          "settings": {
+            "text": "The Next Chapter for Dunrobin Highland Distillery",
+            "size": "h2"
+          }
+        },
+        "text_iK3tM3": {
+          "type": "text",
+          "settings": {
+            "text": "<p>The Northern Times explores the journey of Dunrobin Highland Distillery, reflecting on its progress so far and looking ahead to an exciting new chapter for our independent Highland distillery.</p>"
+          }
+        },
+        "button_WQbVwY": {
+          "type": "button",
+          "settings": {
+            "label": "Read the full article",
+            "link": "https://www.northern-times.co.uk/news/dunrobin-highland-distillery-moving-into-phase-two-after-spi-422321/",
+            "style": "primary"
+          }
+        }
+      },
+      "block_order": [
+        "eyebrow_4BKG9X",
+        "heading_4MK3hN",
+        "text_iK3tM3",
+        "button_WQbVwY"
+      ],
+      "name": "Image with text",
+      "settings": {
+        "image": "shopify://shop_images/IMG_6584.jpg",
+        "builtin_image": "castle",
+        "image_ratio": "portrait",
+        "layout": "image_first",
+        "wide_media": false,
+        "color_scheme": "default",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
+    },
+    "image_with_text_qc4m9r": {
+      "type": "image-with-text",
+      "blocks": {
+        "eyebrow_8Hn6mg": {
+          "type": "eyebrow",
+          "settings": {
+            "text": "THE PRESS AND JOURNAL | NOVEMBER 2019"
+          }
+        },
+        "heading_7CCXEp": {
+          "type": "heading",
+          "settings": {
+            "text": "The Beginnings of a Highland Story",
+            "size": "h2"
+          }
+        },
+        "text_krWMXn": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Looking back to the early days of Dunrobin Highland Distillery, The Press and Journal speaks to founders Lizzie and Boban about their vision for a distillery rooted in the landscape, heritage and natural resources of the Dunrobin Estate.</p><p>An insight into the ambitions and inspiration behind the Dunrobin story, long before the launch of our first gin.</p>"
+          }
+        },
+        "button_CJXLkL": {
+          "type": "button",
+          "settings": {
+            "label": "Read the full article",
+            "link": "https://www.pressandjournal.co.uk/fp/news/inverness/1890966/dunrobin-castle-distillery-ready-to-launch-if-investor-can-pledge-6-million-to-kick-start-production/",
+            "style": "primary"
+          }
+        }
+      },
+      "block_order": [
+        "eyebrow_8Hn6mg",
+        "heading_7CCXEp",
+        "text_krWMXn",
+        "button_CJXLkL"
+      ],
+      "name": "Image with text",
+      "settings": {
+        "image": "shopify://shop_images/AF85FA24-1EDA-4769-B83B-F9DD80B22300_b69f6d9f-e0ad-4fc5-9b65-8bbbc7db04dd.jpg",
+        "builtin_image": "castle",
+        "image_ratio": "portrait",
+        "layout": "image_first",
+        "wide_media": false,
+        "color_scheme": "default",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
+    },
+    "image_with_text_R7gV6q": {
+      "type": "image-with-text",
+      "blocks": {
+        "eyebrow_gbzRan": {
+          "type": "eyebrow",
+          "settings": {
+            "text": "THE SCOTSMAN | AUGUST 2017"
+          }
+        },
+        "heading_kU9Xtf": {
+          "type": "heading",
+          "settings": {
+            "text": "Where the Dunrobin Story Began",
+            "size": "h2"
+          }
+        },
+        "text_arh6wt": {
+          "type": "text",
+          "settings": {
+            "text": "<p>In one of the earliest features on Dunrobin Highland Distillery, The Scotsman speaks to co-founder Lizzie Sutherland about her return to her Highland roots and the inspiration behind establishing a distillery with her husband, Boban Costin.</p><p>A glimpse into the origins of Dunrobin Highland Distillery, and the ambition to create something truly special, rooted in the landscape and heritage of their Highland home.</p>"
+          }
+        },
+        "button_6XpNjW": {
+          "type": "button",
+          "settings": {
+            "label": "Read the full article",
+            "link": "https://www.scotsman.com/lifestyle/food-and-drink/doctor-returns-to-highland-roots-with-dunrobin-distillery-1442660",
+            "style": "primary"
+          }
+        }
+      },
+      "block_order": [
+        "eyebrow_gbzRan",
+        "heading_kU9Xtf",
+        "text_arh6wt",
+        "button_6XpNjW"
+      ],
+      "name": "Image with text",
+      "settings": {
+        "image": "shopify://shop_images/meet_the_team_23f1d41c-cb5f-4759-90fe-67f94894ebe2.jpg",
+        "builtin_image": "castle",
+        "image_ratio": "portrait",
+        "layout": "image_first",
+        "wide_media": false,
+        "color_scheme": "default",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
+    },
+    "contact_form_MXzj6f": {
+      "type": "contact-form",
+      "name": "Contact form",
+      "settings": {
+        "eyebrow": "Every bottle of Dunrobin Gin has a story to tell.",
+        "heading": "Press & Media Enquiries",
+        "text": "<p>If you’re interested in sharing ours, we would be delighted to hear from you. Please get in touch for press enquiries, interviews, high-resolution imagery or further information about Dunrobin Highland Distillery.</p>",
+        "color_scheme": "alt",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
+    }
+  },
+  "order": [
+    "main",
+    "image_banner_ty3iNU",
+    "image_with_text_D3qCmK",
+    "image_with_text_pXGG8k",
+    "image_with_text_qc4m9r",
+    "image_with_text_R7gV6q",
+    "contact_form_MXzj6f"
+  ]
+}
