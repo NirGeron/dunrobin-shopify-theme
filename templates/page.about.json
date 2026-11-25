@@ -309,6 +309,51 @@
         "padding_bottom": 64
       }
     },
+    "rich_text_iTpiTz": {
+      "type": "rich-text",
+      "blocks": {
+        "eyebrow_78TfwT": {
+          "type": "eyebrow",
+          "settings": {
+            "text": "BEYOND OUR OWN WORDS"
+          }
+        },
+        "heading_dNXbRE": {
+          "type": "heading",
+          "settings": {
+            "text": "Our Story Through the Years",
+            "size": "h1"
+          }
+        },
+        "text_UeKiad": {
+          "type": "text",
+          "settings": {
+            "text": "<p>From the first aspirations for a Highland distillery to the realisation of that vision, our journey has been documented by a number of independent publications over the years.</p><p>Discover the different chapters of our story through our collection of press coverage.</p>"
+          }
+        },
+        "button_TVn4Qk": {
+          "type": "button",
+          "settings": {
+            "label": "Explore Our Press Coverage",
+            "link": "shopify://pages/in-the-press",
+            "style": "primary"
+          }
+        }
+      },
+      "block_order": [
+        "eyebrow_78TfwT",
+        "heading_dNXbRE",
+        "text_UeKiad",
+        "button_TVn4Qk"
+      ],
+      "name": "Rich text",
+      "settings": {
+        "color_scheme": "brand",
+        "alignment": "center",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
+    },
     "cta": {
       "type": "rich-text",
       "blocks": {
@@ -365,6 +410,7 @@
     "image_with_text_EKFn3f",
     "image_with_text_Gtwj67",
     "image_with_text_KGLNK9",
+    "rich_text_iTpiTz",
     "cta"
   ]
 }
