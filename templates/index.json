@@ -351,7 +351,7 @@
     "pair": {
       "type": "image-pair",
       "settings": {
-        "caption_left": "Sealed in green wax",
+        "caption_left": "Hand Sealed in green wax",
         "background_left": "#ffffff",
         "align_left": "bottom",
         "caption_right": "Sans Peur",
@@ -382,6 +382,58 @@
         "alignment": "center",
         "padding_top": 0,
         "padding_bottom": 0
+      }
+    },
+    "rich_text_9zVx64": {
+      "type": "rich-text",
+      "blocks": {
+        "eyebrow_nFpxpc": {
+          "type": "eyebrow",
+          "settings": {
+            "text": "As featured in"
+          }
+        },
+        "eyebrow_mXhyeR": {
+          "type": "eyebrow",
+          "settings": {
+            "text": "The Scotsman • The Northern Times • The Press and Journal"
+          }
+        },
+        "heading_DqT6G6": {
+          "type": "heading",
+          "settings": {
+            "text": "A Highland Story, Shared",
+            "size": "h1"
+          }
+        },
+        "text_QgL8i9": {
+          "type": "text",
+          "settings": {
+            "text": "<p>From the earliest ambitions for Dunrobin Highland Distillery to the chapters still being written, discover our journey through a collection of independent articles, interviews and features.</p>"
+          }
+        },
+        "button_eJCMXq": {
+          "type": "button",
+          "settings": {
+            "label": "Explore Our Press Coverage",
+            "link": "shopify://pages/in-the-press",
+            "style": "primary"
+          }
+        }
+      },
+      "block_order": [
+        "eyebrow_nFpxpc",
+        "eyebrow_mXhyeR",
+        "heading_DqT6G6",
+        "text_QgL8i9",
+        "button_eJCMXq"
+      ],
+      "name": "Rich text",
+      "settings": {
+        "color_scheme": "alt",
+        "alignment": "center",
+        "padding_top": 96,
+        "padding_bottom": 96
       }
     },
     "serve": {
@@ -452,6 +504,7 @@
             "autoplay_speed": 5,
             "review_line_clamp": 5,
             "show_headline": true,
+            "show_rating_number": true,
             "show_review_count": false,
             "show_google_logo": true,
             "show_review_time": false,
@@ -509,6 +562,7 @@
     "intro",
     "pair",
     "rich_text_R8cam8",
+    "rich_text_9zVx64",
     "serve",
     "1786549912a9f82cd7"
   ]
