@@ -289,14 +289,14 @@
       "type": "blog-posts",
       "settings": {
         "blog": "news",
-        "eyebrow": "",
-        "heading": "",
+        "eyebrow": "Stories from the distillery",
+        "heading": "On the Blog",
         "posts_to_show": 3,
         "columns": 3,
         "mobile_carousel": true,
-        "stagger": true,
+        "stagger": false,
         "feature_single": true,
-        "image_ratio": "adapt",
+        "image_ratio": "portrait",
         "show_filters": false,
         "filters_to_show": 3,
         "accent_color": "#8a6a3b",
@@ -308,7 +308,7 @@
         "show_view_all": false,
         "view_all_label": "View all dispatches",
         "color_scheme": "alt",
-        "padding_top": 0,
+        "padding_top": 24,
         "padding_bottom": 16
       }
     },
