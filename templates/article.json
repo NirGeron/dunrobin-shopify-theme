@@ -22,7 +22,7 @@
         "image": {
           "type": "featured_image",
           "settings": {
-            "ratio": "adapt"
+            "ratio": "landscape"
           }
         },
         "content": {
