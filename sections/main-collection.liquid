@@ -85,7 +85,7 @@
         role="list"
       >
         {%- for product in collection.products -%}
-          <li>{% render 'card-product', product: product, ratio: section.settings.image_ratio %}</li>
+          <li>{% render 'card-product', product: product, ratio: section.settings.image_ratio, fit: 'contain' %}</li>
         {%- endfor -%}
       </ul>
 
