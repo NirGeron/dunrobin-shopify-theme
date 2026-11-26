@@ -1,1 +1,27 @@
-{"sections":{"main":{"type":"main-blog","settings":{"heading":"Blog","eyebrow":"","show_banner":true,"columns":3,"posts_per_page":9,"image_ratio":"landscape"}}},"order":["main"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-blog",
+      "settings": {
+        "heading": "Blog",
+        "eyebrow": "",
+        "show_banner": true,
+        "columns": 3,
+        "posts_per_page": 9,
+        "image_ratio": "portrait"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
